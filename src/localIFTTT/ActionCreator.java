@@ -6,11 +6,11 @@ package localIFTTT;
 
 import java.util.Map;
 
-public class TriggerCreator {
-    //Trigger factory method based on the TriggerType. 
-    //The argument 'trigParam' contains all the possible parameters of a specific Trigger in a Map.
-    static Trigger createTrigger(TriggerType trigger, Map trigParam){
-        switch(trigger) {
+public class ActionCreator {
+    //Action factory method based on the ActionType. 
+    //The argument 'actParam' contains all the possible parameters of a specific Action in a Map.
+    static Action createAction(ActionType action, Map actParam) {
+        switch(action) {
             default:
                 return null;
         }
