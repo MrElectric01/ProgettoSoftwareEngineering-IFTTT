@@ -1,9 +1,1 @@
-*
-!.gitignore
-!src/
-!src/*/
-!src/*/*.java
-!src/*/*.fxml
-!test/
-!test/*/
-!src/*/*.java
+target
