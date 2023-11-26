@@ -5,5 +5,36 @@
 package progettosoftwareengineering.localifttt;
 
 public class Rule {
-//    TODO
+    
+    private String name;
+    private final Trigger trigger;
+    private final Action action;
+
+    public Rule(String name, Trigger trigger, Action action) {
+        this.name = name;
+        this.trigger = trigger;
+        this.action = action;
+    }
+
+//    These get method is useful for the SetCellValueFactory of the TableView that shows the rules.
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getTrigger() {
+        return trigger.toString();
+    }
+    
+    public String getAction() {
+        return action.toString();
+    }
+    
+    public boolean checkRule() {
+        return trigger.checkTrigger();
+    }
+
+    public void activateRule() {
+        action.doAction();
+    }
 }
