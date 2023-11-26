@@ -13,8 +13,9 @@ public class ChainTriggerCreatorsCreator {
     
 //    Constructor that initialize all the Creators and build the chain.
     private ChainTriggerCreatorsCreator() {
-        first = null;
-//        TODO
+        BaseTriggerCreator TTC = new TimeTriggerCreator();
+        
+        first = TTC;
     }
     
 //    This method uses the Singleton pattern and also returns the first Creator of the chain. 

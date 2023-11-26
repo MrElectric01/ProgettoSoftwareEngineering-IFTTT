@@ -4,6 +4,7 @@
  */
 package progettosoftwareengineering.localifttt;
 
+import java.util.HashMap;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -24,14 +25,13 @@ public class ChainTriggerCreatorsCreatorTest {
         assertEquals(chain, instance2);
     }
     
-//    TODO when the chain contain at least one Creator.
-//    In order to verify that no one can Handle a request with TriggerType = null,
+//    In order to verify that no one can Handle a request with TriggerType = TEST,
 //    and so the whole Chain is traversed (where all the specific Creator handler is 
 //    tested in the specific test class), we check that the created Trigger is null.
     @Test
     public void testChainElements() {
-//        Trigger trigger = chain.createTrigger(null, null);
-//        assertNull(trigger);
+        Trigger trigger = chain.createTrigger(TriggerType.TEST, new HashMap());
+        assertNull(trigger);
     }
     
 }

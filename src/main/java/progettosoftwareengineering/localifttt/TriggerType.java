@@ -6,4 +6,7 @@ package progettosoftwareengineering.localifttt;
 
 //Enumeration class for the TriggerType.
 public enum TriggerType {
+//    This type is useful just for the test.
+    TEST,
+    TIME;
 }

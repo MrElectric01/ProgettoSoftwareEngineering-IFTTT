@@ -1,12 +1,18 @@
 package progettosoftwareengineering.localifttt;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -27,50 +33,93 @@ public class GUIController implements Initializable{
     private TableView<Rule> ruleTable;
     @FXML
     private TableColumn<Rule, String> nameColumn;
-//    TODO when a concrete trigger will be implemented
-//    @FXML
-//    private TableColumn<Rule, Trigger> triggerColumn;  
+    @FXML
+    private TableColumn<Rule, Trigger> triggerColumn;  
 //    TODO when a concrete action will be implemented
 //    @FXML
 //    private TableColumn<Rule, Action> actionColumn;
+        
+    private TriggerType selectedTrigger = null;
+    private BooleanProperty triggerIsSelected = new SimpleBooleanProperty(false);
+    private Map<String, String> trigParam = new HashMap<>();
+    
+    @FXML
+    private VBox timeTriggerPane;
+    @FXML
+    private Spinner<Integer> hourSpinner;
+    @FXML
+    private Spinner<Integer> minutesSpinner;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        saveButton.disableProperty().bind(Bindings.isEmpty(insertRuleName.textProperty()));
+//        Disable the Save button if the ruleName TextField is empty OR no Trigger is selected.
+        saveButton.disableProperty().bind(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()));
         
+//        Connect the table to the Rule fields.
         nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
-//        add when a concrete trigger will be implemented
-//        triggerColumn.setCellValueFactory(new PropertyValueFactory("trigger"));
-
+        triggerColumn.setCellValueFactory(new PropertyValueFactory("trigger"));
 //        add when a concrete action will be implemented
 //        actionColumn.setCellValueFactory(new PropertyValueFactory("action"));
         ruleTable.setItems(RuleCollection.getInstance().getRules());
     }
     
+//    Handle the addRule button action switching the panes.
     @FXML
     private void addRule(ActionEvent event) {
         homePane.setVisible(false);
         addRulePane.setVisible(true);
     }
 
+//    Handle the Cancel button action switching the panes.
     @FXML
     private void handleCancel(ActionEvent event) {
         fromAddToHomePane();
     }
 
+//    Handle the Save button action saving the rule and switching the panes.
     @FXML
     private void handleSave(ActionEvent event) {
-        RuleCollection.getInstance().addRule(new Rule(insertRuleName.getText(), null, null));
+        putTrigParam();
+        Trigger trigger = ChainTriggerCreatorsCreator.chain().createTrigger(selectedTrigger, trigParam);
+        RuleCollection.getInstance().addRule(new Rule(insertRuleName.getText(), trigger, null));
         fromAddToHomePane();
     }
     
+//    Put all the possible value for all the Triggers parameters.
+    private void putTrigParam() {
+        trigParam.put("timeTriggerHour", hourSpinner.getValue().toString());
+        trigParam.put("timeTriggerMinutes", minutesSpinner.getValue().toString());
+    }
+    
+//    Handle the pass from the addPane to the homePane,
+//    clearing the fields and hidinf the Trigger pane (and Action pane TODO)
     private void fromAddToHomePane() {
         clearAllFields();
+        hideAllTriggers();
         addRulePane.setVisible(false);
         homePane.setVisible(true);
     }
 
+//    Clear all fiels of the possible parameters of every pane.
     private void clearAllFields() {
         insertRuleName.clear();
+        selectedTrigger = null;
+        triggerIsSelected.setValue(false);
+        hourSpinner.getValueFactory().setValue(0);
+        minutesSpinner.getValueFactory().setValue(0);
+    }
+
+//    Handle the "Time" choice from the "Select Trigger" menu.
+    @FXML
+    private void selectTimeTrigger(ActionEvent event) {
+        hideAllTriggers();
+        selectedTrigger = TriggerType.TIME;
+        triggerIsSelected.setValue(true);
+        timeTriggerPane.setVisible(true);
+    }
+    
+//    Hide all the possible Trigger pane.
+    private void hideAllTriggers(){
+        timeTriggerPane.setVisible(false);
     }
 }
