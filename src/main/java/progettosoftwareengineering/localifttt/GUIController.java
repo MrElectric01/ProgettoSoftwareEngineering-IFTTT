@@ -1,5 +1,13 @@
 package progettosoftwareengineering.localifttt;
 
+import progettosoftwareengineering.localifttt.rule.RuleCollection;
+import progettosoftwareengineering.localifttt.rule.Rule;
+import progettosoftwareengineering.localifttt.rule.trigger.ChainTriggerCreatorsCreator;
+import progettosoftwareengineering.localifttt.rule.trigger.TriggerType;
+import progettosoftwareengineering.localifttt.rule.trigger.Trigger;
+import progettosoftwareengineering.localifttt.rule.action.Action;
+import progettosoftwareengineering.localifttt.rule.action.ActionType;
+import progettosoftwareengineering.localifttt.rule.action.ChainActionCreatorsCreator;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;

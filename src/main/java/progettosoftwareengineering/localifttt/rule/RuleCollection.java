@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package progettosoftwareengineering.localifttt;
+package progettosoftwareengineering.localifttt.rule;
 
 import java.util.Iterator;
 import javafx.collections.FXCollections;
@@ -31,7 +31,7 @@ public class RuleCollection implements Iterable<Rule> {
     //Method that adds a rule to the collection and triggers the service that checks them.
     public void addRule(Rule rule) {
         rules.add(rule);
-//        RulesCheckService.startChecking();
+        RulesCheckService.startChecking();
     }
     
     //This method doesn't stop the Service, because if the Collection is empty, the Service stops itself.

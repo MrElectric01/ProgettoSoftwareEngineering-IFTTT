@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
-package progettosoftwareengineering.localifttt;
+package progettosoftwareengineering.localifttt.rule;
 
+import progettosoftwareengineering.localifttt.rule.trigger.Trigger;
+import progettosoftwareengineering.localifttt.rule.action.Action;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
