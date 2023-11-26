@@ -94,7 +94,24 @@
                                  <VBox.margin>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </VBox.margin>
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#selectMessageAction" text="Message" />
+                                 </items>
                               </MenuButton>
+                              <StackPane>
+                                 <children>
+                                    <VBox fx:id="messageActionPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
+                                       <children>
+                                          <Label prefHeight="91.0" prefWidth="261.0" text="Message action: an action that, when associated with a rule, displays the specified message in a dialog box when the rule is triggered." wrapText="true" />
+                                          <TextField fx:id="insertMessage" prefHeight="31.0" prefWidth="317.0" promptText="Inserisci testo qui">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </StackPane>
                            </children>
                         </VBox>
                      </children>

@@ -35,13 +35,16 @@ public class GUIController implements Initializable{
     private TableColumn<Rule, String> nameColumn;
     @FXML
     private TableColumn<Rule, Trigger> triggerColumn;  
-//    TODO when a concrete action will be implemented
-//    @FXML
-//    private TableColumn<Rule, Action> actionColumn;
+    @FXML
+    private TableColumn<Rule, Action> actionColumn;
         
     private TriggerType selectedTrigger = null;
     private BooleanProperty triggerIsSelected = new SimpleBooleanProperty(false);
     private Map<String, String> trigParam = new HashMap<>();
+    
+    private ActionType selectedAction = null;
+    private BooleanProperty actionIsSelected = new SimpleBooleanProperty(false);
+    private Map<String, String> actParam = new HashMap<>();
     
     @FXML
     private VBox timeTriggerPane;
@@ -49,17 +52,20 @@ public class GUIController implements Initializable{
     private Spinner<Integer> hourSpinner;
     @FXML
     private Spinner<Integer> minutesSpinner;
+    @FXML
+    private VBox messageActionPane;
+    @FXML
+    private TextField insertMessage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 //        Disable the Save button if the ruleName TextField is empty OR no Trigger is selected.
-        saveButton.disableProperty().bind(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()));
+        saveButton.disableProperty().bind(Bindings.or(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()), actionIsSelected.not()));
         
 //        Connect the table to the Rule fields.
         nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
         triggerColumn.setCellValueFactory(new PropertyValueFactory("trigger"));
-//        add when a concrete action will be implemented
-//        actionColumn.setCellValueFactory(new PropertyValueFactory("action"));
+        actionColumn.setCellValueFactory(new PropertyValueFactory("action"));
         ruleTable.setItems(RuleCollection.getInstance().getRules());
     }
     
@@ -81,7 +87,9 @@ public class GUIController implements Initializable{
     private void handleSave(ActionEvent event) {
         putTrigParam();
         Trigger trigger = ChainTriggerCreatorsCreator.chain().createTrigger(selectedTrigger, trigParam);
-        RuleCollection.getInstance().addRule(new Rule(insertRuleName.getText(), trigger, null));
+        putActParam();
+        Action action = ChainActionCreatorsCreator.chain().createAction(selectedAction, actParam);
+        RuleCollection.getInstance().addRule(new Rule(insertRuleName.getText(), trigger, action));
         fromAddToHomePane();
     }
     
@@ -91,11 +99,17 @@ public class GUIController implements Initializable{
         trigParam.put("timeTriggerMinutes", minutesSpinner.getValue().toString());
     }
     
+//    Put all the possible value for all the Actions parameters.
+    private void putActParam() {
+        actParam.put("messageActionMessage", insertMessage.getText());
+    }
+    
 //    Handle the pass from the addPane to the homePane,
 //    clearing the fields and hidinf the Trigger pane (and Action pane TODO)
     private void fromAddToHomePane() {
         clearAllFields();
         hideAllTriggers();
+        hideAllActions();
         addRulePane.setVisible(false);
         homePane.setVisible(true);
     }
@@ -105,8 +119,10 @@ public class GUIController implements Initializable{
         insertRuleName.clear();
         selectedTrigger = null;
         triggerIsSelected.setValue(false);
+        actionIsSelected.setValue(false);
         hourSpinner.getValueFactory().setValue(0);
         minutesSpinner.getValueFactory().setValue(0);
+        insertMessage.clear();
     }
 
 //    Handle the "Time" choice from the "Select Trigger" menu.
@@ -118,8 +134,22 @@ public class GUIController implements Initializable{
         timeTriggerPane.setVisible(true);
     }
     
-//    Hide all the possible Trigger pane.
+//    Hide all the possible Trigger panes.
     private void hideAllTriggers(){
         timeTriggerPane.setVisible(false);
+    }
+
+//    Handle the "Message" choice from the "Select Action" menu.
+    @FXML
+    private void selectMessageAction(ActionEvent event) {
+        hideAllActions();
+        selectedAction = ActionType.MESSAGE;
+        actionIsSelected.setValue(true);
+        messageActionPane.setVisible(true);
+    }
+    
+//    Hide all the possible Action panes.
+    private void hideAllActions(){
+        messageActionPane.setVisible(false);
     }
 }

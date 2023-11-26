@@ -6,4 +6,8 @@ package progettosoftwareengineering.localifttt;
 
 //Enumeration class for the ActionType.
 public enum ActionType {
+//    This type is useful just for the test.
+    TEST,
+    
+    MESSAGE;
 }

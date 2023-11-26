@@ -13,8 +13,9 @@ public class ChainActionCreatorsCreator {
     
 //    Constructor that initialize all the Creators and build the chain.
     private ChainActionCreatorsCreator() {
-        first = null;
-//        TODO
+        BaseActionCreator MAC = new MessageActionCreator();
+        
+        first = MAC;
     }
     
 //    This method uses the Singleton pattern and also returns the first Creator of the chain. 

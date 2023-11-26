@@ -4,6 +4,7 @@
  */
 package progettosoftwareengineering.localifttt;
 
+import java.util.HashMap;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -23,14 +24,14 @@ public class ChainActionCreatorsCreatorTest {
         BaseActionCreator instance2 = ChainActionCreatorsCreator.chain();
         assertEquals(chain, instance2);
     }
-//    TODO when the chain contains at least one Creator     
+    
 //    In order to verify that no one can Handle a request with ActionType = TEST,
 //    and so the whole Chain is traversed (where all the specific Creator handler is 
 //    tested in the specific test class), we check that the created Action is null.
     @Test
     public void testChainElements() {
-//        Action action = chain.createAction(null, null);
-//        assertNull(action);
+        Action action = chain.createAction(ActionType.TEST, new HashMap());
+        assertNull(action);
     }
     
 }
