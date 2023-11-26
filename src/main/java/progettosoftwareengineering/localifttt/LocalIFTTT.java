@@ -8,9 +8,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * JavaFX LocalIFTTT
- */
 public class LocalIFTTT extends Application {
 
     private static Scene scene;

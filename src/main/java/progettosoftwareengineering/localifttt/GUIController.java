@@ -18,7 +18,7 @@ public class GUIController implements Initializable{
     }
     
     @FXML
-    //Handle the 'Add Rule' button fire (change interface)
+    //Handle the 'Add Rule' button fire (change interface).
     private void handleAddRule(ActionEvent event) {
         // TODO
     }

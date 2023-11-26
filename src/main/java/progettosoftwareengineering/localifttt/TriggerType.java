@@ -4,6 +4,6 @@
  */
 package progettosoftwareengineering.localifttt;
 
-//Enumeration class for the TriggerType
+//Enumeration class for the TriggerType.
 public enum TriggerType {
 }

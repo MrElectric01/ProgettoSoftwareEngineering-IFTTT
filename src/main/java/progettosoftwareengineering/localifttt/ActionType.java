@@ -4,6 +4,6 @@
  */
 package progettosoftwareengineering.localifttt;
 
-//Enumeration class for the ActionType
+//Enumeration class for the ActionType.
 public enum ActionType {
 }
