@@ -14,8 +14,10 @@ public class ChainActionCreatorsCreator {
 //    Constructor that initialize all the Creators and build the chain.
     private ChainActionCreatorsCreator() {
         BaseActionCreator MAC = new MessageActionCreator();
+        BaseActionCreator AAC = new AudioActionCreator();
         
         first = MAC;
+        MAC.setNext(AAC);
     }
     
 //    This method uses the Singleton pattern and also returns the first Creator of the chain. 

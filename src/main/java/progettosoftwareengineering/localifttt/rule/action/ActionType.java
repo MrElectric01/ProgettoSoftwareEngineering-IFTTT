@@ -9,5 +9,6 @@ public enum ActionType {
 //    This type is useful just for the test.
     TEST,
     
-    MESSAGE;
+    MESSAGE,
+    AUDIO;
 }

@@ -14,18 +14,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import progettosoftwareengineering.localifttt.rule.RulesCheckService;
 
 public class GUIController implements Initializable{
@@ -65,11 +70,27 @@ public class GUIController implements Initializable{
     private VBox messageActionPane;
     @FXML
     private TextField insertMessage;
+    @FXML
+    private VBox audioActionPane;
+    @FXML
+    private Label selectedAudioLabel;
+    
+    private String selectedAudio = "";
+    @FXML
+    private MenuItem timeTriggerChoice;
+    @FXML
+    private MenuItem audioActionChoice;
+    @FXML
+    private MenuItem messageActionChoice;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        Disable the Save button if the ruleName TextField is empty OR no Trigger is selected.
-        saveButton.disableProperty().bind(Bindings.or(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()), actionIsSelected.not()));
+//        BooleanBinding "false" if all the rule fields are filled (name, triggger and action).
+        BooleanBinding ruleFields = Bindings.or(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()), actionIsSelected.not());
+//        BooleanBinding "false" if one actionType parameters are filled at least.
+        BooleanBinding actionFields = Bindings.and(insertMessage.textProperty().isEmpty(), selectedAudioLabel.textProperty().isEmpty());
+//        Disable the Save button if the ruleFields OR field of the selected action are empty.
+        saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
         
 //        Connect the table to the Rule fields.
         nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
@@ -112,33 +133,39 @@ public class GUIController implements Initializable{
 //    Put all the possible value for all the Actions parameters.
     private void putActParam() {
         actParam.put("messageActionMessage", insertMessage.getText());
+        actParam.put("audioActionAudioPath", selectedAudio);
     }
     
 //    Handle the pass from the addPane to the homePane,
 //    clearing the fields and hidinf the Trigger pane (and Action pane TODO)
     private void fromAddToHomePane() {
-        clearAllFields();
         hideAllTriggers();
         hideAllActions();
+        insertRuleName.clear();
         addRulePane.setVisible(false);
         homePane.setVisible(true);
     }
-
-//    Clear all fiels of the possible parameters of every pane.
-    private void clearAllFields() {
-        insertRuleName.clear();
+    
+//    Clear all fields of the possible Action parameters.
+    private void clearActionFields() {
+        selectedAction = null;
+        actionIsSelected.setValue(false);
+        insertMessage.clear();
+        selectedAudio = "";
+        selectedAudioLabel.setText(selectedAudio);
+    }
+    
+//    Clear all fields of the possible Trigger parameters.
+    private void clearTriggerFields() {
         selectedTrigger = null;
         triggerIsSelected.setValue(false);
-        actionIsSelected.setValue(false);
-        hourSpinner.getValueFactory().setValue(0);
-        minutesSpinner.getValueFactory().setValue(0);
-        insertMessage.clear();
     }
 
 //    Handle the "Time" choice from the "Select Trigger" menu.
     @FXML
     private void selectTimeTrigger(ActionEvent event) {
         hideAllTriggers();
+        timeTriggerChoice.setDisable(true);
         hourSpinner.getValueFactory().setValue(LocalTime.now().getHour());
         minutesSpinner.getValueFactory().setValue(LocalTime.now().getMinute());
         selectedTrigger = TriggerType.TIME;
@@ -148,13 +175,17 @@ public class GUIController implements Initializable{
     
 //    Hide all the possible Trigger panes.
     private void hideAllTriggers(){
+        clearTriggerFields();
+        
         timeTriggerPane.setVisible(false);
+        timeTriggerChoice.setDisable(false);
     }
 
 //    Handle the "Message" choice from the "Select Action" menu.
     @FXML
     private void selectMessageAction(ActionEvent event) {
         hideAllActions();
+        messageActionChoice.setDisable(true);
         selectedAction = ActionType.MESSAGE;
         actionIsSelected.setValue(true);
         messageActionPane.setVisible(true);
@@ -162,6 +193,44 @@ public class GUIController implements Initializable{
     
 //    Hide all the possible Action panes.
     private void hideAllActions(){
+        clearActionFields();
+        
         messageActionPane.setVisible(false);
+        messageActionChoice.setDisable(false);
+        
+        audioActionPane.setVisible(false);
+        audioActionChoice.setDisable(false);
+    }
+
+//    Handle the audio selection with the system FileChooser, only for the .MP3 and .WAV.
+    @FXML
+    private void selectAudio(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Audio File");
+        
+        FileChooser.ExtensionFilter extFilterMp3 = new FileChooser.ExtensionFilter("File MP3 (*.mp3)", "*.mp3");
+        FileChooser.ExtensionFilter extFilterWav = new FileChooser.ExtensionFilter("File WAV (*.wav)", "*.wav");
+        fileChooser.getExtensionFilters().addAll(extFilterMp3, extFilterWav);
+
+        Stage stage = (Stage) audioActionPane.getScene().getWindow();
+        java.io.File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+            selectedAudio = selectedFile.getAbsolutePath();
+            selectedAudioLabel.setText(selectedFile.getName());
+        } else {
+            selectedAudio = "";
+            selectedAudioLabel.setText("");
+        }
+    }
+
+//    Handle the "Audio" choice from the "Select Action" menu.
+    @FXML
+    private void selectAudioAction(ActionEvent event) {
+        hideAllActions();
+        audioActionChoice.setDisable(true);
+        selectedAction = ActionType.AUDIO;
+        actionIsSelected.setValue(true);
+        audioActionPane.setVisible(true);
     }
 }
