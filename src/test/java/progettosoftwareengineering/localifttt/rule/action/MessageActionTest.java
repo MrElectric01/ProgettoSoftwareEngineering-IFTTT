@@ -4,8 +4,11 @@
  */
 package progettosoftwareengineering.localifttt.rule.action;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import org.junit.*;
 import static org.junit.Assert.assertEquals;
+import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 public class MessageActionTest {
     
@@ -17,11 +20,13 @@ public class MessageActionTest {
         action = new MessageAction(message);
     }
 
-//    This method can't be automatically tested because the only
-//    function that it has, is to open a Dialog box (Alert), that can be opened
-//    only from a JavaFX Event Thread.
+//    In order to verify that the action is to open a dialog box with the message
+//    inserted at the time of creation, we open it to visually confirm.
     @Test
     public void testDoAction() {
+        new JFXPanel();
+        Platform.runLater(() -> action.doAction());
+        waitForFxEvents();
     }
 
     @Test

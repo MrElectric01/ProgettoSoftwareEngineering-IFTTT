@@ -9,6 +9,7 @@ import progettosoftwareengineering.localifttt.rule.action.Action;
 import progettosoftwareengineering.localifttt.rule.action.ActionType;
 import progettosoftwareengineering.localifttt.rule.action.ChainActionCreatorsCreator;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -25,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import progettosoftwareengineering.localifttt.rule.RulesCheckService;
 
 public class GUIController implements Initializable{
 
@@ -89,7 +91,7 @@ public class GUIController implements Initializable{
         fromAddToHomePane();
     }
 
-//    Handle the Save button action saving the rule and switching the panes.
+//    Handle the Save button action saving the rule, start the CheckingService and switching the panes.
     @FXML
     private void handleSave(ActionEvent event) {
         putTrigParam();
@@ -97,6 +99,7 @@ public class GUIController implements Initializable{
         putActParam();
         Action action = ChainActionCreatorsCreator.chain().createAction(selectedAction, actParam);
         RuleCollection.getInstance().addRule(new Rule(insertRuleName.getText(), trigger, action));
+        RulesCheckService.startChecking();
         fromAddToHomePane();
     }
     
@@ -136,6 +139,8 @@ public class GUIController implements Initializable{
     @FXML
     private void selectTimeTrigger(ActionEvent event) {
         hideAllTriggers();
+        hourSpinner.getValueFactory().setValue(LocalTime.now().getHour());
+        minutesSpinner.getValueFactory().setValue(LocalTime.now().getMinute());
         selectedTrigger = TriggerType.TIME;
         triggerIsSelected.setValue(true);
         timeTriggerPane.setVisible(true);

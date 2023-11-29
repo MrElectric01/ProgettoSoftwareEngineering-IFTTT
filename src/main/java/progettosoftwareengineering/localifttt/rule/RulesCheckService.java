@@ -13,6 +13,7 @@ public class RulesCheckService extends Service<ObservableList<Rule>>{
     
     private RuleCollection rules = RuleCollection.getInstance();
     private static RulesCheckService instance = null;
+    private final int checkingPeriod = 3000;
 
     private RulesCheckService() {
     }
@@ -40,7 +41,7 @@ public class RulesCheckService extends Service<ObservableList<Rule>>{
             @Override
             protected ObservableList<Rule> call() throws Exception {
                 while(!rules.getRules().isEmpty()) {
-                    Thread.sleep(3000);
+                    Thread.sleep(checkingPeriod);
                     for (Rule rule : rules) {
                         if(rule.checkRule()) {
                             Platform.runLater(() -> {
@@ -55,5 +56,10 @@ public class RulesCheckService extends Service<ObservableList<Rule>>{
                 return null;
             }
         };
+    }
+    
+//    This method is useful only for the test, infact it is package.
+    int getCheckingPeriod() {
+        return checkingPeriod;
     }
 }

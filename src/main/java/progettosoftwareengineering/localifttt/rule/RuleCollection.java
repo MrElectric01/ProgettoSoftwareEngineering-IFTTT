@@ -28,10 +28,9 @@ public class RuleCollection implements Iterable<Rule> {
         return rules;
     }
     
-    //Method that adds a rule to the collection and triggers the service that checks them.
+    //Method that adds a rule to the collection.
     public void addRule(Rule rule) {
         rules.add(rule);
-        RulesCheckService.startChecking();
     }
     
     //This method doesn't stop the Service, because if the Collection is empty, the Service stops itself.
