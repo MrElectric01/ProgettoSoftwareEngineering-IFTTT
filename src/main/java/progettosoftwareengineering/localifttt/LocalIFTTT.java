@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.scene.image.Image;
 
 public class LocalIFTTT extends Application {
 
@@ -16,6 +17,7 @@ public class LocalIFTTT extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("GUI"));
         stage.setScene(scene);
+        stage.getIcons().add(new Image(LocalIFTTT.class.getResource("logo.png").toString()));
         stage.setTitle("Local IFTTT");
         stage.show();
     }
