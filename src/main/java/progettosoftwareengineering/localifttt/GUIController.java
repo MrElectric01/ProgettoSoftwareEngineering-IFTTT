@@ -11,7 +11,10 @@ import progettosoftwareengineering.localifttt.rule.action.ChainActionCreatorsCre
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -21,19 +24,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import progettosoftwareengineering.localifttt.rule.RulesCheckService;
 
-public class GUIController implements Initializable{
+public class GUIController implements Initializable, Observer{
 
     @FXML
     private VBox homePane;
@@ -82,6 +88,12 @@ public class GUIController implements Initializable{
     private MenuItem audioActionChoice;
     @FXML
     private MenuItem messageActionChoice;
+    @FXML
+    private MenuItem switchStatusContextMenuItem;
+    @FXML
+    private Button switchStatusButton;
+    @FXML
+    private TableColumn<Rule, String> statusColumn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -91,12 +103,21 @@ public class GUIController implements Initializable{
         BooleanBinding actionFields = Bindings.and(insertMessage.textProperty().isEmpty(), selectedAudioLabel.textProperty().isEmpty());
 //        Disable the Save button if the ruleFields OR field of the selected action are empty.
         saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
+       
+        switchStatusContextMenuItem.disableProperty().bind(ruleTable.getSelectionModel().selectedItemProperty().isNull());
+        switchStatusButton.disableProperty().bind(ruleTable.getSelectionModel().selectedItemProperty().isNull());
+        ruleTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
 //        Connect the table to the Rule fields.
         nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
         triggerColumn.setCellValueFactory(new PropertyValueFactory("trigger"));
         actionColumn.setCellValueFactory(new PropertyValueFactory("action"));
+         statusColumn.setCellValueFactory(new PropertyValueFactory("status"));
         ruleTable.setItems(RuleCollection.getInstance().getRules());
+
+//      Observe the RuleCollection to refresh the interface if it changes.
+        RuleCollection.getInstance().addObserver(this);
+        
     }
     
 //    Handle the addRule button action switching the panes.
@@ -232,5 +253,24 @@ public class GUIController implements Initializable{
         selectedAction = ActionType.AUDIO;
         actionIsSelected.setValue(true);
         audioActionPane.setVisible(true);
+    }
+
+    @FXML
+    private void handleSwitchStatus(ActionEvent event) {
+        List<Rule> rules = ruleTable.getSelectionModel().getSelectedItems();
+        for(Rule rule: rules) {
+            RuleCollection.getInstance().getRules().get(RuleCollection.getInstance().getRules().indexOf(rule)).switchStatus();
+        }
+        ruleTable.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void deselect(MouseEvent event) {
+        ruleTable.getSelectionModel().clearSelection();
+    }
+   
+    @Override
+    public void update(Observable o, Object arg) {
+        ruleTable.refresh(); 
     }
 }

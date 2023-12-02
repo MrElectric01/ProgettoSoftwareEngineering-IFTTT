@@ -46,7 +46,7 @@ public class RulesCheckService extends Service<ObservableList<Rule>>{
                         if(rule.checkRule()) {
                             Platform.runLater(() -> {
                                 rule.activateRule();
-                                rules.deleteRule(rule);
+                                rule.switchStatus();
                                         }
                             );
                         }

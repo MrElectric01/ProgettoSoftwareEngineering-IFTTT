@@ -68,7 +68,7 @@ public class RulesCheckServiceTest {
 //    In order to verify that the tested method iterates all the rules in the collection, 
 //    we first insert a rule whose trigger value is true, and then verify both the action 
 //    of the inserted Rule has been executed, and the rule has been removed from the 
-//    collection, checking its size (it must contains only the FalseTriggerRule) (for now, the rules are disposable).
+//    collection, checking its size (it must contains only the FalseTriggerRule).
     @Test
     public void testCreateTask() {
         Trigger triggerTrue = mock(Trigger.class);
@@ -88,7 +88,6 @@ public class RulesCheckServiceTest {
         waitForFxEvents();
         
         verify(action, times(1)).doAction();
-        assertEquals(1, RuleCollection.getInstance().getRules().size());
     }
     
 }

@@ -60,6 +60,16 @@ public class RuleTest {
         when(mockTrigger.checkTrigger()).thenReturn(false);
         assertFalse(rule.checkRule());
     }
+    
+//    In order to verify that checkRule method return false when the rule
+//    is disable, even if the Trigger is true, we set the mock return of the checkTrigger
+//    method at "true", but disable the rule, and so check if the checkRule is false.
+    @Test
+    public void testCheckRuleDisabled() {
+        when(mockTrigger.checkTrigger()).thenReturn(true);
+        rule.switchStatus();
+        assertFalse(rule.checkRule());
+    }
 
 //    In order to verify that activeRule method execute the Action's
 //    doAction() method, we verify, with the specific Mockito's method,
