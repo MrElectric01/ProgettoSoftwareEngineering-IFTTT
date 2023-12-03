@@ -30,12 +30,12 @@ public class Rule extends Observable implements Serializable {
         return name;
     }
     
-    public String getTrigger() {
-        return trigger.toString();
+    public Trigger getTrigger() {
+        return trigger;
     }
     
-    public String getAction() {
-        return action.toString();
+    public Action getAction() {
+        return action;
     }
     
     public String getStatus() {

@@ -51,6 +51,22 @@ public class RuleCollectionTest {
         assertTrue(ruleCollection.getRules().contains(rule));
         assertEquals(1, rule.countObservers());
     }
+    
+//    In order to veirify if the addition into the RuleCollection from another
+//    Collection with this method is correct, we verify if the RuleCollection 
+//    contains the two new Rule created in this test method, imported from
+//    a created List<Rule>.
+    @Test
+    public void testAddAll() {
+        Rule rule1 = new Rule("TestRule1", null, null);
+        Rule rule2 = new Rule("TestRule2", null, null);
+        List<Rule> list = new ArrayList();
+        list.add(rule1);
+        list.add(rule2);
+        ruleCollection.addAll(list);
+        assertTrue(ruleCollection.getRules().contains(rule1));
+        assertTrue(ruleCollection.getRules().contains(rule2));
+    }
 
 //    In order to verify if the deletion of a Rule from the Collection is correct,
 //    we elete the Rule added in the Setup, and verify if the Collection is empty.

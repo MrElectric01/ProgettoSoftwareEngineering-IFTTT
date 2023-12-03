@@ -5,6 +5,9 @@
 package progettosoftwareengineering.localifttt.model.rule;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -65,5 +68,26 @@ public class BackupRulesTest {
     public void testUpdate() {
         assertTrue(BackupRules.getInstance().getExecute());
     }
+
+//    In order to verify that the tested method reloads the rules saved in the setup,
+//    we check if the returned List has the right size, and if the only Rule is the
+//    Rule created in the setUp.
+    @Test
+    public void testReloadBackupExist() {
+        List<Rule> backup = BackupRules.reloadBackup();
+        
+        assertEquals(1, backup.size());
+        assertEquals("Test Rule", backup.get(0).getName());
+    }
     
+//    In order to verify that the tested method returns an empty List if the Backup
+//    file doesn't exist, we delete the file created in the setUp, and we check that the
+//    returned list is empty.
+    @Test
+    public void testReloadBackupNotExist() throws IOException {
+        Files.delete(Paths.get("TestBackupRules.bin"));
+        List<Rule> backup = BackupRules.reloadBackup();
+        
+        assertTrue(backup.isEmpty());
+    }
 }

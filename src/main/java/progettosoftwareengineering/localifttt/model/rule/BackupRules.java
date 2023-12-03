@@ -9,7 +9,7 @@ import java.util.*;
 
 public class BackupRules implements Runnable, Observer {
     
-    private String backupFile = "BackupRules.bin";
+    private static String backupFile = "BackupRules.bin";
     private static BackupRules instance = null;
     
 //    Attribute useful for the testing.
@@ -56,5 +56,20 @@ public class BackupRules implements Runnable, Observer {
 //    Useful method to check the run method execution in tests.
     Boolean getExecute() {
         return execute;
+    }
+    
+//    Static method for the Reloading of the rule collection.
+    public static List<Rule> reloadBackup() {
+        List<Rule> backup = new ArrayList<>();
+        try(ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(backupFile)))) {
+            backup = (ArrayList<Rule>) ois.readObject();
+        } catch (FileNotFoundException ex) {
+//            In this case we do nothing, because if there isn't a BackupFile the backup Collection must be empty.
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return backup;
     }
 }

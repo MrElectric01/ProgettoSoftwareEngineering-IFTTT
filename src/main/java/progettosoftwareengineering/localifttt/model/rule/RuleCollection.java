@@ -38,6 +38,12 @@ public class RuleCollection extends Observable implements Iterable<Rule>, Observ
         changed();
     }
 
+//    Method that call the single addRule for all the parameter's collection Rules.
+    public void addAll(List<Rule> list) {
+        for(Rule rule: list) {
+            addRule(rule);
+        }
+    }
     
     public void deleteRule(Rule rule) {
         rules.remove(rule);

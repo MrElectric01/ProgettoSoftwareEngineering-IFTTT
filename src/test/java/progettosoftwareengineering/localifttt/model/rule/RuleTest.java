@@ -30,20 +30,18 @@ public class RuleTest {
         assertEquals("TestRule", rule.getName());
     }
     
-//    In order to verify that the get method return the Trigger's toString() results,
-//    we set a mock return of the method. 
+//    In order to verify that the get method returns the rigth Trigger,
+//    we check that is equal to the Trigger created in the setUp. 
     @Test
     public void testGetTrigger() {
-        when(mockTrigger.toString()).thenReturn("MockTrigger");
-        assertEquals("MockTrigger", rule.getTrigger());
+        assertEquals(mockTrigger, rule.getTrigger());
     }
 
-//    In order to verify that the get method return the Action's toString() results,
-//    we set a mock return of the method. 
+//    In order to verify that the get method returns the rigth Action,
+//    we check that is equal to the Action created in the setUp. 
     @Test
     public void testGetAction() {
-        when(mockAction.toString()).thenReturn("MockAction");
-        assertEquals("MockAction", rule.getAction());
+        assertEquals(mockAction, rule.getAction());
     }
 
 //    In order to verify that checkRule method has the same return of the
