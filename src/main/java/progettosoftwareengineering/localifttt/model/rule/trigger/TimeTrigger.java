@@ -4,10 +4,11 @@
  */
 package progettosoftwareengineering.localifttt.model.rule.trigger;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
 //Trigger for the hour of the day.
-public class TimeTrigger implements Trigger {
+public class TimeTrigger extends Trigger {
     
     private LocalTime time;
 

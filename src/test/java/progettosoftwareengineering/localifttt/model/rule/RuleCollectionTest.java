@@ -18,9 +18,11 @@ public class RuleCollectionTest {
     
 //    Get the istance of the Rule Collection and add a Rule.
 //    These are useful for all the tests.
+//    We must delete the Observer because we don't want the autosave.
     @Before
     public void setUp() {
         rule = spy(new Rule("TestRule", null, null));
+        RuleCollection.getInstance().deleteObservers();
         ruleCollection = RuleCollection.getInstance();
         ruleCollection.addRule(rule);
     }
@@ -43,12 +45,11 @@ public class RuleCollectionTest {
     
 //    In order to veirify if the addition into the Collection is correct,
 //    we verify if the Collection contains the Rule added in the Setup,
-//    the added rule is observed and if the Thread is started.
+//    the added rule is observed.
     @Test
     public void testAddRule() {
         assertTrue(ruleCollection.getRules().contains(rule));
         assertEquals(1, rule.countObservers());
-        assertTrue(RulesCheckThread.getInstance().isAlive());
     }
 
 //    In order to verify if the deletion of a Rule from the Collection is correct,

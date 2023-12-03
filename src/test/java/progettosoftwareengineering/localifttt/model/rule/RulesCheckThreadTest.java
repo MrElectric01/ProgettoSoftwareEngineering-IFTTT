@@ -15,12 +15,14 @@ public class RulesCheckThreadTest {
 //    In order to do all the test on the RulesCheckThread,
 //    we add to the RuleCollection a Rule that have a 
 //    permanently false Trigger.
+//    We must delete the Observer because we don't want the autosave.
     @Before
     public void setUp() {
         Trigger triggerFalse = mock(Trigger.class);
         when(triggerFalse.checkTrigger()).thenReturn(false);
         Action action = mock(Action.class);
         Rule ruleFalse = new Rule("TestRule", triggerFalse, action);
+        RuleCollection.getInstance().deleteObservers();
         RuleCollection.getInstance().addRule(ruleFalse);
     }
     

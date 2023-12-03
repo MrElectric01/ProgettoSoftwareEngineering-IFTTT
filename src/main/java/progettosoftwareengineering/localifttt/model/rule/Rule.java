@@ -4,12 +4,13 @@
  */
 package progettosoftwareengineering.localifttt.model.rule;
 
+import java.io.Serializable;
 import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 import java.util.Observable;
 
 
-public class Rule extends Observable{
+public class Rule extends Observable implements Serializable {
     
     private String name;
     private final Trigger trigger;
@@ -44,7 +45,7 @@ public class Rule extends Observable{
     }
     
 //    Change the Rule status from enable to disable (and viceversa) and notify the Observers.
-    public void switchStatus() {
+    public synchronized void switchStatus() {
         this.status=!this.status;
         changed();
     }

@@ -168,6 +168,7 @@ public class AddRuleController implements Initializable {
         Action action = ChainActionCreatorsCreator.chain().createAction(selectedAction, actParam);
         ChainActionControllersCreator.chain().observeAction(action);
         RuleCollection.getInstance().addRule(new Rule(insertRuleName.getText(), trigger, action));
+        RulesCheckThread.startChecking();
         LocalIFTTT.setRoot("src\\main\\resources\\progettosoftwareengineering\\localifttt\\view\\HomeView.fxml");
     }
     

@@ -11,15 +11,18 @@ public class RuleCollection extends Observable implements Iterable<Rule>, Observ
     private List<Rule> rules;
     private static RuleCollection instance = null;
     
-//   In addition to initialize the Collection, we set as Deamon the RulesCheckThread.
+//   In addition to initialize the Collection, we set as Deamon the RulesCheckThread,
+//   we set as Deamon the BackupRules and register it as observer.
     private RuleCollection() {
         rules = new ArrayList();
         RulesCheckThread.getInstance().setDaemon(true);
     }
     
     public static RuleCollection getInstance() {
-        if(instance == null)
+        if(instance == null) {
             instance = new RuleCollection();
+            instance.addObserver(BackupRules.getInstance());
+        }
         return instance;
     }
     
@@ -33,7 +36,6 @@ public class RuleCollection extends Observable implements Iterable<Rule>, Observ
         rule.addObserver(instance);
         rules.add(rule);
         changed();
-        RulesCheckThread.startChecking();
     }
 
     

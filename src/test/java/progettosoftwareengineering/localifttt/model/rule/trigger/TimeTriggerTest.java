@@ -29,10 +29,10 @@ public class TimeTriggerTest {
     
 //    In order to verify that cheackTrigger for this trigger isn't triggered when is called
 //    at a different time from the specified one in the tigger's attributes, we call it after 
-//    have initialized a TimeTrigger with a minute over the current time.
+//    have initialized a TimeTrigger with a minute over the current time (%60 because we use the 00-59 interval).
     @Test
     public void testCheckTriggerFalse() {
-        TimeTrigger trigger2 = new TimeTrigger(hour, String.valueOf(Integer.parseInt(minutes) + 1));
+        TimeTrigger trigger2 = new TimeTrigger(hour, String.valueOf((Integer.parseInt(minutes) + 1)%60));
         assertFalse(trigger2.checkTrigger());
     }
 
