@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane onMouseClicked="#deselect" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="progettosoftwareengineering.localifttt.controller.guicontroller.HomeController">
@@ -32,15 +33,17 @@
                   <ContextMenu>
                     <items>
                       <MenuItem fx:id="switchStatusContextMenuItem" mnemonicParsing="false" onAction="#handleSwitchStatus" text="Switch Status" />
+                        <MenuItem fx:id="removeContextMenuItem" mnemonicParsing="false" onAction="#handleRemove" text="Remove" />
                     </items>
                   </ContextMenu>
                </contextMenu>
             </TableView>
-            <Button fx:id="switchStatusButton" mnemonicParsing="false" onAction="#handleSwitchStatus" text="Switch Status">
-               <VBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </VBox.margin>
-            </Button>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+               <children>
+                  <Button fx:id="switchStatusButton" mnemonicParsing="false" onAction="#handleSwitchStatus" text="Switch Status" />
+                  <Button fx:id="removeButton" mnemonicParsing="false" onAction="#handleRemove" text="Remove" />
+               </children>
+            </HBox>
          </children>
       </VBox>
     </children>

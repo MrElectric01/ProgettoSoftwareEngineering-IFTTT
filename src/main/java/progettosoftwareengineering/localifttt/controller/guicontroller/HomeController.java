@@ -38,6 +38,11 @@ public class HomeController implements Initializable, Observer {
     
 //    ObservaleList useful to contain the RuleCollection List in the interface.
     private ObservableList<Rule> rules = FXCollections.observableArrayList();
+    
+    @FXML
+    private MenuItem removeContextMenuItem;
+    @FXML
+    private Button removeButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -47,8 +52,13 @@ public class HomeController implements Initializable, Observer {
 //        Disable the SwitchStatusButton if there isn't a selected rule.
         switchStatusContextMenuItem.disableProperty().bind(ruleTable.getSelectionModel().selectedItemProperty().isNull());
         switchStatusButton.disableProperty().bind(ruleTable.getSelectionModel().selectedItemProperty().isNull());
+        
 //        Unlock the possibility to select more than one rule at the same time.
         ruleTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        
+//        Disable the removeButton if there isn't a selected rule.
+        removeContextMenuItem.disableProperty().bind(ruleTable.getSelectionModel().selectedItemProperty().isNull());
+        removeButton.disableProperty().bind(ruleTable.getSelectionModel().selectedItemProperty().isNull());
         
 //        Connect the table to the Rule fields.
         nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
@@ -89,6 +99,15 @@ public class HomeController implements Initializable, Observer {
 //    Deselect the selected rules in the table, when click out of the table.
     @FXML
     private void deselect(MouseEvent event) {
+        ruleTable.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void handleRemove(ActionEvent event) {
+        List<Rule> selectedRules = ruleTable.getSelectionModel().getSelectedItems();
+        for(Rule rule: selectedRules) {
+            RuleCollection.getInstance().deleteRule(rule);
+        }
         ruleTable.getSelectionModel().clearSelection();
     }
 }
