@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane id="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="progettosoftwareengineering.localifttt.controller.guicontroller.AddRuleController">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <HBox VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+                        <MenuButton mnemonicParsing="false" text="Select Trigger">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </VBox.margin>
+                           <items>
+                              <MenuItem fx:id="timeTriggerChoice" mnemonicParsing="false" onAction="#selectTimeTrigger" text="Time" />
+                           </items>
+                        </MenuButton>
+                        <StackPane>
+                           <children>
+                              <VBox fx:id="timeTriggerPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefHeight="141.0" prefWidth="269.0" text="Time Trigger: a trigger that, when associated with a rule, causes it to activate at the specified time." wrapText="true" />
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Hour:" />
+                                          <Spinner fx:id="hourSpinner" prefHeight="31.0" prefWidth="126.0">
+                                             <valueFactory>
+                                                <SpinnerValueFactory.IntegerSpinnerValueFactory max="23" min="00" />
+                                             </valueFactory>
+                                          </Spinner>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Minutes:" />
+                                          <Spinner fx:id="minutesSpinner" prefHeight="31.0" prefWidth="125.0">
+                                             <valueFactory>
+                                                <SpinnerValueFactory.IntegerSpinnerValueFactory max="59" min="00" />
+                                             </valueFactory>
+                                          </Spinner>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </VBox>
+                  <Separator orientation="VERTICAL" scaleX="5.0" HBox.hgrow="ALWAYS" />
+                  <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+                        <MenuButton mnemonicParsing="false" text="Select Action">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </VBox.margin>
+                           <items>
+                              <MenuItem fx:id="audioActionChoice" mnemonicParsing="false" onAction="#selectAudioAction" text="Audio" />
+                              <MenuItem fx:id="messageActionChoice" mnemonicParsing="false" onAction="#selectMessageAction" text="Message" />
+                           </items>
+                        </MenuButton>
+                        <StackPane>
+                           <children>
+                              <VBox fx:id="audioActionPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefHeight="66.0" prefWidth="269.0" text="Sound action: an action that, when associated with a rule, plays the selected audio when the rule is triggered." wrapText="true" />
+                                    <Button mnemonicParsing="false" onAction="#selectAudio" text="Select Audio" />
+                                    <Label fx:id="selectedAudioLabel" />
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="messageActionPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefHeight="91.0" prefWidth="261.0" text="Message action: an action that, when associated with a rule, displays the specified message in a dialog box when the rule is triggered." wrapText="true" />
+                                    <TextField fx:id="insertMessage" prefHeight="31.0" prefWidth="317.0" promptText="Inserisci testo qui">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Separator scaleY="5.0" VBox.vgrow="ALWAYS" />
+            <HBox alignment="CENTER" spacing="50.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="113.0" text="Insert rule name:" />
+                  <TextField fx:id="insertRuleName" promptText="rule name..." />
+                  <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
