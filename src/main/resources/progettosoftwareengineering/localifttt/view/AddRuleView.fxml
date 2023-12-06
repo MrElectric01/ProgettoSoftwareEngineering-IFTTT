@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -96,7 +97,32 @@
                </children>
             </HBox>
             <Separator />
-            <HBox alignment="CENTER" spacing="70.0" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="125.0" prefWidth="645.0" spacing="50.0">
+               <children>
+                  <Label text="Select the repetition type:" />
+                  <VBox alignment="CENTER_LEFT" prefHeight="157.0" prefWidth="426.0" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="onlyOnceCheckbox" mnemonicParsing="false" onAction="#handleOnlyOnce" selected="true" text="Only once (disables after the activation)" />
+                        <CheckBox fx:id="periodicallyCheckBox" contentDisplay="TOP" mnemonicParsing="false" onAction="#handlePeriodically" prefHeight="61.0" prefWidth="441.0" text="Periodically (disables for the indicated time after activation)" wrapText="true" />
+                        <HBox fx:id="periodicallyParameters" alignment="CENTER" disable="true" prefWidth="408.0" spacing="10.0">
+                           <children>
+                              <Label text="Days:" />
+                              <Spinner fx:id="periodicallyDaysSpinner" prefHeight="31.0" prefWidth="80.0" />
+                              <Label text="Hours:" />
+                              <Spinner fx:id="periodicallyHoursSpinner" prefWidth="80.0" />
+                              <Label text="Minutes:" />
+                              <Spinner fx:id="periodicallyMinutesSpinner" prefWidth="80.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator />
+            <HBox alignment="CENTER" spacing="70.0">
                <children>
                   <Label prefHeight="21.0" prefWidth="113.0" text="Insert rule name:" />
                   <TextField fx:id="insertRuleName" promptText="rule name..." />

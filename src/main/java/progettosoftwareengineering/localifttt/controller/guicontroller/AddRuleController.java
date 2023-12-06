@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
 
@@ -62,12 +63,27 @@ public class AddRuleController implements Initializable {
     private BooleanProperty actionIsSelected = new SimpleBooleanProperty(false);
 //    Map that contains all the Action parameters.
     private Map<String, String> actParam = new HashMap<>();
+    @FXML
+    private CheckBox onlyOnceCheckbox;
+    @FXML
+    private CheckBox periodicallyCheckBox;
+    @FXML
+    private HBox periodicallyParameters;
+    @FXML
+    private Spinner<Integer> periodicallyDaysSpinner;
+    @FXML
+    private Spinner<Integer> periodicallyHoursSpinner;
+    @FXML
+    private Spinner<Integer> periodicallyMinutesSpinner;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //        Set the ValueFactories of all the Spinners.
         setSpinnerValueFactory(timeTriggerHoursSpinner, 0, 23);
         setSpinnerValueFactory(timeTriggerMinutesSpinner, 0, 59);
+        setSpinnerValueFactory(periodicallyDaysSpinner, 0, 7);
+        setSpinnerValueFactory(periodicallyHoursSpinner, 0, 23);
+        setSpinnerValueFactory(periodicallyMinutesSpinner, 0, 59);
         
 //        BooleanBinding "false" if all the rule fields are filled (name, triggger and action).
         BooleanBinding ruleFields = Bindings.or(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()), actionIsSelected.not());
@@ -195,5 +211,19 @@ public class AddRuleController implements Initializable {
     private void putActParam() {
         actParam.put("messageActionMessage", messageActionInsertMessage.getText());
         actParam.put("audioActionAudioPath", selectedAudio);
+    }
+
+//    Handle the OnlyOnce Checkbox selection.
+    @FXML
+    private void handleOnlyOnce(ActionEvent event) {
+        periodicallyCheckBox.setSelected(false);
+        periodicallyParameters.setDisable(true);
+    }
+
+//    Handle the Periodically Checkbox selection.
+    @FXML
+    private void handlePeriodically(ActionEvent event) {
+        onlyOnceCheckbox.setSelected(false);
+        periodicallyParameters.setDisable(false);
     }
 }
