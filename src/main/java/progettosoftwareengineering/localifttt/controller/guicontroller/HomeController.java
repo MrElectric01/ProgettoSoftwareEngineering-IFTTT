@@ -105,9 +105,20 @@ public class HomeController implements Initializable, Observer {
     @FXML
     private void handleRemove(ActionEvent event) {
         List<Rule> selectedRules = ruleTable.getSelectionModel().getSelectedItems();
+        
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Remove Rules");
+        confirm.setHeaderText("Are you sure you want to remove the following rules?");
         for(Rule rule: selectedRules) {
-            RuleCollection.getInstance().deleteRule(rule);
+            confirm.setContentText(confirm.getContentText() + rule.getName() + "\n");
         }
-        ruleTable.getSelectionModel().clearSelection();
+
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            for(Rule rule: selectedRules) {
+                RuleCollection.getInstance().deleteRule(rule);
+            }
+            ruleTable.getSelectionModel().clearSelection();
+        }
     }
 }
