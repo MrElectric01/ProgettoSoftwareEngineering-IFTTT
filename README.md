@@ -2,7 +2,7 @@
 Repository progetto di Software Engineering A.A. 2023/2024 del gruppo composto da Ciaravola Giosué, Conato Christian, Del Gaudio Nunzio, Figus Ugo Emanuele riguardo lo sviluppo di un sistema IFTTT locale a singolo utente
 
 
--Product Backlog + SprintBacklog+ Regole generali: https://docs.google.com/spreadsheets/d/1clCOlxQ5oVlsMoRoY4Hg2rn9AATubTmLCMz_opeU_AE/edit?usp=sharing
+-Product Backlog + SprintBacklog + BurnDownChart + Regole generali: https://docs.google.com/spreadsheets/d/1clCOlxQ5oVlsMoRoY4Hg2rn9AATubTmLCMz_opeU_AE/edit?usp=sharing
 
 -Diagramma delle classi: https://app.moqups.com/7lJ1Vx6lPJl1T2SzGIOa6a5HuaK7VEZH/view/page/a8bfb0d3e
 
