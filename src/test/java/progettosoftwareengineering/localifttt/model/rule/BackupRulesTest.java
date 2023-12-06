@@ -5,14 +5,14 @@
 package progettosoftwareengineering.localifttt.model.rule;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 
 public class BackupRulesTest {
+
+    private String testBackupFile = "TestBackupRules.bin";
     
 //    Get the istance of the Rule Collection and add a Rule.
 //    These are useful for all the tests.
@@ -20,7 +20,7 @@ public class BackupRulesTest {
     @Before
     public void setUp() throws InterruptedException {
         Rule rule = new Rule ("Test Rule", null, null);
-        BackupRules.getInstance().setBackupFile("TestBackupRules.bin");
+        BackupRules.getInstance().setBackupFile(testBackupFile);
         RuleCollection.getInstance().addRule(rule);
         Thread.sleep(200);
     }
@@ -47,7 +47,7 @@ public class BackupRulesTest {
     @Test
     public void testRun() {
         List<Rule> backup = new ArrayList<>();
-        try(ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream("TestBackupRules.bin")))) {
+        try(ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(testBackupFile)))) {
             backup = (ArrayList<Rule>) ois.readObject();
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -85,7 +85,7 @@ public class BackupRulesTest {
 //    returned list is empty.
     @Test
     public void testReloadBackupNotExist() throws IOException {
-        Files.delete(Paths.get("TestBackupRules.bin"));
+        Files.delete(Paths.get(testBackupFile));
         List<Rule> backup = BackupRules.reloadBackup();
         
         assertTrue(backup.isEmpty());

@@ -70,11 +70,12 @@ public class RuleTest {
     }
 
 //    In order to verify that activeRule method execute the Action's
-//    doAction() method, we verify, with the specific Mockito's method,
-//    that the doAction() method is executed.
+//    doAction() method, we verify both, with the specific Mockito's method,
+//    that the doAction() method is executed, and the RuleStatus is disabled.
     @Test
     public void testActivateRule() {
         rule.activateRule();
         verify(mockAction, times(1)).doAction();
+        assertEquals("Disabled", rule.getStatus());
     }
 }

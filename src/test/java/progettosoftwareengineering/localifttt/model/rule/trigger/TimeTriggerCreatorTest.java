@@ -18,7 +18,7 @@ public class TimeTriggerCreatorTest {
     public void testCreateTrigger() {
         TimeTriggerCreator TTC = new TimeTriggerCreator();
         Map<String,String> trigParam = new HashMap();
-        trigParam.put("timeTriggerHour", "0");
+        trigParam.put("timeTriggerHours", "0");
         trigParam.put("timeTriggerMinutes", "0");
         
         Trigger trigger = TTC.createTrigger(TriggerType.TIME, trigParam);

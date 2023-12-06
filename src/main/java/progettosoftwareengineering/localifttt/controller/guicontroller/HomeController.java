@@ -15,7 +15,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import progettosoftwareengineering.localifttt.model.rule.*;
+import progettosoftwareengineering.localifttt.model.ModelFacade;
+import progettosoftwareengineering.localifttt.model.rule.Rule;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 
@@ -47,7 +48,7 @@ public class HomeController implements Initializable, Observer {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //        When we open the view at first time, or after a switch, we refresh the ObservableList.
-        rules.setAll(RuleCollection.getInstance().getRules());
+        rules.setAll(ModelFacade.getRuleCollection().getRules());
         
 //        Disable the SwitchStatusButton if there isn't a selected rule.
         switchStatusContextMenuItem.disableProperty().bind(ruleTable.getSelectionModel().selectedItemProperty().isNull());
@@ -68,14 +69,14 @@ public class HomeController implements Initializable, Observer {
         ruleTable.setItems(rules);
 
 //      Observe the RuleCollection to refresh the interface if the RuleCollection changes.
-        RuleCollection.getInstance().addObserver(this);
+        ModelFacade.getRuleCollection().addObserver(this);
     }    
 
 //    Handle the update copying the RuleCollection List and refreshing the table.
     @Override
     public void update(Observable o, Object arg) {
         Platform.runLater(() -> {
-            rules.setAll(RuleCollection.getInstance().getRules());
+            rules.setAll(ModelFacade.getRuleCollection().getRules());
             ruleTable.refresh();
         });
     }
@@ -91,7 +92,7 @@ public class HomeController implements Initializable, Observer {
     private void handleSwitchStatus(ActionEvent event) {
         List<Rule> selectedRules = ruleTable.getSelectionModel().getSelectedItems();
         for(Rule rule: selectedRules) {
-            RuleCollection.getInstance().getRules().get(RuleCollection.getInstance().getRules().indexOf(rule)).switchStatus();
+            ModelFacade.switchRuleStatus(rule);
         }
         ruleTable.getSelectionModel().clearSelection();
     }
@@ -102,6 +103,8 @@ public class HomeController implements Initializable, Observer {
         ruleTable.getSelectionModel().clearSelection();
     }
 
+//   Before removing the selected Rules, a Confirmation Alert appears in order
+//    to receive a confirm from the User.
     @FXML
     private void handleRemove(ActionEvent event) {
         List<Rule> selectedRules = ruleTable.getSelectionModel().getSelectedItems();
@@ -116,9 +119,10 @@ public class HomeController implements Initializable, Observer {
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             for(Rule rule: selectedRules) {
-                RuleCollection.getInstance().deleteRule(rule);
+                ModelFacade.getRuleCollection().deleteRule(rule);
             }
             ruleTable.getSelectionModel().clearSelection();
         }
+        
     }
 }

@@ -15,7 +15,7 @@ public class BackupRules implements Runnable, Observer {
 //    Attribute useful for the testing.
     private Boolean execute = false;
     
-        private BackupRules() {
+    private BackupRules() {
     }
 
     public static BackupRules getInstance() {
@@ -32,8 +32,6 @@ public class BackupRules implements Runnable, Observer {
         synchronized(RuleCollection.getInstance().getRules()) {
             try(ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(backupFile)))) {
                 oos.writeObject(RuleCollection.getInstance().getRules());
-            }   catch (FileNotFoundException ex) {
-                ex.printStackTrace();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

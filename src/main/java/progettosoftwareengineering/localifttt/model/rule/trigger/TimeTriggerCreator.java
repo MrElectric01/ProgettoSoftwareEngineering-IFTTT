@@ -11,7 +11,7 @@ public class TimeTriggerCreator extends BaseTriggerCreator {
     @Override
     public Trigger createTrigger(TriggerType trigger, Map trigParam) {
         if(trigger.equals(TriggerType.TIME))
-            return new TimeTrigger(trigParam.get("timeTriggerHour").toString(), trigParam.get("timeTriggerMinutes").toString());
+            return new TimeTrigger(trigParam.get("timeTriggerHours").toString(), trigParam.get("timeTriggerMinutes").toString());
         else
             return this.nextCreator(trigger, trigParam);
     }

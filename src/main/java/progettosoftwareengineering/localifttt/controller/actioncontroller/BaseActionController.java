@@ -4,11 +4,10 @@
  */
 package progettosoftwareengineering.localifttt.controller.actioncontroller;
 
-import java.util.Observer;
-import progettosoftwareengineering.localifttt.model.rule.action.Action;
+import progettosoftwareengineering.localifttt.model.rule.action.*;
 
 //Abstract class for the base behaviour of an ActionController in the Chain.
-public abstract class BaseActionController implements Observer {
+public abstract class BaseActionController implements ActionController {
 //    Reference to the next Controller in the chain, initially null.
     private BaseActionController next = null;
     
@@ -19,6 +18,7 @@ public abstract class BaseActionController implements Observer {
     
 //    Abstract Method that all the Controllers that extends this class have to Override
 //    in order to handle their specific Action observation.
+    @Override
     public abstract void observeAction(Action action);
     
 //    If the Controller can't handle the request, this method will be

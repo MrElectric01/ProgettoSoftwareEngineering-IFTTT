@@ -27,7 +27,7 @@ public class RulesCheckThread extends Thread {
     }
 
 //    Method that check all the Rules every CheckingPeriod time,
-//    and if a Rule is verified, the Thread activate and disable it.ù
+//    and if a Rule is verified, the Thread activate it.
     @Override
     public void run() {
         while (!RuleCollection.getInstance().getRules().isEmpty()) {
@@ -40,7 +40,6 @@ public class RulesCheckThread extends Thread {
             for (Rule rule : RuleCollection.getInstance()) {
                 if (rule.checkRule()) {
                     rule.activateRule();
-                    rule.switchStatus();
                 }
             }
         }

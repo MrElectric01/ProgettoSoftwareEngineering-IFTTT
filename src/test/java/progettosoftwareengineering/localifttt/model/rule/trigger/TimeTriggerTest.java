@@ -10,13 +10,13 @@ import static org.junit.Assert.*;
 
 public class TimeTriggerTest {
     
-    private String hour = String.valueOf(LocalTime.now().getHour());
+    private String hours = String.valueOf(LocalTime.now().getHour());
     private String minutes = String.valueOf(LocalTime.now().getMinute());
     private TimeTrigger trigger;
 
     @Before
     public void setUp() {
-        trigger = new TimeTrigger(hour, minutes);
+        trigger = new TimeTrigger(hours, minutes);
     }
     
 //    In order to verify that cheackTrigger for this trigger is triggered when is called
@@ -32,13 +32,13 @@ public class TimeTriggerTest {
 //    have initialized a TimeTrigger with a minute over the current time (%60 because we use the 00-59 interval).
     @Test
     public void testCheckTriggerFalse() {
-        TimeTrigger trigger2 = new TimeTrigger(hour, String.valueOf((Integer.parseInt(minutes) + 1)%60));
+        TimeTrigger trigger2 = new TimeTrigger(hours, String.valueOf((Integer.parseInt(minutes) + 1)%60));
         assertFalse(trigger2.checkTrigger());
     }
 
     @Test
     public void testToString() {
-        assertEquals("Time: "+LocalTime.of(Integer.parseInt(hour), Integer.parseInt(minutes), 0), trigger.toString());
+        assertEquals("Time: "+LocalTime.of(Integer.parseInt(hours), Integer.parseInt(minutes), 0), trigger.toString());
     }
     
 }

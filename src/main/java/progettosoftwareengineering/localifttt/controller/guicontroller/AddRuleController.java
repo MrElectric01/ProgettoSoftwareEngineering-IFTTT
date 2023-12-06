@@ -4,9 +4,9 @@
  */
 package progettosoftwareengineering.localifttt.controller.guicontroller;
 
-import progettosoftwareengineering.localifttt.model.rule.*;
 import progettosoftwareengineering.localifttt.model.rule.trigger.*;
 import progettosoftwareengineering.localifttt.model.rule.action.*;
+import progettosoftwareengineering.localifttt.model.ModelFacade;
 import progettosoftwareengineering.localifttt.controller.actioncontroller.ChainActionControllersCreator;
 import java.io.IOException;
 import java.net.URL;
@@ -28,9 +28,9 @@ public class AddRuleController implements Initializable {
     @FXML
     private VBox timeTriggerPane;
     @FXML
-    private Spinner<Integer> hourSpinner;
+    private Spinner<Integer> timeTriggerHoursSpinner;
     @FXML
-    private Spinner<Integer> minutesSpinner;
+    private Spinner<Integer> timeTriggerMinutesSpinner;
     @FXML
     private MenuItem audioActionChoice;
     @FXML
@@ -43,7 +43,7 @@ public class AddRuleController implements Initializable {
     @FXML
     private VBox messageActionPane;
     @FXML
-    private TextField insertMessage;
+    private TextField messageActionInsertMessage;
     @FXML
     private TextField insertRuleName;
     @FXML
@@ -65,53 +65,68 @@ public class AddRuleController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+//        Set the ValueFactories of all the Spinners.
+        setSpinnerValueFactory(timeTriggerHoursSpinner, 0, 23);
+        setSpinnerValueFactory(timeTriggerMinutesSpinner, 0, 59);
+        
 //        BooleanBinding "false" if all the rule fields are filled (name, triggger and action).
         BooleanBinding ruleFields = Bindings.or(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()), actionIsSelected.not());
 //        BooleanBinding "false" if one actionType parameters are filled at least.
-        BooleanBinding actionFields = Bindings.and(insertMessage.textProperty().isEmpty(), selectedAudioLabel.textProperty().isEmpty());
+        BooleanBinding actionFields = Bindings.and(messageActionInsertMessage.textProperty().isEmpty(), selectedAudioLabel.textProperty().isEmpty());
 //        Disable the Save button if the ruleFields OR field of the selected action are empty.
         saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
-    }    
+    }
 
-//    Handle the "Time" choice from the "Select Trigger" menu.
-    @FXML
-    private void selectTimeTrigger(ActionEvent event) {
-        hideAllTriggers();
-        timeTriggerChoice.setDisable(true);
-        hourSpinner.getValueFactory().setValue(LocalTime.now().getHour());
-        minutesSpinner.getValueFactory().setValue(LocalTime.now().getMinute());
-        selectedTrigger = TriggerType.TIME;
-        triggerIsSelected.setValue(true);
-        timeTriggerPane.setVisible(true);
+//    Set the Spinner min and max value, and the wrapArounf propwerty in order
+//    to make it circular.
+    private void setSpinnerValueFactory(Spinner spinner, Integer min, Integer max) {
+        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max);
+        valueFactory.setWrapAround(true);
+        spinner.setValueFactory(valueFactory);
     }
     
-//    Hide all the possible Trigger panes.
-    private void hideAllTriggers() {
-        timeTriggerPane.setVisible(false);
-        timeTriggerChoice.setDisable(false);
+//    Handle the behavior of the selection of a generic Action/Trigger.
+    private void selectTriggerOrAction(MenuItem choice, VBox pane, TriggerType triggerType, ActionType actionType) {
+        if(triggerType == null) {
+            hideAllActions();
+            selectedAction = actionType;
+            actionIsSelected.setValue(true);
+        } else {
+            hideAllTriggers();
+            selectedTrigger = triggerType;
+            triggerIsSelected.setValue(true);
+        }
+        choice.setDisable(true);
+        pane.setVisible(true);
+    }
+    
+    //    Handle the "Time" choice from the "Select Trigger" menu.
+    @FXML
+    private void selectTimeTrigger(ActionEvent event) {
+        timeTriggerHoursSpinner.getValueFactory().setValue(LocalTime.now().getHour());
+        timeTriggerMinutesSpinner.getValueFactory().setValue(LocalTime.now().getMinute());
+        selectTriggerOrAction(timeTriggerChoice, timeTriggerPane, TriggerType.TIME, null);
     }
 
 //    Handle the "Audio" choice from the "Select Action" menu.
     @FXML
     private void selectAudioAction(ActionEvent event) {
-        hideAllActions();
-        audioActionChoice.setDisable(true);
-        selectedAction = ActionType.AUDIO;
-        actionIsSelected.setValue(true);
-        audioActionPane.setVisible(true);
+        selectTriggerOrAction(audioActionChoice, audioActionPane, null, ActionType.AUDIO);
     }
 
 //    Handle the "Message" choice from the "Select Action" menu.
     @FXML
     private void selectMessageAction(ActionEvent event) {
-        hideAllActions();
-        messageActionChoice.setDisable(true);
-        selectedAction = ActionType.MESSAGE;
-        actionIsSelected.setValue(true);
-        messageActionPane.setVisible(true);
+        selectTriggerOrAction(messageActionChoice, messageActionPane, null, ActionType.MESSAGE);
     }
     
-//    Hide all the possible Action panes.
+//    Hide all the possible Trigger panes and reactivate all the MenuItems.
+    private void hideAllTriggers() {
+        timeTriggerPane.setVisible(false);
+        timeTriggerChoice.setDisable(false);
+    }
+    
+//    Hide all the possible Action panes and reactivate all the MenuItems.
     private void hideAllActions(){
         clearActionFields();
         
@@ -126,7 +141,7 @@ public class AddRuleController implements Initializable {
     private void clearActionFields() {
         selectedAction = null;
         actionIsSelected.setValue(false);
-        insertMessage.clear();
+        messageActionInsertMessage.clear();
         selectedAudio = "";
         selectedAudioLabel.setText(selectedAudio);
     }
@@ -163,24 +178,22 @@ public class AddRuleController implements Initializable {
     @FXML
     private void handleSave(ActionEvent event) throws IOException {
         putTrigParam();
-        Trigger trigger = ChainTriggerCreatorsCreator.chain().createTrigger(selectedTrigger, trigParam);
+        Trigger trigger = ModelFacade.createTrigger(selectedTrigger, trigParam);
         putActParam();
-        Action action = ChainActionCreatorsCreator.chain().createAction(selectedAction, actParam);
-        ChainActionControllersCreator.chain().observeAction(action);
-        RuleCollection.getInstance().addRule(new Rule(insertRuleName.getText(), trigger, action));
-        RulesCheckThread.startChecking();
+        Action action = ModelFacade.createAction(selectedAction, actParam, ChainActionControllersCreator.chain());
+        ModelFacade.addToRuleCollection(insertRuleName.getText(), trigger, action);
         LocalIFTTT.setRoot("src\\main\\resources\\progettosoftwareengineering\\localifttt\\view\\HomeView.fxml");
     }
     
 //    Put all the possible value for all the Triggers parameters.
     private void putTrigParam() {
-        trigParam.put("timeTriggerHour", hourSpinner.getValue().toString());
-        trigParam.put("timeTriggerMinutes", minutesSpinner.getValue().toString());
+        trigParam.put("timeTriggerHours", timeTriggerHoursSpinner.getValue().toString());
+        trigParam.put("timeTriggerMinutes", timeTriggerMinutesSpinner.getValue().toString());
     }
     
 //    Put all the possible value for all the Actions parameters.
     private void putActParam() {
-        actParam.put("messageActionMessage", insertMessage.getText());
+        actParam.put("messageActionMessage", messageActionInsertMessage.getText());
         actParam.put("audioActionAudioPath", selectedAudio);
     }
 }

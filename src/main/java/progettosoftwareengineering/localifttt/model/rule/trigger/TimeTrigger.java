@@ -4,7 +4,6 @@
  */
 package progettosoftwareengineering.localifttt.model.rule.trigger;
 
-import java.io.Serializable;
 import java.time.LocalTime;
 
 //Trigger for the hour of the day.
@@ -12,8 +11,8 @@ public class TimeTrigger extends Trigger {
     
     private LocalTime time;
 
-    public TimeTrigger(String hour, String minutes) {
-        time = LocalTime.of(Integer.parseInt(hour), Integer.parseInt(minutes), 0);
+    public TimeTrigger(String hours, String minutes) {
+        time = LocalTime.of(Integer.parseInt(hours), Integer.parseInt(minutes), 0);
     }
 
 //    Triggers the Trigger when the time within the minute of the specified time.

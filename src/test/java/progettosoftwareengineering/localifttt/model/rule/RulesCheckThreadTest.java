@@ -49,9 +49,8 @@ public class RulesCheckThreadTest {
     }
 
 //    In order to verify that the tested method iterates all the rules in the collection, 
-//    we first insert a rule whose trigger value is true, and then verify both the action 
-//    of the inserted Rule has been executed, and the rule has been disabled checking
-//    its status.
+//    we first insert a rule whose trigger value is true, and then verify the action 
+//    of the inserted Rule has been executed.
     @Test
     public void testRun() throws InterruptedException {
         Trigger triggerTrue = mock(Trigger.class);
@@ -65,6 +64,5 @@ public class RulesCheckThreadTest {
         Thread.sleep(RulesCheckThread.getInstance().getCheckingPeriod()+1000);
         
         verify(action, times(1)).doAction();
-        assertEquals("Disabled", ruleTrue.getStatus());
     }
 }

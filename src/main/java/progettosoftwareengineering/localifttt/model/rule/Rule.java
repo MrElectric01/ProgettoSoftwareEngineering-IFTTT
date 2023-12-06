@@ -58,8 +58,10 @@ public class Rule extends Observable implements Serializable {
             return false;
     }
 
+//    After the activation of a Rule, we disable it.
     public void activateRule() {
         action.doAction();
+        switchStatus();
     }
 
     private void changed(){
