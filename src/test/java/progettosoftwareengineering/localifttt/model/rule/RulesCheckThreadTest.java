@@ -21,7 +21,7 @@ public class RulesCheckThreadTest {
         Trigger triggerFalse = mock(Trigger.class);
         when(triggerFalse.checkTrigger()).thenReturn(false);
         Action action = mock(Action.class);
-        Rule ruleFalse = new Rule("TestRule", triggerFalse, action);
+        Rule ruleFalse = new ConcreteRule("TestRule", triggerFalse, action);
         RuleCollection.getInstance().deleteObservers();
         RuleCollection.getInstance().addRule(ruleFalse);
     }
@@ -56,7 +56,7 @@ public class RulesCheckThreadTest {
         Trigger triggerTrue = mock(Trigger.class);
         when(triggerTrue.checkTrigger()).thenReturn(true);
         Action action = mock(Action.class);
-        Rule ruleTrue = new Rule("TestRule", triggerTrue, action);
+        Rule ruleTrue = new ConcreteRule("TestRule", triggerTrue, action);
         RuleCollection.getInstance().addRule(ruleTrue);
         
         RulesCheckThread.startChecking();

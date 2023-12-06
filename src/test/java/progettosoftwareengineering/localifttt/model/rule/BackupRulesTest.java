@@ -19,7 +19,7 @@ public class BackupRulesTest {
 //    We do a sleep in order to give the right time of saving to the BackupRules Thread.
     @Before
     public void setUp() throws InterruptedException {
-        Rule rule = new Rule ("Test Rule", null, null);
+        Rule rule = new ConcreteRule ("Test Rule", null, null);
         BackupRules.getInstance().setBackupFile(testBackupFile);
         RuleCollection.getInstance().addRule(rule);
         Thread.sleep(200);

@@ -63,6 +63,7 @@ public class AddRuleController implements Initializable {
     private BooleanProperty actionIsSelected = new SimpleBooleanProperty(false);
 //    Map that contains all the Action parameters.
     private Map<String, String> actParam = new HashMap<>();
+    
     @FXML
     private CheckBox onlyOnceCheckbox;
     @FXML
@@ -197,7 +198,7 @@ public class AddRuleController implements Initializable {
         Trigger trigger = ModelFacade.createTrigger(selectedTrigger, trigParam);
         putActParam();
         Action action = ModelFacade.createAction(selectedAction, actParam, ChainActionControllersCreator.chain());
-        ModelFacade.addToRuleCollection(insertRuleName.getText(), trigger, action);
+        ModelFacade.addToRuleCollection(insertRuleName.getText(), trigger, action, periodicallyCheckBox.isSelected(), periodicallyDaysSpinner.getValue(), periodicallyHoursSpinner.getValue(), periodicallyMinutesSpinner.getValue());
         LocalIFTTT.setRoot("src\\main\\resources\\progettosoftwareengineering\\localifttt\\view\\HomeView.fxml");
     }
     

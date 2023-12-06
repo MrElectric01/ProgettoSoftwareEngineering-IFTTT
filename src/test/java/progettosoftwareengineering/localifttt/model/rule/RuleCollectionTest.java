@@ -21,7 +21,7 @@ public class RuleCollectionTest {
 //    We must delete the Observer because we don't want the autosave.
     @Before
     public void setUp() {
-        rule = spy(new Rule("TestRule", null, null));
+        rule = spy(new ConcreteRule("TestRule", null, null));
         RuleCollection.getInstance().deleteObservers();
         ruleCollection = RuleCollection.getInstance();
         ruleCollection.addRule(rule);
@@ -58,8 +58,8 @@ public class RuleCollectionTest {
 //    a created List<Rule>.
     @Test
     public void testAddAll() {
-        Rule rule1 = new Rule("TestRule1", null, null);
-        Rule rule2 = new Rule("TestRule2", null, null);
+        Rule rule1 = new ConcreteRule("TestRule1", null, null);
+        Rule rule2 = new ConcreteRule("TestRule2", null, null);
         List<Rule> list = new ArrayList();
         list.add(rule1);
         list.add(rule2);

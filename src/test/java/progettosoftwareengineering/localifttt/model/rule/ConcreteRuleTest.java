@@ -10,7 +10,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class RuleTest {
+public class ConcreteRuleTest {
 
     private Trigger mockTrigger;
 
@@ -22,7 +22,7 @@ public class RuleTest {
     public void setUp() {
         mockTrigger = mock(Trigger.class);
         mockAction = mock(Action.class);
-        rule = new Rule("TestRule", mockTrigger, mockAction);
+        rule = new ConcreteRule("TestRule", mockTrigger, mockAction);
     }
 
     @Test

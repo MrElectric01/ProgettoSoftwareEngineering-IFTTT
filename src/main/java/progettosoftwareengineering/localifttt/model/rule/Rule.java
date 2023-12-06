@@ -9,62 +9,25 @@ import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 import java.util.Observable;
 
+//Abstract class useful for the application of Decorator pattern (Component), 
+//which concreteComponent is ConcreteRule.
+public abstract class Rule extends Observable implements Serializable{
 
-public class Rule extends Observable implements Serializable {
+    public abstract String getName();
     
-    private String name;
-    private final Trigger trigger;
-    private final Action action;
-    private boolean status;
+    public abstract Trigger getTrigger();
+    
+    public abstract Action getAction();
+    
+    public abstract String getStatus();
+    
+    public abstract void switchStatus();
+    
+    public abstract boolean checkRule();
 
-    public Rule(String name, Trigger trigger, Action action) {
-        this.name = name;
-        this.trigger = trigger;
-        this.action = action;
-        this.status = true;
-    }
-
-//    These get method is useful for the SetCellValueFactory of the TableView that shows the rules.
+    public abstract void activateRule();
     
-    public String getName() {
-        return name;
-    }
-    
-    public Trigger getTrigger() {
-        return trigger;
-    }
-    
-    public Action getAction() {
-        return action;
-    }
-    
-    public String getStatus() {
-        if(status)
-            return "Enabled";
-        return "Disabled";
-    }
-    
-//    Change the Rule status from enable to disable (and viceversa) and notify the Observers.
-    public synchronized void switchStatus() {
-        this.status=!this.status;
-        changed();
-    }
-    
-//    The Rule trigger is checked if the Rule is enable (status = true).
-    public boolean checkRule() {
-        if(this.status)
-            return trigger.checkTrigger();
-        else 
-            return false;
-    }
-
-//    After the activation of a Rule, we disable it.
-    public void activateRule() {
-        action.doAction();
-        switchStatus();
-    }
-
-    private void changed(){
+    protected void changed() {
         setChanged();
         notifyObservers();
     }

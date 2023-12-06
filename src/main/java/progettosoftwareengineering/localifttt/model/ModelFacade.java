@@ -36,8 +36,12 @@ public class ModelFacade {
     }
     
 //    Add a new Rule to the RuleCollection and start the CheckingThread (deactivated for default).
-    public static void addToRuleCollection(String ruleName, Trigger ruleTrigger, Action ruleAction) {
-        RuleCollection.getInstance().addRule(new Rule(ruleName, ruleTrigger, ruleAction));
+//    The Rule is decorated or not with the SleepingPeriod, based on the passed boolean.
+    public static void addToRuleCollection(String ruleName, Trigger ruleTrigger, Action ruleAction, Boolean decorate, Integer days, Integer hours, Integer minutes) {
+        Rule rule = new ConcreteRule(ruleName, ruleTrigger, ruleAction);
+        if(decorate) 
+            rule = new PeriodicallyRuleDecorator(rule, new SleepingPeriod(days, hours, minutes));
+        RuleCollection.getInstance().addRule(rule);
         RulesCheckThread.startChecking();
     }
     
