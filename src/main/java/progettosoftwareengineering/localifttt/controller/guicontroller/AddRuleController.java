@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package progettosoftwareengineering.localifttt.controller.guicontroller;
 
 import progettosoftwareengineering.localifttt.model.rule.trigger.*;
 import progettosoftwareengineering.localifttt.model.rule.action.*;
 import progettosoftwareengineering.localifttt.model.ModelFacade;
 import progettosoftwareengineering.localifttt.controller.actioncontroller.ChainActionControllersCreator;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
@@ -21,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class AddRuleController implements Initializable {
 
@@ -39,8 +38,8 @@ public class AddRuleController implements Initializable {
     @FXML
     private VBox audioActionPane;
     @FXML
-    private Label selectedAudioLabel;
-    private String selectedAudio = "";
+    private Label audioActionSelectedAudioLabel;
+    private String audioActionSelectedAudio = "";
     @FXML
     private VBox messageActionPane;
     @FXML
@@ -76,6 +75,15 @@ public class AddRuleController implements Initializable {
     private Spinner<Integer> periodicallyHoursSpinner;
     @FXML
     private Spinner<Integer> periodicallyMinutesSpinner;
+    @FXML
+    private MenuItem writingToFileActionChoice;
+    @FXML
+    private TextField writingToFileActionInsertText;
+    @FXML
+    private VBox writingToFileActionPane;
+    @FXML
+    private Label writingToFileActionSelectedFileLabel;
+    private String writingToFileActionSelectedFile = "";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -89,14 +97,14 @@ public class AddRuleController implements Initializable {
 //        BooleanBinding "false" if all the rule fields are filled (name, triggger and action).
         BooleanBinding ruleFields = Bindings.or(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()), actionIsSelected.not());
 //        BooleanBinding "false" if one actionType parameters are filled at least.
-        BooleanBinding actionFields = Bindings.and(messageActionInsertMessage.textProperty().isEmpty(), selectedAudioLabel.textProperty().isEmpty());
+        BooleanBinding actionFields = Bindings.and(Bindings.and(messageActionInsertMessage.textProperty().isEmpty(), audioActionSelectedAudioLabel.textProperty().isEmpty()), Bindings.or(writingToFileActionInsertText.textProperty().isEmpty(), writingToFileActionSelectedFileLabel.textProperty().isEmpty()));
 //        Disable the Save button if the ruleFields OR field of the selected action are empty.
         saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
     }
 
 //    Set the Spinner min and max value, and the wrapArounf propwerty in order
 //    to make it circular.
-    private void setSpinnerValueFactory(Spinner spinner, Integer min, Integer max) {
+    private void setSpinnerValueFactory(Spinner<Integer> spinner, Integer min, Integer max) {
         SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max);
         valueFactory.setWrapAround(true);
         spinner.setValueFactory(valueFactory);
@@ -137,6 +145,12 @@ public class AddRuleController implements Initializable {
         selectTriggerOrAction(messageActionChoice, messageActionPane, null, ActionType.MESSAGE);
     }
     
+//    Handle the "Writing to File" choice from the "Select Action" menu.
+    @FXML
+    private void selectWritingToFIleAction(ActionEvent event) {
+        selectTriggerOrAction(writingToFileActionChoice, writingToFileActionPane, null, ActionType.WRITINGTOFILE);
+    }
+    
 //    Hide all the possible Trigger panes and reactivate all the MenuItems.
     private void hideAllTriggers() {
         timeTriggerPane.setVisible(false);
@@ -152,37 +166,35 @@ public class AddRuleController implements Initializable {
         
         audioActionPane.setVisible(false);
         audioActionChoice.setDisable(false);
+        
+        writingToFileActionPane.setVisible(false);
+        writingToFileActionChoice.setDisable(false);
     }
     
 //    Clear all fields of the possible Action parameters.
     private void clearActionFields() {
         selectedAction = null;
         actionIsSelected.setValue(false);
+        
         messageActionInsertMessage.clear();
-        selectedAudio = "";
-        selectedAudioLabel.setText(selectedAudio);
+        
+        audioActionSelectedAudio = "";
+        audioActionSelectedAudioLabel.setText(audioActionSelectedAudio);
+        
+        writingToFileActionInsertText.clear();
+        writingToFileActionSelectedFile = ""; 
+        writingToFileActionSelectedFileLabel.setText(writingToFileActionSelectedFile);
     }
 
 //    Handle the audio selection with the system FileChooser, only for the .MP3 and .WAV.
     @FXML
-    private void selectAudio(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Audio File");
-        
-        FileChooser.ExtensionFilter extFilterMp3 = new FileChooser.ExtensionFilter("File MP3 (*.mp3)", "*.mp3");
-        FileChooser.ExtensionFilter extFilterWav = new FileChooser.ExtensionFilter("File WAV (*.wav)", "*.wav");
-        fileChooser.getExtensionFilters().addAll(extFilterMp3, extFilterWav);
-
-        Stage stage = (Stage) audioActionPane.getScene().getWindow();
-        java.io.File selectedFile = fileChooser.showOpenDialog(stage);
-
-        if (selectedFile != null) {
-            selectedAudio = selectedFile.getAbsolutePath();
-            selectedAudioLabel.setText(selectedFile.getName());
-        } else {
-            selectedAudio = "";
-            selectedAudioLabel.setText("");
-        }
+    private void audioActionSelectAudio(ActionEvent event) {
+        List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+        filters.add(new ExtensionFilter("File MP3 (*.mp3)", "*.mp3"));
+        filters.add(new ExtensionFilter("File WAV (*.wav)", "*.wav"));
+        File selectedFile = selectFile("Select Audio File", filters);
+        audioActionSelectedAudio = selectedFile.getAbsolutePath();
+        audioActionSelectedAudioLabel.setText(selectedFile.getName());
     }
 
 //    Handle the Cancel button action switching the views.
@@ -211,7 +223,11 @@ public class AddRuleController implements Initializable {
 //    Put all the possible value for all the Actions parameters.
     private void putActParam() {
         actParam.put("messageActionMessage", messageActionInsertMessage.getText());
-        actParam.put("audioActionAudioPath", selectedAudio);
+        
+        actParam.put("audioActionAudioPath", audioActionSelectedAudio);
+        
+        actParam.put("writingToFileActionTextToAppend", writingToFileActionInsertText.getText());
+        actParam.put("writingToFileActionFilePath", writingToFileActionSelectedFile);
     }
 
 //    Handle the OnlyOnce Checkbox selection.
@@ -226,5 +242,28 @@ public class AddRuleController implements Initializable {
     private void handlePeriodically(ActionEvent event) {
         onlyOnceCheckbox.setSelected(false);
         periodicallyParameters.setDisable(false);
+    }
+
+//    Handle the file selection with the system FileChooser, only for the .txt.
+    @FXML
+    private void writingToFileActionSelectFile(ActionEvent event) {
+        List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+        filters.add(new ExtensionFilter("Text files (*.txt)", "*.txt"));
+        File selectedFile = selectFile("Select File to write", filters);
+        writingToFileActionSelectedFile = selectedFile.getAbsolutePath();
+        writingToFileActionSelectedFileLabel.setText(selectedFile.getName());
+    }
+
+//    Handle the generic opening of the file chooser with passed filters.
+    private File selectFile(String title, List<ExtensionFilter> filters){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        
+        fileChooser.getExtensionFilters().addAll(filters);
+
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        return selectedFile;
     }
 }

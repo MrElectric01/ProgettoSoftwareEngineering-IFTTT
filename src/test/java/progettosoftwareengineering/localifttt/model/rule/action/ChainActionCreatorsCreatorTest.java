@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule.action;
 
 import java.util.HashMap;
 import org.junit.*;
+
+
 import static org.junit.Assert.*;
 
 public class ChainActionCreatorsCreatorTest {
@@ -30,7 +28,7 @@ public class ChainActionCreatorsCreatorTest {
 //    tested in the specific test class), we check that the created Action is null.
     @Test
     public void testChainElements() {
-        Action action = chain.createAction(ActionType.TEST, new HashMap());
+        Action action = chain.createAction(ActionType.TEST, new HashMap<String,String>());
         assertNull(action);
     }
     

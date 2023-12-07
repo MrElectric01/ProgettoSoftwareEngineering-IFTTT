@@ -5,8 +5,10 @@
 package progettosoftwareengineering.localifttt.model.rule;
 
 import java.io.Serializable;
-import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
+
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
+import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
+
 import java.util.Observable;
 
 //Abstract class useful for the application of Decorator pattern (Component), 

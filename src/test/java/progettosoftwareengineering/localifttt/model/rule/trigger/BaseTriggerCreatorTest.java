@@ -19,7 +19,7 @@ public class BaseTriggerCreatorTest {
     public void setUp() {
         base = new BaseTriggerCreator() {
             @Override
-            public Trigger createTrigger(TriggerType trigger, Map trigParam) {
+            public Trigger createTrigger(TriggerType trigger, Map<String,String> trigParam) {
                 return null;
             }
         };

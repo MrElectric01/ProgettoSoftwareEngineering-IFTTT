@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package progettosoftwareengineering.localifttt.model.rule.trigger;
+package progettosoftwareengineering.localifttt.model.rule.trigger.time;
 
 import java.time.LocalTime;
+
+import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 
 //Trigger for the hour of the day.
 public class TimeTrigger extends Trigger {

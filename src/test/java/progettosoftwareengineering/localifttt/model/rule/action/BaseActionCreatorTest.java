@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule.action;
 
 import java.util.Map;
 import org.junit.*;
+
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -19,7 +17,7 @@ public class BaseActionCreatorTest {
     public void setUp() {
         base = new BaseActionCreator() {
             @Override
-            public Action createAction(ActionType action, Map actParam) {
+            public Action createAction(ActionType action, Map<String,String> actParam) {
                 return null;
             }
         };

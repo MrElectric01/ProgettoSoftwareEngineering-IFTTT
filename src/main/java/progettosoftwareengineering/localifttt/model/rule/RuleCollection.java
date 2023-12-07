@@ -14,7 +14,7 @@ public class RuleCollection extends Observable implements Iterable<Rule>, Observ
 //   In addition to initialize the Collection, we set as Deamon the RulesCheckThread,
 //   we set as Deamon the BackupRules and register it as observer.
     private RuleCollection() {
-        rules = new ArrayList();
+        rules = new ArrayList<Rule>();
         RulesCheckThread.getInstance().setDaemon(true);
     }
     
@@ -51,7 +51,7 @@ public class RuleCollection extends Observable implements Iterable<Rule>, Observ
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<Rule> iterator() {
         return rules.iterator();
     }
 

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package progettosoftwareengineering.localifttt.controller.actioncontroller;
 
 //Class that create the Action Controllers chain.
@@ -15,9 +11,11 @@ public class ChainActionControllersCreator {
     private ChainActionControllersCreator() {
         BaseActionController MAC = new MessageActionController();
         BaseActionController AAC = new AudioActionController();
+        BaseActionController NAEC = new NotifyActionExecutionController();
         
         first = MAC;
         MAC.setNext(AAC);
+        AAC.setNext(NAEC);
     }
     
 //    This method uses the Singleton pattern and also returns the first Controller of the chain. 

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule;
 
 import java.io.*;
@@ -12,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class BackupRulesTest {
 
-    private String testBackupFile = "TestBackupRules.bin";
+    private final String testBackupFile = "TestBackupRules.bin";
     
 //    Get the istance of the Rule Collection and add a Rule.
 //    These are useful for all the tests.
@@ -22,14 +18,21 @@ public class BackupRulesTest {
         Rule rule = new ConcreteRule ("Test Rule", null, null);
         BackupRules.getInstance().setBackupFile(testBackupFile);
         RuleCollection.getInstance().addRule(rule);
-        Thread.sleep(200);
+        Thread.sleep(500);
     }
+ 
     
 //    In order to make the tests indipendent,
-//    we clear the Collection after every test.
+//    we clear the Collection and the file after every test.
     @After
     public void cleanUp() {
         RuleCollection.getInstance().getRules().clear();
+        try {
+            Files.delete(Paths.get(testBackupFile));
+        } catch (IOException e) {
+            //the only exception is launched if the file doesn't exist, 
+            // and that is what we want.
+        }
     }
 
 //    In order to verify that the implementation of the Singleton pattern is correctly done,
@@ -84,8 +87,13 @@ public class BackupRulesTest {
 //    file doesn't exist, we delete the file created in the setUp, and we check that the
 //    returned list is empty.
     @Test
-    public void testReloadBackupNotExist() throws IOException {
-        Files.delete(Paths.get(testBackupFile));
+    public void testReloadBackupNotExist() {
+        try {
+            Files.delete(Paths.get(testBackupFile));
+        } catch (IOException e) {
+            //the only exception is launched if the file doesn't exist, 
+            // and that is what we want.
+        }
         List<Rule> backup = BackupRules.reloadBackup();
         
         assertTrue(backup.isEmpty());

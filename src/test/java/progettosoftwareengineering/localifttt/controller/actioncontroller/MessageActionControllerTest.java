@@ -4,13 +4,15 @@
  */
 package progettosoftwareengineering.localifttt.controller.actioncontroller;
 
+import static java.lang.Thread.sleep;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import progettosoftwareengineering.localifttt.model.rule.action.message.MessageAction;
+
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.spy;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
-import progettosoftwareengineering.localifttt.model.rule.action.MessageAction;
 
 public class MessageActionControllerTest {
     
@@ -40,6 +42,11 @@ public class MessageActionControllerTest {
     public void testUpdate() {
         new JFXPanel();
         Platform.runLater(() -> action.doAction());
+        try {
+            sleep(4000);
+        } catch (InterruptedException ex) {
+              ex.printStackTrace();
+        }
         waitForFxEvents();
     }
 }

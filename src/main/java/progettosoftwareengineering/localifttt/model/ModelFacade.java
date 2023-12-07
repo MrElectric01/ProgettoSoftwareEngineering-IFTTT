@@ -19,12 +19,12 @@ public class ModelFacade {
     }
     
 //    Create and return a trigger of the passed Type with the passed Parameters, using the CreatorsChain.
-    public static Trigger createTrigger(TriggerType trigger, Map trigParam) {
+    public static Trigger createTrigger(TriggerType trigger, Map<String,String> trigParam) {
         return ChainTriggerCreatorsCreator.chain().createTrigger(trigger, trigParam);
     }
     
 //    Create and return a action of the passed Type with the passed Parameters, using the CreatorsChain.
-    public static Action createAction(ActionType action, Map actParam, ActionController controller) {
+    public static Action createAction(ActionType action, Map<String,String> actParam, ActionController controller) {
         Action newAction = ChainActionCreatorsCreator.chain().createAction(action, actParam);
         controller.observeAction(newAction);
         return newAction;

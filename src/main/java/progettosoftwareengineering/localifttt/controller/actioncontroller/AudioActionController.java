@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package progettosoftwareengineering.localifttt.controller.actioncontroller;
 
 import java.io.File;
@@ -10,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.media.*;
 import progettosoftwareengineering.localifttt.model.rule.action.*;
+import progettosoftwareengineering.localifttt.model.rule.action.audio.AudioAction;
 
 public class AudioActionController extends BaseActionController {
 

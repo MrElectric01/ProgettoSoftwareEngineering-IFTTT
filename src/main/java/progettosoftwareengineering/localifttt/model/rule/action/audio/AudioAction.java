@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package progettosoftwareengineering.localifttt.model.rule.action;
+package progettosoftwareengineering.localifttt.model.rule.action.audio;
+
+import progettosoftwareengineering.localifttt.model.rule.action.Action;
 
 //Action for the audio playing.
 public class AudioAction extends Action {

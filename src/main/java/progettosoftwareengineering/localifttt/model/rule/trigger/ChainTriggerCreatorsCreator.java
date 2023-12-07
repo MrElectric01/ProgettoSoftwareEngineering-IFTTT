@@ -4,6 +4,8 @@
  */
 package progettosoftwareengineering.localifttt.model.rule.trigger;
 
+import progettosoftwareengineering.localifttt.model.rule.trigger.time.TimeTriggerCreator;
+
 //Class that create the Trigger Creators chain.
 public class ChainTriggerCreatorsCreator {
 //    Reference to the first creator of the chain.

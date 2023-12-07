@@ -9,10 +9,11 @@ import static java.lang.Thread.sleep;
 import java.net.URLDecoder;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import progettosoftwareengineering.localifttt.model.rule.action.audio.AudioAction;
+
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
-import progettosoftwareengineering.localifttt.model.rule.action.AudioAction;
 
 public class AudioActionControllerTest {
     

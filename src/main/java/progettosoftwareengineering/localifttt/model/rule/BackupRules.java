@@ -48,7 +48,7 @@ public class BackupRules implements Runnable, Observer {
     
 //    Useful method for changing the file in tests.
     void setBackupFile(String backupFile) {
-        this.backupFile = backupFile;
+        BackupRules.backupFile = backupFile;
     }
     
 //    Useful method to check the run method execution in tests.
@@ -57,8 +57,9 @@ public class BackupRules implements Runnable, Observer {
     }
     
 //    Static method for the Reloading of the rule collection.
+    @SuppressWarnings("unchecked") //we can be sure that the file contains an ArrayList<Rule>
     public static List<Rule> reloadBackup() {
-        List<Rule> backup = new ArrayList<>();
+        List<Rule> backup = new ArrayList<Rule>();
         try(ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(backupFile)))) {
             backup = (ArrayList<Rule>) ois.readObject();
         } catch (FileNotFoundException ex) {

@@ -22,11 +22,11 @@ public abstract class BaseTriggerCreator {
 
 //    Abstract Method that all the Creators that extends this class have to Override
 //    in order to handle their specific Trigger creation.
-    public abstract Trigger createTrigger(TriggerType trigger, Map trigParam);
+    public abstract Trigger createTrigger(TriggerType trigger, Map<String,String>  trigParam);
     
 //    If the Creator can't handle the request, this method will be
 //    called to pass it to the next in the chain, if exist.
-    protected Trigger nextCreator(TriggerType trigger, Map trigParam) {
+    protected Trigger nextCreator(TriggerType trigger, Map<String,String>  trigParam) {
         if(next != null)
             return next.createTrigger(trigger, trigParam);
         else

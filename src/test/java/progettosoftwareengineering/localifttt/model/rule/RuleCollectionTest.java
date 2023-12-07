@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule;
 
 import java.util.*;
@@ -60,7 +56,7 @@ public class RuleCollectionTest {
     public void testAddAll() {
         Rule rule1 = new ConcreteRule("TestRule1", null, null);
         Rule rule2 = new ConcreteRule("TestRule2", null, null);
-        List<Rule> list = new ArrayList();
+        List<Rule> list = new ArrayList<Rule>();
         list.add(rule1);
         list.add(rule2);
         ruleCollection.addAll(list);
@@ -84,7 +80,7 @@ public class RuleCollectionTest {
         Rule rule2 = mock(Rule.class);
         ruleCollection.addRule(rule2);
         
-        List<Rule> copy = new ArrayList();
+        List<Rule> copy = new ArrayList<Rule>();
 
         for (Rule r : ruleCollection) {
             copy.add(r);

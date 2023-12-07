@@ -1,14 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package progettosoftwareengineering.localifttt.controller.actioncontroller;
 
 import java.util.Observable;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
-import progettosoftwareengineering.localifttt.model.rule.action.MessageAction;
+import progettosoftwareengineering.localifttt.model.rule.action.message.MessageAction;
 
 public class MessageActionController  extends BaseActionController {
     @Override

@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule.action;
+
+import progettosoftwareengineering.localifttt.model.rule.action.audio.AudioActionCreator;
+import progettosoftwareengineering.localifttt.model.rule.action.message.MessageActionCreator;
+import progettosoftwareengineering.localifttt.model.rule.action.writingtofile.WritingToFileActionCreator;
 
 //Class that create the Action Creators chain.
 public class ChainActionCreatorsCreator {
@@ -15,9 +15,11 @@ public class ChainActionCreatorsCreator {
     private ChainActionCreatorsCreator() {
         BaseActionCreator MAC = new MessageActionCreator();
         BaseActionCreator AAC = new AudioActionCreator();
+        BaseActionCreator WTFAC = new WritingToFileActionCreator();
         
         first = MAC;
         MAC.setNext(AAC);
+        AAC.setNext(WTFAC);
     }
     
 //    This method uses the Singleton pattern and also returns the first Creator of the chain. 
