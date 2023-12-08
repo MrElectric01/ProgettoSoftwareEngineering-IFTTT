@@ -58,10 +58,10 @@ public class HomeController implements Initializable, Observer {
         removeButton.disableProperty().bind(ruleTable.getSelectionModel().selectedItemProperty().isNull());
         
 //        Connect the table to the Rule fields.
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Rule,String>("name"));
-        triggerColumn.setCellValueFactory(new PropertyValueFactory<Rule,Trigger>("trigger"));
-        actionColumn.setCellValueFactory(new PropertyValueFactory<Rule,Action>("action"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<Rule,String>("status"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
+        triggerColumn.setCellValueFactory(new PropertyValueFactory("trigger"));
+        actionColumn.setCellValueFactory(new PropertyValueFactory("action"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory("status"));
         ruleTable.setItems(rules);
 
 //      Observe the RuleCollection to refresh the interface if the RuleCollection changes.

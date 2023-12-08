@@ -43,13 +43,29 @@ public class AudioActionControllerTest {
         assertEquals(1, action.countObservers());
     }
 
-//    In order to verify that the update of this controller is to play the audio 
+//    In order to verify that the update of this controller, if receives an audioFile, is to play the audio 
 //    of the AudioAction that trigger the observer, we execute the doAction 
-//    of the action created in the setUp to visually confirm.
+//    of the action created in the setUp to visually confirm (NOT AUTOMATIC).
     @Test
-    public void testUpdate() {
+    public void testUpdateFileExist() {
         new JFXPanel();
-        Platform.runLater(() -> action.doAction());
+        testHelper(action);
+    }
+    
+//    In order to verify that the update of this controller, if receives an error message, 
+//    is to show an ErrorAlert that says that the audioFile
+//    of the AudioAction that trigger the observer doesn't exist anymore, 
+//    we execute the doAction of a new action with a Fake File created to visually confirm (NOT AUTOMATIC).
+    @Test
+    public void testUpdateFileNotExist() {
+        AudioAction action2 = new AudioAction("Fake File");
+        AAC.observeAction(action2);
+        testHelper(action2);
+    }
+    
+    private void testHelper(AudioAction testAction) {
+        new JFXPanel();
+        Platform.runLater(() -> testAction.doAction());
         try {
             sleep(4000);
         } catch (InterruptedException ex) {
@@ -57,5 +73,4 @@ public class AudioActionControllerTest {
         }
         waitForFxEvents();
     }
-    
 }

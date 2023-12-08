@@ -11,7 +11,6 @@ import progettosoftwareengineering.localifttt.model.rule.action.message.MessageA
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.spy;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 public class MessageActionControllerTest {
@@ -22,7 +21,7 @@ public class MessageActionControllerTest {
     @Before
     public void setUp() {
         MAC = new MessageActionController();
-        action = spy(new MessageAction("test"));
+        action = new MessageAction("test");
         MAC.observeAction(action);
     }
 
@@ -37,7 +36,7 @@ public class MessageActionControllerTest {
 //    In order to verify that the update of this controller is to open 
 //    a dialog box with the message of the MessageAction that trigger 
 //    the observer, we execute the doAction of the action created in 
-//    the setUp to visually confirm.
+//    the setUp to visually confirm (NOT AUTOMATIC).
     @Test
     public void testUpdate() {
         new JFXPanel();

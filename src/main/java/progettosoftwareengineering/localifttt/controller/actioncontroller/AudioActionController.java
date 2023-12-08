@@ -20,40 +20,48 @@ public class AudioActionController extends BaseActionController {
 
 //    Execute an AudioAction with the audio in the parameter, showing a dialog
 //    box in order to give the possibility to stop the play.
+//    In addition manage the show of the Alert for the error. 
     @Override
     public void update(Observable o, Object arg) {
-        String audioFilePath = (String) arg;
-        String[] split = audioFilePath.split("\\\\");
-        String audioName = split[split.length-1];
-        
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Audio playing!");
-            alert.setHeaderText(null);
-            alert.setContentText("The audio "+audioName+" is playing.\n\nPress the 'Stop Audio' button if you want to stop the audio play.");
+        if(arg instanceof File)
+            Platform.runLater(() -> {
+                File audioFile = (File) arg;
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Audio playing!");
+                alert.setHeaderText(null);
+                alert.setContentText("The audio "+audioFile.getName()+" is playing.\n\nPress the 'Stop Audio' button if you want to stop the audio play.");
 
-            alert.getButtonTypes().clear();
-            ButtonType stopAudioButton = new ButtonType("Stop Audio");
-            alert.getButtonTypes().add(stopAudioButton);
+                alert.getButtonTypes().clear();
+                ButtonType stopAudioButton = new ButtonType("Stop Audio");
+                alert.getButtonTypes().add(stopAudioButton);
 
 
-            Media media = new Media(new File(audioFilePath).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
+                Media media = new Media(audioFile.toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
 
-            alert.setOnCloseRequest(onClose -> {
-                mediaPlayer.stop();
-                mediaPlayer.dispose();
-            });
+                alert.setOnCloseRequest(onClose -> {
+                    mediaPlayer.stop();
+                    mediaPlayer.dispose();
+                });
 
-            mediaPlayer.setOnEndOfMedia(() -> {
-                mediaPlayer.stop();
-                mediaPlayer.dispose();
-                alert.close();
-            });
+                mediaPlayer.setOnEndOfMedia(() -> {
+                    mediaPlayer.stop();
+                    mediaPlayer.dispose();
+                    alert.close();
+                });
 
             alert.show();
             mediaPlayer.play();
-        });
+            });
+        else
+            Platform.runLater(() -> {
+                String error = (String) arg;
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Audio not found");
+                alert.setHeaderText(null);
+                alert.setContentText(error);
+                alert.show();
+            });
     }
     
 }

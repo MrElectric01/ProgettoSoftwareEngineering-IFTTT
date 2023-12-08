@@ -7,6 +7,6 @@ public enum ActionType {
     
     MESSAGE,
     AUDIO,
-    WRITINGTOFILE;
-
+    WRITINGTOFILE,
+    MOVEFILE;
 }

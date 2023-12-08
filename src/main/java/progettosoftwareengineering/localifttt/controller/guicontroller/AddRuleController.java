@@ -16,8 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -84,6 +83,16 @@ public class AddRuleController implements Initializable {
     @FXML
     private Label writingToFileActionSelectedFileLabel;
     private String writingToFileActionSelectedFile = "";
+    @FXML
+    private MenuItem moveFileActionChoice;
+    @FXML
+    private VBox moveFileActionPane;
+    @FXML
+    private Label moveFileActionSelectedFileLabel;
+    private String moveFileActionSelectedFile = "";
+    @FXML
+    private Label moveFileActionSelectedDirectoryLabel;
+    private String moveFileActionSelectedDirectory = "";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,9 +104,18 @@ public class AddRuleController implements Initializable {
         setSpinnerValueFactory(periodicallyMinutesSpinner, 0, 59);
         
 //        BooleanBinding "false" if all the rule fields are filled (name, triggger and action).
-        BooleanBinding ruleFields = Bindings.or(Bindings.or(insertRuleName.textProperty().isEmpty(), triggerIsSelected.not()), actionIsSelected.not());
+        BooleanBinding ruleFields = Bindings.or(Bindings.or(
+                insertRuleName.textProperty().isEmpty(), 
+                triggerIsSelected.not()), 
+                actionIsSelected.not()
+        );
 //        BooleanBinding "false" if one actionType parameters are filled at least.
-        BooleanBinding actionFields = Bindings.and(Bindings.and(messageActionInsertMessage.textProperty().isEmpty(), audioActionSelectedAudioLabel.textProperty().isEmpty()), Bindings.or(writingToFileActionInsertText.textProperty().isEmpty(), writingToFileActionSelectedFileLabel.textProperty().isEmpty()));
+        BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(
+                messageActionInsertMessage.textProperty().isEmpty(), 
+                audioActionSelectedAudioLabel.textProperty().isEmpty()), 
+                Bindings.or(writingToFileActionInsertText.textProperty().isEmpty(), writingToFileActionSelectedFileLabel.textProperty().isEmpty())),
+                Bindings.or(moveFileActionSelectedFileLabel.textProperty().isEmpty(), moveFileActionSelectedDirectoryLabel.textProperty().isEmpty())
+        );
 //        Disable the Save button if the ruleFields OR field of the selected action are empty.
         saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
     }
@@ -151,6 +169,12 @@ public class AddRuleController implements Initializable {
         selectTriggerOrAction(writingToFileActionChoice, writingToFileActionPane, null, ActionType.WRITINGTOFILE);
     }
     
+//    Handle the "Move File" choice from the "Select Action" menu.
+    @FXML
+    private void selectMoveFIleAction(ActionEvent event) {
+        selectTriggerOrAction(moveFileActionChoice, moveFileActionPane, null, ActionType.MOVEFILE);
+    }
+    
 //    Hide all the possible Trigger panes and reactivate all the MenuItems.
     private void hideAllTriggers() {
         timeTriggerPane.setVisible(false);
@@ -169,6 +193,9 @@ public class AddRuleController implements Initializable {
         
         writingToFileActionPane.setVisible(false);
         writingToFileActionChoice.setDisable(false);
+        
+        moveFileActionPane.setVisible(false);
+        moveFileActionChoice.setDisable(false);
     }
     
 //    Clear all fields of the possible Action parameters.
@@ -184,17 +211,20 @@ public class AddRuleController implements Initializable {
         writingToFileActionInsertText.clear();
         writingToFileActionSelectedFile = ""; 
         writingToFileActionSelectedFileLabel.setText(writingToFileActionSelectedFile);
+        
+        moveFileActionSelectedFile = ""; 
+        moveFileActionSelectedFileLabel.setText(moveFileActionSelectedFile);
+        moveFileActionSelectedDirectory = ""; 
+        moveFileActionSelectedDirectoryLabel.setText(moveFileActionSelectedDirectory);
     }
 
 //    Handle the audio selection with the system FileChooser, only for the .MP3 and .WAV.
     @FXML
     private void audioActionSelectAudio(ActionEvent event) {
-        List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+        List<ExtensionFilter> filters = new ArrayList();
         filters.add(new ExtensionFilter("File MP3 (*.mp3)", "*.mp3"));
         filters.add(new ExtensionFilter("File WAV (*.wav)", "*.wav"));
-        File selectedFile = selectFile("Select Audio File", filters);
-        audioActionSelectedAudio = selectedFile.getAbsolutePath();
-        audioActionSelectedAudioLabel.setText(selectedFile.getName());
+        audioActionSelectedAudio = selectFile("Select Audio File", filters, audioActionSelectedAudioLabel);
     }
 
 //    Handle the Cancel button action switching the views.
@@ -228,6 +258,9 @@ public class AddRuleController implements Initializable {
         
         actParam.put("writingToFileActionTextToAppend", writingToFileActionInsertText.getText());
         actParam.put("writingToFileActionFilePath", writingToFileActionSelectedFile);
+        
+        actParam.put("moveFileActionFilePath", moveFileActionSelectedFile);
+        actParam.put("moveFileActionDirectoryPath", moveFileActionSelectedDirectory);
     }
 
 //    Handle the OnlyOnce Checkbox selection.
@@ -247,23 +280,55 @@ public class AddRuleController implements Initializable {
 //    Handle the file selection with the system FileChooser, only for the .txt.
     @FXML
     private void writingToFileActionSelectFile(ActionEvent event) {
-        List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+        List<ExtensionFilter> filters = new ArrayList();
         filters.add(new ExtensionFilter("Text files (*.txt)", "*.txt"));
-        File selectedFile = selectFile("Select File to write", filters);
-        writingToFileActionSelectedFile = selectedFile.getAbsolutePath();
-        writingToFileActionSelectedFileLabel.setText(selectedFile.getName());
+        writingToFileActionSelectedFile = selectFile("Select File to write", filters, writingToFileActionSelectedFileLabel);
     }
 
 //    Handle the generic opening of the file chooser with passed filters.
-    private File selectFile(String title, List<ExtensionFilter> filters){
+    private String selectFile(String title, List<ExtensionFilter> filters, Label selectedFileLabel) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(title);
         
-        fileChooser.getExtensionFilters().addAll(filters);
+        if(filters != null)
+            fileChooser.getExtensionFilters().addAll(filters);
 
         Stage stage = (Stage) saveButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
+        
+        if(selectedFile == null)
+            return "";
+        else {
+            selectedFileLabel.setText(selectedFile.getName());
+            return selectedFile.getAbsolutePath();
+        }
+    }
+    
+    //    Handle the generic opening of the directory chooser.
+    private String selectDirectory(String title, Label selectedDirectoryLabel) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(title);
+        
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        
+        if(selectedDirectory == null)
+            return "";
+        else {
+        selectedDirectoryLabel.setText(selectedDirectory.getName());
+        return selectedDirectory.getAbsolutePath();
+        }
+    }
 
-        return selectedFile;
+//    Handle the file selection with the system FileChooser.
+    @FXML
+    private void moveFileActionSelectFile(ActionEvent event) {
+        moveFileActionSelectedFile = selectFile("Select File to Move", null, moveFileActionSelectedFileLabel);
+    }
+
+//    Handle the directory selection with the system DirectoryChooser.
+    @FXML
+    private void moveFileActionSelectDirectory(ActionEvent event) {
+        moveFileActionSelectedDirectory = selectDirectory("Select a Directory", moveFileActionSelectedDirectoryLabel);
     }
 }

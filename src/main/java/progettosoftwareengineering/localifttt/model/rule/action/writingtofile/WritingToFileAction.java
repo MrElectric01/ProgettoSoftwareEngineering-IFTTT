@@ -18,27 +18,28 @@ public class WritingToFileAction extends Action{
         this.textToAppend = toAppend;
     } 
 
-//      Execute a WritingToFileAction writing the passed text in append 
-//      to the passed file (create it if not exist), and notify the controller.
+//    Executes a WritingToFileAction writing the passed text in append 
+//    to the passed file (create it if not exist), and notifies the controller.
+//    An exception is launched if only a path's directory of the selected File is removed.
     @Override
     public void doAction() {
-       try(BufferedWriter bf = new BufferedWriter(new FileWriter(this.filePath,true))){
-            bf.write(textToAppend);
+        try(BufferedWriter bf = new BufferedWriter(new FileWriter(this.filePath, true))) {
             bf.newLine();
-       }catch(FileNotFoundException ex){
-        //if the file doesn't exist this method will create it.
-       }
-       catch(IOException ex){
-        ex.printStackTrace();
-       }
+            bf.write(textToAppend);
+        } catch(FileNotFoundException ex) {
+            setChanged();
+            notifyObservers(new String[] {"A directory of the file path \"" + filePath + "\" has been deleted!", "Directory removed"});
+            return;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
        
-       setChanged();
-       notifyObservers("The text \"" + textToAppend + "\" has been append to file: " + filePath);
+        setChanged();
+        notifyObservers(new String[] {"The text \"" + textToAppend + "\" has been append to file: " + filePath});
     }
 
     @Override
     public String toString() {
         return "Text to append: " + textToAppend +"\nFile: " + filePath;
     }
-
 }

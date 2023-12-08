@@ -2,6 +2,7 @@ package progettosoftwareengineering.localifttt.model.rule.action;
 
 import progettosoftwareengineering.localifttt.model.rule.action.audio.AudioActionCreator;
 import progettosoftwareengineering.localifttt.model.rule.action.message.MessageActionCreator;
+import progettosoftwareengineering.localifttt.model.rule.action.movefile.MoveFileActionCreator;
 import progettosoftwareengineering.localifttt.model.rule.action.writingtofile.WritingToFileActionCreator;
 
 //Class that create the Action Creators chain.
@@ -16,10 +17,12 @@ public class ChainActionCreatorsCreator {
         BaseActionCreator MAC = new MessageActionCreator();
         BaseActionCreator AAC = new AudioActionCreator();
         BaseActionCreator WTFAC = new WritingToFileActionCreator();
+        BaseActionCreator MFAC = new MoveFileActionCreator();
         
         first = MAC;
         MAC.setNext(AAC);
         AAC.setNext(WTFAC);
+        WTFAC.setNext(MFAC);
     }
     
 //    This method uses the Singleton pattern and also returns the first Creator of the chain. 

@@ -37,9 +37,11 @@ public class RulesCheckThread extends Thread {
                 e.printStackTrace();
             }
 
-            for (Rule rule : RuleCollection.getInstance()) {
-                if (rule.checkRule()) {
-                    rule.activateRule();
+            synchronized(RuleCollection.getInstance().getRules()) {
+                for (Rule rule : RuleCollection.getInstance()) {
+                    if (rule.checkRule()) {
+                        rule.activateRule();
+                    }
                 }
             }
         }

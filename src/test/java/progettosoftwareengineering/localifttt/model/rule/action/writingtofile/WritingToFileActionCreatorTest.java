@@ -16,7 +16,7 @@ public class WritingToFileActionCreatorTest {
     @Test
     public void testCreateAction() {
         WritingToFileActionCreator WTFAC = new WritingToFileActionCreator();
-        Map<String,String> actParam = new HashMap<String,String>();
+        Map<String, String> actParam = new HashMap();
         actParam.put("writingToFileActionFilePath", "testPath");
         actParam.put("writingToFileActionTextToAppend","testToAppend");
         
