@@ -93,6 +93,16 @@ public class AddRuleController implements Initializable {
     @FXML
     private Label moveFileActionSelectedDirectoryLabel;
     private String moveFileActionSelectedDirectory = "";
+    @FXML
+    private MenuItem copyFileActionChoice;
+    @FXML
+    private VBox copyFileActionPane;
+    @FXML
+    private Label copyFileActionSelectedFileLabel;
+    private String copyFileActionSelectedFile = "";
+    @FXML
+    private Label copyFileActionSelectedDirectoryLabel;
+    private String copyFileActionSelectedDirectory = "";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -110,11 +120,12 @@ public class AddRuleController implements Initializable {
                 actionIsSelected.not()
         );
 //        BooleanBinding "false" if one actionType parameters are filled at least.
-        BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(
+        BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(Bindings.and(
                 messageActionInsertMessage.textProperty().isEmpty(), 
                 audioActionSelectedAudioLabel.textProperty().isEmpty()), 
                 Bindings.or(writingToFileActionInsertText.textProperty().isEmpty(), writingToFileActionSelectedFileLabel.textProperty().isEmpty())),
-                Bindings.or(moveFileActionSelectedFileLabel.textProperty().isEmpty(), moveFileActionSelectedDirectoryLabel.textProperty().isEmpty())
+                Bindings.or(moveFileActionSelectedFileLabel.textProperty().isEmpty(), moveFileActionSelectedDirectoryLabel.textProperty().isEmpty())),
+                Bindings.or(copyFileActionSelectedFileLabel.textProperty().isEmpty(), copyFileActionSelectedDirectoryLabel.textProperty().isEmpty())
         );
 //        Disable the Save button if the ruleFields OR field of the selected action are empty.
         saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
@@ -171,8 +182,14 @@ public class AddRuleController implements Initializable {
     
 //    Handle the "Move File" choice from the "Select Action" menu.
     @FXML
-    private void selectMoveFIleAction(ActionEvent event) {
+    private void selectMoveFileAction(ActionEvent event) {
         selectTriggerOrAction(moveFileActionChoice, moveFileActionPane, null, ActionType.MOVEFILE);
+    }
+    
+//    Handle the "Copy File" choice from the "Select Action" menu.
+    @FXML
+    private void selectCopyFileAction(ActionEvent event) {
+        selectTriggerOrAction(copyFileActionChoice, copyFileActionPane, null, ActionType.COPYFILE);
     }
     
 //    Hide all the possible Trigger panes and reactivate all the MenuItems.
@@ -196,6 +213,9 @@ public class AddRuleController implements Initializable {
         
         moveFileActionPane.setVisible(false);
         moveFileActionChoice.setDisable(false);
+        
+        copyFileActionPane.setVisible(false);
+        copyFileActionChoice.setDisable(false);
     }
     
 //    Clear all fields of the possible Action parameters.
@@ -216,6 +236,11 @@ public class AddRuleController implements Initializable {
         moveFileActionSelectedFileLabel.setText(moveFileActionSelectedFile);
         moveFileActionSelectedDirectory = ""; 
         moveFileActionSelectedDirectoryLabel.setText(moveFileActionSelectedDirectory);
+        
+        copyFileActionSelectedFile = ""; 
+        copyFileActionSelectedFileLabel.setText(copyFileActionSelectedFile);
+        copyFileActionSelectedDirectory = ""; 
+        copyFileActionSelectedDirectoryLabel.setText(copyFileActionSelectedDirectory);
     }
 
 //    Handle the audio selection with the system FileChooser, only for the .MP3 and .WAV.
@@ -261,6 +286,9 @@ public class AddRuleController implements Initializable {
         
         actParam.put("moveFileActionFilePath", moveFileActionSelectedFile);
         actParam.put("moveFileActionDirectoryPath", moveFileActionSelectedDirectory);
+        
+        actParam.put("copyFileActionFilePath", copyFileActionSelectedFile);
+        actParam.put("copyFileActionDirectoryPath", copyFileActionSelectedDirectory);
     }
 
 //    Handle the OnlyOnce Checkbox selection.
@@ -330,5 +358,17 @@ public class AddRuleController implements Initializable {
     @FXML
     private void moveFileActionSelectDirectory(ActionEvent event) {
         moveFileActionSelectedDirectory = selectDirectory("Select a Directory", moveFileActionSelectedDirectoryLabel);
+    }
+
+//    Handle the file selection with the system FileChooser
+    @FXML
+    private void copyFileActionSelectFile(ActionEvent event) {
+        copyFileActionSelectedFile = selectFile("Select File to Copy", null, copyFileActionSelectedFileLabel);
+    }
+
+//    Handle the directory selection with the system DirectoryChooser.
+    @FXML
+    private void copyFileActionSelectDirectory(ActionEvent event) {
+        copyFileActionSelectedDirectory = selectDirectory("Select a Directory", copyFileActionSelectedDirectoryLabel);
     }
 }

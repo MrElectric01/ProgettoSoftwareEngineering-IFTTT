@@ -67,7 +67,8 @@
                               <MenuItem fx:id="audioActionChoice" mnemonicParsing="false" onAction="#selectAudioAction" text="Audio" />
                               <MenuItem fx:id="messageActionChoice" mnemonicParsing="false" onAction="#selectMessageAction" text="Message" />
                               <MenuItem fx:id="writingToFileActionChoice" mnemonicParsing="false" onAction="#selectWritingToFIleAction" text="Writing to File" />
-                              <MenuItem fx:id="moveFileActionChoice" mnemonicParsing="false" onAction="#selectMoveFIleAction" text="Move File" />
+                              <MenuItem fx:id="moveFileActionChoice" mnemonicParsing="false" onAction="#selectMoveFileAction" text="Move File" />
+                              <MenuItem fx:id="copyFileActionChoice" mnemonicParsing="false" onAction="#selectCopyFileAction" text="Copy File" />
                            </items>
                         </MenuButton>
                         <StackPane prefHeight="270.0" prefWidth="116.0">
@@ -108,6 +109,15 @@
                                     <Label fx:id="moveFileActionSelectedFileLabel" />
                                     <Button mnemonicParsing="false" onAction="#moveFileActionSelectDirectory" text="Select Directory" />
                                     <Label fx:id="moveFileActionSelectedDirectoryLabel" />
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="copyFileActionPane" alignment="CENTER" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefWidth="261.0" text="Copy File action: copy the selected file, replacing if exist, to the selected directory when the rule is triggered." wrapText="true" />
+                                    <Button mnemonicParsing="false" onAction="#copyFileActionSelectFile" text="Select File" />
+                                    <Label fx:id="copyFileActionSelectedFileLabel" />
+                                    <Button mnemonicParsing="false" onAction="#copyFileActionSelectDirectory" text="Select Directory" />
+                                    <Label fx:id="copyFileActionSelectedDirectoryLabel" />
                                  </children>
                               </VBox>
                            </children>

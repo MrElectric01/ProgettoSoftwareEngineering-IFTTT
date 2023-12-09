@@ -10,6 +10,7 @@ import org.junit.*;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
+import progettosoftwareengineering.localifttt.model.rule.action.copyfile.CopyFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.movefile.MoveFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.writingtofile.WritingToFileAction;
 
@@ -29,7 +30,7 @@ public class NotifyActionExecutionControllerTest {
 //    after that we check that all the actions are observed.
     @Test
     public void testObserveAction() {
-        testHelper1("test/test.txt", "MoveTest.txt", "test");
+        testHelper1("test/test.txt", "MoveTest.txt", "test", "CopyTest.txt");
         
         for(Action action: actions)
             assertEquals(1, action.countObservers());
@@ -45,11 +46,14 @@ public class NotifyActionExecutionControllerTest {
     public void testUpdateWithoutError() throws IOException {
         Files.createDirectory(Paths.get("test1"));
         Files.createFile(Paths.get("MoveTest1.txt"));
+        Files.createFile(Paths.get("CopyTest1.txt"));
         
-        testHelper2("test1/test1.txt", "MoveTest1.txt", "test1");
+        testHelper2("test1/test1.txt", "MoveTest1.txt", "test1", "CopyTest1.txt");
         
         Files.delete(Paths.get("test1/test1.txt"));
         Files.delete(Paths.get("test1/MoveTest1.txt"));
+        Files.delete(Paths.get("test1/CopyTest1.txt"));
+        Files.delete(Paths.get("CopyTest1.txt"));
         Files.delete(Paths.get("test1"));
     }
     
@@ -62,21 +66,22 @@ public class NotifyActionExecutionControllerTest {
     public void testUpdateWithError() throws IOException {
         Files.createFile(Paths.get("MoveTest2.txt"));
         
-        testHelper2("test2/test2.txt", "MoveTest2.txt", "test2");
+        testHelper2("test2/test2.txt", "MoveTest2.txt", "test2", "CopyTest2.txt");
         
         Files.delete(Paths.get("MoveTest2.txt"));
     }
     
-    private void testHelper1(String WTFAFile, String MFAFile, String MFADirectory) {
+    private void testHelper1(String WTFAFile, String MFAFile, String MFADirectory, String CFAFile) {
         actions.add(new WritingToFileAction(WTFAFile,"toAppendStringTest"));
         actions.add(new MoveFileAction(MFAFile, MFADirectory));
+        actions.add(new CopyFileAction(CFAFile, MFADirectory));
         
         for(Action action: actions)
             NAEC.observeAction(action);
     }
     
-    private void testHelper2(String WTFAFile, String MFAFile, String MFADirectory) {
-        testHelper1(WTFAFile, MFAFile, MFADirectory);
+    private void testHelper2(String WTFAFile, String MFAFile, String MFADirectory, String CFAFile) {
+        testHelper1(WTFAFile, MFAFile, MFADirectory, CFAFile);
         
         new JFXPanel();
         for(Action action: actions) {
