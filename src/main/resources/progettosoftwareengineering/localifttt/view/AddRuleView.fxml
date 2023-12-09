@@ -70,6 +70,7 @@
                               <MenuItem fx:id="moveFileActionChoice" mnemonicParsing="false" onAction="#selectMoveFileAction" text="Move File" />
                               <MenuItem fx:id="copyFileActionChoice" mnemonicParsing="false" onAction="#selectCopyFileAction" text="Copy File" />
                               <MenuItem fx:id="deleteFileActionChoice" mnemonicParsing="false" onAction="#selectDeleteFileAction" text="Delete File" />
+                              <MenuItem fx:id="programExecutionActionChoice" mnemonicParsing="false" onAction="#selectProgramExecutionAction" text="Program Execution" />
                            </items>
                         </MenuButton>
                         <StackPane prefHeight="270.0" prefWidth="116.0">
@@ -126,6 +127,23 @@
                                     <Label prefWidth="261.0" text="Delete File action: delete the selected file when the rule is triggered." wrapText="true" />
                                     <Button mnemonicParsing="false" onAction="#deleteFileActionSelectFile" text="Select File" />
                                     <Label fx:id="deleteFileActionSelectedFileLabel" />
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="programExecutionActionPane" alignment="CENTER" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefWidth="261.0" text="Program Execution action: executes the selected program, with the selected interpreter, when the rule is triggered." wrapText="true" />
+                                    <Button mnemonicParsing="false" onAction="#programExecutionActionSelectProgram" text="Select Program" />
+                                    <Label fx:id="programExecutionActionSelectedProgramLabel" />
+                                    <VBox fx:id="argumentsPane" alignment="CENTER" disable="true" spacing="20.0">
+                                       <children>
+                                          <Label prefWidth="261.0" text="Insert the program arguments separated with a space (&quot; &quot;)." wrapText="true" />
+                                          <TextField fx:id="programExecutionActionInsertArguments" promptText="Insert arguments here">
+                                             <VBox.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </VBox>
                            </children>

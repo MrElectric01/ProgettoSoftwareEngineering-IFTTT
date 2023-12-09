@@ -110,6 +110,18 @@ public class AddRuleController implements Initializable {
     @FXML
     private Label deleteFileActionSelectedFileLabel;
     private String deleteFileActionSelectedFile = "";
+    @FXML
+    private MenuItem programExecutionActionChoice;
+    @FXML
+    private VBox programExecutionActionPane;
+    @FXML
+    private Label programExecutionActionSelectedProgramLabel;
+    private String programExecutionActionSelectedProgram = "";
+    private String programExecutionActionSelectedInterpreter = null;
+    @FXML
+    private TextField programExecutionActionInsertArguments;
+    @FXML
+    private VBox argumentsPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -127,13 +139,14 @@ public class AddRuleController implements Initializable {
                 actionIsSelected.not()
         );
 //        BooleanBinding "false" if one actionType parameters are filled at least.
-        BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(Bindings.and(Bindings.and(
+        BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(Bindings.and(Bindings.and(Bindings.and(
                 messageActionInsertMessage.textProperty().isEmpty(), 
                 audioActionSelectedAudioLabel.textProperty().isEmpty()), 
                 Bindings.or(writingToFileActionInsertText.textProperty().isEmpty(), writingToFileActionSelectedFileLabel.textProperty().isEmpty())),
                 Bindings.or(moveFileActionSelectedFileLabel.textProperty().isEmpty(), moveFileActionSelectedDirectoryLabel.textProperty().isEmpty())),
                 Bindings.or(copyFileActionSelectedFileLabel.textProperty().isEmpty(), copyFileActionSelectedDirectoryLabel.textProperty().isEmpty())),
-                deleteFileActionSelectedFileLabel.textProperty().isEmpty()
+                deleteFileActionSelectedFileLabel.textProperty().isEmpty()),
+                programExecutionActionSelectedProgramLabel.textProperty().isEmpty()
         );
 //        Disable the Save button if the ruleFields OR field of the selected action are empty.
         saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
@@ -206,6 +219,13 @@ public class AddRuleController implements Initializable {
         selectTriggerOrAction(deleteFileActionChoice, deleteFileActionPane, null, ActionType.DELETEFILE);
     }
     
+//    Handle the "Program Execution" choice from the "Select Action" menu.
+    @FXML
+    private void selectProgramExecutionAction(ActionEvent event) {
+        selectTriggerOrAction(programExecutionActionChoice, programExecutionActionPane, null, ActionType.PROGRAMEXECUTION);
+        argumentsPane.disableProperty().bind(programExecutionActionSelectedProgramLabel.textProperty().isEmpty());
+    }
+    
 //    Hide all the possible Trigger panes and reactivate all the MenuItems.
     private void hideAllTriggers() {
         timeTriggerPane.setVisible(false);
@@ -228,6 +248,7 @@ public class AddRuleController implements Initializable {
         hideAction(moveFileActionPane, moveFileActionChoice);
         hideAction(copyFileActionPane, copyFileActionChoice);
         hideAction(deleteFileActionPane, deleteFileActionChoice);
+        hideAction(programExecutionActionPane, programExecutionActionChoice);
     }
     
 //    Clear all fields of the possible Action parameters.
@@ -256,15 +277,18 @@ public class AddRuleController implements Initializable {
         
         deleteFileActionSelectedFile = ""; 
         deleteFileActionSelectedFileLabel.setText(deleteFileActionSelectedFile);
+        
+        programExecutionActionSelectedProgram = ""; 
+        programExecutionActionSelectedProgramLabel.setText(programExecutionActionSelectedProgram);
+        programExecutionActionInsertArguments.clear();
+        programExecutionActionSelectedInterpreter = null;
     }
 
 //    Handle the audio selection with the system FileChooser, only for the .MP3 and .WAV.
     @FXML
     private void audioActionSelectAudio(ActionEvent event) {
-        List<ExtensionFilter> filters = new ArrayList();
-        filters.add(new ExtensionFilter("File MP3 (*.mp3)", "*.mp3"));
-        filters.add(new ExtensionFilter("File WAV (*.wav)", "*.wav"));
-        audioActionSelectedAudio = selectFile("Select Audio File", filters, audioActionSelectedAudioLabel);
+        ExtensionFilter filter = new ExtensionFilter("File Audio (*.mp3, *.wav)", "*.mp3", "*.wav");
+        audioActionSelectedAudio = selectFile("Select Audio File", filter, audioActionSelectedAudioLabel);
     }
 
 //    Handle the Cancel button action switching the views.
@@ -306,6 +330,10 @@ public class AddRuleController implements Initializable {
         actParam.put("copyFileActionDirectoryPath", copyFileActionSelectedDirectory);
         
         actParam.put("deleteFileActionFilePath", deleteFileActionSelectedFile);
+        
+        actParam.put("programExecutionActionInterpreter", programExecutionActionSelectedInterpreter);
+        actParam.put("programExecutionActionProgramPath", programExecutionActionSelectedProgram);
+        actParam.put("programExecutionActionProgramArguments", programExecutionActionInsertArguments.getText());
     }
 
 //    Handle the OnlyOnce Checkbox selection.
@@ -325,18 +353,17 @@ public class AddRuleController implements Initializable {
 //    Handle the file selection with the system FileChooser, only for the .txt.
     @FXML
     private void writingToFileActionSelectFile(ActionEvent event) {
-        List<ExtensionFilter> filters = new ArrayList();
-        filters.add(new ExtensionFilter("Text files (*.txt)", "*.txt"));
-        writingToFileActionSelectedFile = selectFile("Select File to write", filters, writingToFileActionSelectedFileLabel);
+        ExtensionFilter filter = new ExtensionFilter("Text files (*.txt)", "*.txt");
+        writingToFileActionSelectedFile = selectFile("Select File to write", filter, writingToFileActionSelectedFileLabel);
     }
 
 //    Handle the generic opening of the file chooser with passed filters.
-    private String selectFile(String title, List<ExtensionFilter> filters, Label selectedFileLabel) {
+    private String selectFile(String title, ExtensionFilter filter, Label selectedFileLabel) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(title);
         
-        if(filters != null)
-            fileChooser.getExtensionFilters().addAll(filters);
+        if(filter != null)
+            fileChooser.getExtensionFilters().add(filter);
 
         Stage stage = (Stage) saveButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
@@ -393,5 +420,15 @@ public class AddRuleController implements Initializable {
     @FXML
     private void deleteFileActionSelectFile(ActionEvent event) {
         deleteFileActionSelectedFile = selectFile("Select File to Delete", null, deleteFileActionSelectedFileLabel);
+    }
+
+//    Handle the executable selection with the system FileChooser
+    @FXML
+    private void programExecutionActionSelectProgram(ActionEvent event) {
+        ExtensionFilter filter = new ExtensionFilter("Executable Files (*.exe, *.jar)", "*.exe", "*.jar");
+        programExecutionActionSelectedProgram = selectFile("Select an Executable", filter, programExecutionActionSelectedProgramLabel);
+//        In order to generalize the ProgramExecutionAction, we obtain the interpreter here.
+        if(programExecutionActionSelectedProgram.split("\\.")[1].equals("jar"))
+            programExecutionActionSelectedInterpreter = "java -jar";
     }
 }

@@ -1,7 +1,9 @@
 package progettosoftwareengineering.localifttt.controller.actioncontroller;
 
+import java.io.File;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
+import java.net.URLDecoder;
 import java.nio.file.*;
 import java.util.*;
 import static org.junit.Assert.assertEquals;
@@ -13,10 +15,12 @@ import progettosoftwareengineering.localifttt.model.rule.action.Action;
 import progettosoftwareengineering.localifttt.model.rule.action.copyfile.CopyFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.deletefile.DeleteFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.movefile.MoveFileAction;
+import progettosoftwareengineering.localifttt.model.rule.action.programexecution.ProgramExecutionAction;
 import progettosoftwareengineering.localifttt.model.rule.action.writingtofile.WritingToFileAction;
 
 public class NotifyActionExecutionControllerTest {
 
+    private Map<String, String> param;
     private List<Action> actions;
     private NotifyActionExecutionController NAEC;
 
@@ -24,6 +28,7 @@ public class NotifyActionExecutionControllerTest {
     public void setUp() throws IOException {
         actions = new ArrayList();
         NAEC = new NotifyActionExecutionController();
+        param = new HashMap();
     }
 
 //    In order to verify that this controller observe the right Actions,
@@ -31,12 +36,21 @@ public class NotifyActionExecutionControllerTest {
 //    after that we check that all the actions are observed.
     @Test
     public void testObserveAction() {
-        testHelper1("test/test.txt", "MoveTest.txt", "test", "CopyTest.txt", "DeleteTest.txt");
+        param.put("WTFAFile", "test/test.txt");
+        param.put("MFAFile", "MoveTest.txt");
+        param.put("MFADirectory", "test");
+        param.put("CFAFile", "CopyTest.txt");
+        param.put("DFAFile", "DeleteTest.txt");
+        param.put("PEAInterpreter", "interpreter");
+        param.put("PEAProgramPath", "test.jar");
+        
+        testHelper1();
         
         for(Action action: actions)
             assertEquals(1, action.countObservers());
         
         actions.clear();
+        param.clear();
     }
     
 //    In order to verify that the normal update of this controller is to open 
@@ -44,19 +58,37 @@ public class NotifyActionExecutionControllerTest {
 //    we create all the necessary for the Actions that are created and executed with testHelper2,
 //    and visually check the right behaviour (NOT AUTOMATIC). 
     @Test
-    public void testUpdateWithoutError() throws IOException {
+    public void testUpdateWithoutError() throws IOException, InterruptedException {
         Files.createDirectory(Paths.get("test1"));
         Files.createFile(Paths.get("MoveTest1.txt"));
         Files.createFile(Paths.get("CopyTest1.txt"));
         Files.createFile(Paths.get("DeleteTest1.txt"));
         
-        testHelper2("test1/test1.txt", "MoveTest1.txt", "test1", "CopyTest1.txt", "DeleteTest1.txt");
+        param.put("WTFAFile", "test1/test1.txt");
+        param.put("MFAFile", "MoveTest1.txt");
+        param.put("MFADirectory", "test1");
+        param.put("CFAFile", "CopyTest1.txt");
+        param.put("DFAFile", "DeleteTest1.txt");
+        param.put("PEAInterpreter", "java -jar");
+//        After retrieving the test program path using getResource() from the specific project folder, 
+//        we first decode it correctly, and then replace the '/' with '\' to obtain the same path format
+//        returned by the FileChooser through the UI.
+//        TestProgram.jar is a build of a test program that, after a sleeping time (to simulate a long execution) write in a file ("outputTestProgram.csv")
+//        the command line passed arguments.
+        param.put("PEAProgramPath", URLDecoder.decode(NotifyActionExecutionControllerTest.class.getResource("TestProgram.jar").getPath().substring(1), "UTF-8"));
+        
+        testHelper2();
         
         Files.delete(Paths.get("test1/test1.txt"));
         Files.delete(Paths.get("test1/MoveTest1.txt"));
         Files.delete(Paths.get("test1/CopyTest1.txt"));
         Files.delete(Paths.get("CopyTest1.txt"));
         Files.delete(Paths.get("test1"));
+//        We have to wait that the executed program has finished.
+        while(new File("outputTestProgram.csv").exists()) {
+            sleep(1000);
+            Files.delete(Paths.get("outputTestProgram.csv"));
+        }
     }
     
 //    In order to verify that the "error" update of this controller is to open 
@@ -68,23 +100,32 @@ public class NotifyActionExecutionControllerTest {
     public void testUpdateWithError() throws IOException {
         Files.createFile(Paths.get("MoveTest2.txt"));
         
-        testHelper2("test2/test2.txt", "MoveTest2.txt", "test2", "CopyTest2.txt", "DeleteTest1.txt");
+        param.put("WTFAFile", "test2/test2.txt");
+        param.put("MFAFile", "MoveTest2.txt");
+        param.put("MFADirectory", "test2");
+        param.put("CFAFile", "CopyTest2.txt");
+        param.put("DFAFile", "DeleteTest2.txt");
+        param.put("PEAInterpreter", "java -jar");
+        param.put("PEAProgramPath", "FakeProgram");
+        
+        testHelper2();
         
         Files.delete(Paths.get("MoveTest2.txt"));
     }
     
-    private void testHelper1(String WTFAFile, String MFAFile, String MFADirectory, String CFAFile, String DFAFile) {
-        actions.add(new WritingToFileAction(WTFAFile,"toAppendStringTest"));
-        actions.add(new MoveFileAction(MFAFile, MFADirectory));
-        actions.add(new CopyFileAction(CFAFile, MFADirectory));
-        actions.add(new DeleteFileAction(DFAFile));
+    private void testHelper1() {
+        actions.add(new WritingToFileAction(param.get("WTFAFile"),"toAppendStringTest"));
+        actions.add(new MoveFileAction(param.get("MFAFile"), param.get("MFADirectory")));
+        actions.add(new CopyFileAction(param.get("CFAFile"), param.get("MFADirectory")));
+        actions.add(new DeleteFileAction(param.get("DFAFile")));
+        actions.add(new ProgramExecutionAction(param.get("PEAInterpreter"), param.get("PEAProgramPath"), null));
         
         for(Action action: actions)
             NAEC.observeAction(action);
     }
     
-    private void testHelper2(String WTFAFile, String MFAFile, String MFADirectory, String CFAFile, String DFAFile) {
-        testHelper1(WTFAFile, MFAFile, MFADirectory, CFAFile, DFAFile);
+    private void testHelper2() {
+        testHelper1();
         
         new JFXPanel();
         for(Action action: actions) {
@@ -98,5 +139,6 @@ public class NotifyActionExecutionControllerTest {
         }
         
         actions.clear();
+        param.clear();
     }
 }

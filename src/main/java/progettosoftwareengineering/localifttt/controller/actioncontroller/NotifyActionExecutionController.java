@@ -11,13 +11,22 @@ import progettosoftwareengineering.localifttt.model.rule.action.Action;
 import progettosoftwareengineering.localifttt.model.rule.action.copyfile.CopyFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.deletefile.DeleteFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.movefile.MoveFileAction;
+import progettosoftwareengineering.localifttt.model.rule.action.programexecution.ProgramExecutionAction;
 import progettosoftwareengineering.localifttt.model.rule.action.writingtofile.WritingToFileAction;
 
 public class NotifyActionExecutionController extends BaseActionController {
+    
+    private int notifyDuration = 3;
 
     @Override
     public void observeAction(Action action) {
-        if(action instanceof WritingToFileAction || action instanceof MoveFileAction || action instanceof CopyFileAction || action instanceof DeleteFileAction)
+        if(
+                action instanceof WritingToFileAction || 
+                action instanceof MoveFileAction || 
+                action instanceof CopyFileAction || 
+                action instanceof DeleteFileAction ||
+                action instanceof ProgramExecutionAction
+            )
             action.addObserver(this);
         else
             this.nextController(action);
@@ -38,7 +47,7 @@ public class NotifyActionExecutionController extends BaseActionController {
                 alert.setContentText(arrayArg[0]);
                 alert.show();
                 alert.getDialogPane().lookupButton(ButtonType.OK).setVisible(false);
-                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                PauseTransition delay = new PauseTransition(Duration.seconds(notifyDuration));
                 delay.setOnFinished(event -> alert.close());
                 delay.play();
             });

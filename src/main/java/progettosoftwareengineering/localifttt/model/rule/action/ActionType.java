@@ -10,5 +10,6 @@ public enum ActionType {
     WRITINGTOFILE,
     MOVEFILE,
     COPYFILE,
-    DELETEFILE;
+    DELETEFILE,
+    PROGRAMEXECUTION;
 }
