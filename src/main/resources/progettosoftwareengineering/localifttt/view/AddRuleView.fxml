@@ -69,6 +69,7 @@
                               <MenuItem fx:id="writingToFileActionChoice" mnemonicParsing="false" onAction="#selectWritingToFIleAction" text="Writing to File" />
                               <MenuItem fx:id="moveFileActionChoice" mnemonicParsing="false" onAction="#selectMoveFileAction" text="Move File" />
                               <MenuItem fx:id="copyFileActionChoice" mnemonicParsing="false" onAction="#selectCopyFileAction" text="Copy File" />
+                              <MenuItem fx:id="deleteFileActionChoice" mnemonicParsing="false" onAction="#selectDeleteFileAction" text="Delete File" />
                            </items>
                         </MenuButton>
                         <StackPane prefHeight="270.0" prefWidth="116.0">
@@ -118,6 +119,13 @@
                                     <Label fx:id="copyFileActionSelectedFileLabel" />
                                     <Button mnemonicParsing="false" onAction="#copyFileActionSelectDirectory" text="Select Directory" />
                                     <Label fx:id="copyFileActionSelectedDirectoryLabel" />
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="deleteFileActionPane" alignment="CENTER" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefWidth="261.0" text="Delete File action: delete the selected file when the rule is triggered." wrapText="true" />
+                                    <Button mnemonicParsing="false" onAction="#deleteFileActionSelectFile" text="Select File" />
+                                    <Label fx:id="deleteFileActionSelectedFileLabel" />
                                  </children>
                               </VBox>
                            </children>

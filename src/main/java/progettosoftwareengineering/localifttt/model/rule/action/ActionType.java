@@ -9,5 +9,6 @@ public enum ActionType {
     AUDIO,
     WRITINGTOFILE,
     MOVEFILE,
-    COPYFILE;
+    COPYFILE,
+    DELETEFILE;
 }

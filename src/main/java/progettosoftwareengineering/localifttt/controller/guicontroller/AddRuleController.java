@@ -103,6 +103,13 @@ public class AddRuleController implements Initializable {
     @FXML
     private Label copyFileActionSelectedDirectoryLabel;
     private String copyFileActionSelectedDirectory = "";
+    @FXML
+    private MenuItem deleteFileActionChoice;
+    @FXML
+    private VBox deleteFileActionPane;
+    @FXML
+    private Label deleteFileActionSelectedFileLabel;
+    private String deleteFileActionSelectedFile = "";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -120,12 +127,13 @@ public class AddRuleController implements Initializable {
                 actionIsSelected.not()
         );
 //        BooleanBinding "false" if one actionType parameters are filled at least.
-        BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(Bindings.and(
+        BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(Bindings.and(Bindings.and(
                 messageActionInsertMessage.textProperty().isEmpty(), 
                 audioActionSelectedAudioLabel.textProperty().isEmpty()), 
                 Bindings.or(writingToFileActionInsertText.textProperty().isEmpty(), writingToFileActionSelectedFileLabel.textProperty().isEmpty())),
                 Bindings.or(moveFileActionSelectedFileLabel.textProperty().isEmpty(), moveFileActionSelectedDirectoryLabel.textProperty().isEmpty())),
-                Bindings.or(copyFileActionSelectedFileLabel.textProperty().isEmpty(), copyFileActionSelectedDirectoryLabel.textProperty().isEmpty())
+                Bindings.or(copyFileActionSelectedFileLabel.textProperty().isEmpty(), copyFileActionSelectedDirectoryLabel.textProperty().isEmpty())),
+                deleteFileActionSelectedFileLabel.textProperty().isEmpty()
         );
 //        Disable the Save button if the ruleFields OR field of the selected action are empty.
         saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
@@ -191,6 +199,12 @@ public class AddRuleController implements Initializable {
     private void selectCopyFileAction(ActionEvent event) {
         selectTriggerOrAction(copyFileActionChoice, copyFileActionPane, null, ActionType.COPYFILE);
     }
+
+//    Handle the "Copy File" choice from the "Select Action" menu.
+    @FXML
+    private void selectDeleteFileAction(ActionEvent event) {
+        selectTriggerOrAction(deleteFileActionChoice, deleteFileActionPane, null, ActionType.DELETEFILE);
+    }
     
 //    Hide all the possible Trigger panes and reactivate all the MenuItems.
     private void hideAllTriggers() {
@@ -198,24 +212,22 @@ public class AddRuleController implements Initializable {
         timeTriggerChoice.setDisable(false);
     }
     
-//    Hide all the possible Action panes and reactivate all the MenuItems.
-    private void hideAllActions(){
+//    Hide a single Action panes and reactivate his MenuItems.
+    private void hideAction(VBox pane, MenuItem choice) {
+        pane.setVisible(false);
+        choice.setDisable(false);
+    }
+    
+//    Hide all the possible Action panes, reactivate all the MenuItems and clear all fields.
+    private void hideAllActions() {
         clearActionFields();
         
-        messageActionPane.setVisible(false);
-        messageActionChoice.setDisable(false);
-        
-        audioActionPane.setVisible(false);
-        audioActionChoice.setDisable(false);
-        
-        writingToFileActionPane.setVisible(false);
-        writingToFileActionChoice.setDisable(false);
-        
-        moveFileActionPane.setVisible(false);
-        moveFileActionChoice.setDisable(false);
-        
-        copyFileActionPane.setVisible(false);
-        copyFileActionChoice.setDisable(false);
+        hideAction(messageActionPane, messageActionChoice);
+        hideAction(audioActionPane, audioActionChoice);
+        hideAction(writingToFileActionPane, writingToFileActionChoice);
+        hideAction(moveFileActionPane, moveFileActionChoice);
+        hideAction(copyFileActionPane, copyFileActionChoice);
+        hideAction(deleteFileActionPane, deleteFileActionChoice);
     }
     
 //    Clear all fields of the possible Action parameters.
@@ -241,6 +253,9 @@ public class AddRuleController implements Initializable {
         copyFileActionSelectedFileLabel.setText(copyFileActionSelectedFile);
         copyFileActionSelectedDirectory = ""; 
         copyFileActionSelectedDirectoryLabel.setText(copyFileActionSelectedDirectory);
+        
+        deleteFileActionSelectedFile = ""; 
+        deleteFileActionSelectedFileLabel.setText(deleteFileActionSelectedFile);
     }
 
 //    Handle the audio selection with the system FileChooser, only for the .MP3 and .WAV.
@@ -289,6 +304,8 @@ public class AddRuleController implements Initializable {
         
         actParam.put("copyFileActionFilePath", copyFileActionSelectedFile);
         actParam.put("copyFileActionDirectoryPath", copyFileActionSelectedDirectory);
+        
+        actParam.put("deleteFileActionFilePath", deleteFileActionSelectedFile);
     }
 
 //    Handle the OnlyOnce Checkbox selection.
@@ -370,5 +387,11 @@ public class AddRuleController implements Initializable {
     @FXML
     private void copyFileActionSelectDirectory(ActionEvent event) {
         copyFileActionSelectedDirectory = selectDirectory("Select a Directory", copyFileActionSelectedDirectoryLabel);
+    }
+
+//    Handle the file selection with the system FileChooser
+    @FXML
+    private void deleteFileActionSelectFile(ActionEvent event) {
+        deleteFileActionSelectedFile = selectFile("Select File to Delete", null, deleteFileActionSelectedFileLabel);
     }
 }

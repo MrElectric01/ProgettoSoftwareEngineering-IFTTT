@@ -9,6 +9,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 import progettosoftwareengineering.localifttt.model.rule.action.copyfile.CopyFileAction;
+import progettosoftwareengineering.localifttt.model.rule.action.deletefile.DeleteFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.movefile.MoveFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.writingtofile.WritingToFileAction;
 
@@ -16,7 +17,7 @@ public class NotifyActionExecutionController extends BaseActionController {
 
     @Override
     public void observeAction(Action action) {
-        if(action instanceof WritingToFileAction || action instanceof MoveFileAction || action instanceof CopyFileAction)
+        if(action instanceof WritingToFileAction || action instanceof MoveFileAction || action instanceof CopyFileAction || action instanceof DeleteFileAction)
             action.addObserver(this);
         else
             this.nextController(action);
