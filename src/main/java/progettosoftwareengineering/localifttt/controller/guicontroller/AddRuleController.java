@@ -8,6 +8,8 @@ import progettosoftwareengineering.localifttt.controller.actioncontroller.ChainA
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import javafx.beans.binding.*;
@@ -53,14 +55,14 @@ public class AddRuleController implements Initializable {
 //    Boolean to check that a Trigger is selected.
     private BooleanProperty triggerIsSelected = new SimpleBooleanProperty(false);
 //    Map that contains all the Trigger parameters.
-    private Map<String, String> trigParam = new HashMap<>();
+    private Map<String, String> trigParam = new HashMap();
     
 //    Reference to the ActionTriggere selected.
     private ActionType selectedAction = null;
 //    Boolean to check that a Action is selected.
     private BooleanProperty actionIsSelected = new SimpleBooleanProperty(false);
 //    Map that contains all the Action parameters.
-    private Map<String, String> actParam = new HashMap<>();
+    private Map<String, String> actParam = new HashMap();
     
     @FXML
     private CheckBox onlyOnceCheckbox;
@@ -122,15 +124,38 @@ public class AddRuleController implements Initializable {
     private TextField programExecutionActionInsertArguments;
     @FXML
     private VBox argumentsPane;
+    @FXML
+    private MenuItem dayOfWeekTriggerChoice;
+    @FXML
+    private VBox dayOfWeekTriggerPane;
+    @FXML
+    private Spinner<String> dayOfWeekTriggerSpinner;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        Set the ValueFactories of all the Spinners.
-        setSpinnerValueFactory(timeTriggerHoursSpinner, 0, 23);
-        setSpinnerValueFactory(timeTriggerMinutesSpinner, 0, 59);
-        setSpinnerValueFactory(periodicallyDaysSpinner, 0, 7);
-        setSpinnerValueFactory(periodicallyHoursSpinner, 0, 23);
-        setSpinnerValueFactory(periodicallyMinutesSpinner, 0, 59);
+//        Set the ValueFactories of all the Integer Spinners.
+        setIntegerSpinnerValueFactory(timeTriggerHoursSpinner, 0, 23);
+        setIntegerSpinnerValueFactory(timeTriggerMinutesSpinner, 0, 59);
+        setIntegerSpinnerValueFactory(periodicallyDaysSpinner, 0, 7);
+        setIntegerSpinnerValueFactory(periodicallyHoursSpinner, 0, 23);
+        setIntegerSpinnerValueFactory(periodicallyMinutesSpinner, 0, 59);
+        
+//        Set the ValueFactory for the DayOfWeekSpinner.
+        SpinnerValueFactory<String> dayOfWeekFactory = new SpinnerValueFactory<String>() {
+            @Override
+            public void increment(int steps) {
+                DayOfWeek currentDay = DayOfWeek.valueOf(getValue());
+                setValue(currentDay.plus(steps).toString());
+            }
+
+            @Override
+            public void decrement(int steps) {
+                DayOfWeek currentDay = DayOfWeek.valueOf(getValue());
+                setValue(currentDay.minus(steps).toString());
+            }
+        };
+        dayOfWeekFactory.setWrapAround(true);
+        dayOfWeekTriggerSpinner.setValueFactory(dayOfWeekFactory);
         
 //        BooleanBinding "false" if all the rule fields are filled (name, triggger and action).
         BooleanBinding ruleFields = Bindings.or(Bindings.or(
@@ -154,7 +179,7 @@ public class AddRuleController implements Initializable {
 
 //    Set the Spinner min and max value, and the wrapArounf propwerty in order
 //    to make it circular.
-    private void setSpinnerValueFactory(Spinner<Integer> spinner, Integer min, Integer max) {
+    private void setIntegerSpinnerValueFactory(Spinner<Integer> spinner, Integer min, Integer max) {
         SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max);
         valueFactory.setWrapAround(true);
         spinner.setValueFactory(valueFactory);
@@ -175,12 +200,19 @@ public class AddRuleController implements Initializable {
         pane.setVisible(true);
     }
     
-    //    Handle the "Time" choice from the "Select Trigger" menu.
+//    Handle the "Time" choice from the "Select Trigger" menu.
     @FXML
     private void selectTimeTrigger(ActionEvent event) {
         timeTriggerHoursSpinner.getValueFactory().setValue(LocalTime.now().getHour());
         timeTriggerMinutesSpinner.getValueFactory().setValue(LocalTime.now().getMinute());
         selectTriggerOrAction(timeTriggerChoice, timeTriggerPane, TriggerType.TIME, null);
+    }
+    
+//    Handle the "Day of Week" choice from the "Select Trigger" menu.
+    @FXML
+    private void selectDayOfWeekTrigger(ActionEvent event) {
+        dayOfWeekTriggerSpinner.getValueFactory().setValue(LocalDate.now().getDayOfWeek().toString());
+        selectTriggerOrAction(dayOfWeekTriggerChoice, dayOfWeekTriggerPane, TriggerType.DAY_OF_WEEK, null);
     }
 
 //    Handle the "Audio" choice from the "Select Action" menu.
@@ -198,38 +230,44 @@ public class AddRuleController implements Initializable {
 //    Handle the "Writing to File" choice from the "Select Action" menu.
     @FXML
     private void selectWritingToFIleAction(ActionEvent event) {
-        selectTriggerOrAction(writingToFileActionChoice, writingToFileActionPane, null, ActionType.WRITINGTOFILE);
+        selectTriggerOrAction(writingToFileActionChoice, writingToFileActionPane, null, ActionType.WRITING_TO_FILE);
     }
     
 //    Handle the "Move File" choice from the "Select Action" menu.
     @FXML
     private void selectMoveFileAction(ActionEvent event) {
-        selectTriggerOrAction(moveFileActionChoice, moveFileActionPane, null, ActionType.MOVEFILE);
+        selectTriggerOrAction(moveFileActionChoice, moveFileActionPane, null, ActionType.MOVE_FILE);
     }
     
 //    Handle the "Copy File" choice from the "Select Action" menu.
     @FXML
     private void selectCopyFileAction(ActionEvent event) {
-        selectTriggerOrAction(copyFileActionChoice, copyFileActionPane, null, ActionType.COPYFILE);
+        selectTriggerOrAction(copyFileActionChoice, copyFileActionPane, null, ActionType.COPY_FILE);
     }
 
 //    Handle the "Copy File" choice from the "Select Action" menu.
     @FXML
     private void selectDeleteFileAction(ActionEvent event) {
-        selectTriggerOrAction(deleteFileActionChoice, deleteFileActionPane, null, ActionType.DELETEFILE);
+        selectTriggerOrAction(deleteFileActionChoice, deleteFileActionPane, null, ActionType.DELETE_FILE);
     }
     
 //    Handle the "Program Execution" choice from the "Select Action" menu.
     @FXML
     private void selectProgramExecutionAction(ActionEvent event) {
-        selectTriggerOrAction(programExecutionActionChoice, programExecutionActionPane, null, ActionType.PROGRAMEXECUTION);
+        selectTriggerOrAction(programExecutionActionChoice, programExecutionActionPane, null, ActionType.PROGRAMEX_ECUTION);
         argumentsPane.disableProperty().bind(programExecutionActionSelectedProgramLabel.textProperty().isEmpty());
+    }
+    
+//    Hide a single Trigger panes and reactivate his MenuItems.
+    private void hideTrigger(VBox pane, MenuItem choice) {
+        pane.setVisible(false);
+        choice.setDisable(false);
     }
     
 //    Hide all the possible Trigger panes and reactivate all the MenuItems.
     private void hideAllTriggers() {
-        timeTriggerPane.setVisible(false);
-        timeTriggerChoice.setDisable(false);
+        hideTrigger(timeTriggerPane, timeTriggerChoice);
+        hideTrigger(dayOfWeekTriggerPane, dayOfWeekTriggerChoice);
     }
     
 //    Hide a single Action panes and reactivate his MenuItems.
@@ -312,6 +350,8 @@ public class AddRuleController implements Initializable {
     private void putTrigParam() {
         trigParam.put("timeTriggerHours", timeTriggerHoursSpinner.getValue().toString());
         trigParam.put("timeTriggerMinutes", timeTriggerMinutesSpinner.getValue().toString());
+        
+        trigParam.put("dayOfWeekTriggerDayOfWeek", dayOfWeekTriggerSpinner.getValue());
     }
     
 //    Put all the possible value for all the Actions parameters.

@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 public class WritingToFileActionCreatorTest {
     
 //    In order to verify that this creator return the right Action,
-//    we call the createAction method with the ActionType "WRITINGTOFILE", and the
+//    we call the createAction method with the ActionType "WRITING_TO_FILE", and the
 //    appropried parameters, and verify that the returned Action is an
 //    instance of WritingToFileAction.
     @Test
@@ -20,7 +20,7 @@ public class WritingToFileActionCreatorTest {
         actParam.put("writingToFileActionFilePath", "testPath");
         actParam.put("writingToFileActionTextToAppend","testToAppend");
         
-        Action action = WTFAC.createAction(ActionType.WRITINGTOFILE, actParam);
+        Action action = WTFAC.createAction(ActionType.WRITING_TO_FILE, actParam);
         assertTrue(action instanceof WritingToFileAction);
     }
 }

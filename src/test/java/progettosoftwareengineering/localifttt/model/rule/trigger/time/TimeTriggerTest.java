@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule.trigger.time;
 
 import java.time.LocalTime;
 import org.junit.*;
-
-import progettosoftwareengineering.localifttt.model.rule.trigger.time.TimeTrigger;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +16,7 @@ public class TimeTriggerTest {
         trigger = new TimeTrigger(hours, minutes);
     }
     
-//    In order to verify that cheackTrigger for this trigger is triggered when is called
+//    In order to verify that checkTrigger for this trigger is triggered when is called
 //    at the time specified in the tigger's attributes, we call it after initialize the TimeTrigger
 //    at the current time.
     @Test
@@ -30,7 +24,7 @@ public class TimeTriggerTest {
         assertTrue(trigger.checkTrigger());
     }
     
-//    In order to verify that cheackTrigger for this trigger isn't triggered when is called
+//    In order to verify that checkTrigger for this trigger isn't triggered when is called
 //    at a different time from the specified one in the tigger's attributes, we call it after 
 //    have initialized a TimeTrigger with a minute over the current time (%60 because we use the 00-59 interval).
     @Test

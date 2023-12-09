@@ -7,9 +7,9 @@ public enum ActionType {
     
     MESSAGE,
     AUDIO,
-    WRITINGTOFILE,
-    MOVEFILE,
-    COPYFILE,
-    DELETEFILE,
-    PROGRAMEXECUTION;
+    WRITING_TO_FILE,
+    MOVE_FILE,
+    COPY_FILE,
+    DELETE_FILE,
+    PROGRAMEX_ECUTION;
 }

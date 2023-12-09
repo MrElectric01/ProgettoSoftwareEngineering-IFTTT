@@ -8,5 +8,7 @@ package progettosoftwareengineering.localifttt.model.rule.trigger;
 public enum TriggerType {
 //    This type is useful just for the test.
     TEST,
-    TIME;
+    
+    TIME,
+    DAY_OF_WEEK;
 }

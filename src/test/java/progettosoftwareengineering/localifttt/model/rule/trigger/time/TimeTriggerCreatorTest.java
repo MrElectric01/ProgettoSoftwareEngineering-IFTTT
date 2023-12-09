@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule.trigger.time;
 
 import java.util.*;
@@ -22,7 +18,7 @@ public class TimeTriggerCreatorTest {
     @Test
     public void testCreateTrigger() {
         TimeTriggerCreator TTC = new TimeTriggerCreator();
-        Map<String,String> trigParam = new HashMap<String,String> ();
+        Map<String,String> trigParam = new HashMap();
         trigParam.put("timeTriggerHours", "0");
         trigParam.put("timeTriggerMinutes", "0");
         

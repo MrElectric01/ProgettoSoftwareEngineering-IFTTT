@@ -7,7 +7,7 @@ public class MoveFileActionCreator extends BaseActionCreator{
 
     @Override
     public Action createAction(ActionType action, Map<String, String> actParam) {
-        if(action.equals(ActionType.MOVEFILE))
+        if(action.equals(ActionType.MOVE_FILE))
             return new MoveFileAction(actParam.get("moveFileActionFilePath"), actParam.get("moveFileActionDirectoryPath"));
         else
             return this.nextCreator(action, actParam);

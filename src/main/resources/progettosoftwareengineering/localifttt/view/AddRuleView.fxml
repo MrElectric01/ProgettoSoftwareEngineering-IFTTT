@@ -28,6 +28,7 @@
                            </VBox.margin>
                            <items>
                               <MenuItem fx:id="timeTriggerChoice" mnemonicParsing="false" onAction="#selectTimeTrigger" text="Time" />
+                              <MenuItem fx:id="dayOfWeekTriggerChoice" mnemonicParsing="false" onAction="#selectDayOfWeekTrigger" text="Day of Week" />
                            </items>
                         </MenuButton>
                         <StackPane prefHeight="270.0" prefWidth="45.0">
@@ -45,6 +46,17 @@
                                        <children>
                                           <Label text="Minutes:" />
                                           <Spinner fx:id="timeTriggerMinutesSpinner" prefHeight="31.0" prefWidth="125.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="dayOfWeekTriggerPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefHeight="78.0" prefWidth="269.0" text="Day of Week Trigger: a trigger that, when associated with a rule, causes it to activate at the specified day of week." wrapText="true" />
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Day of Week:" />
+                                          <Spinner fx:id="dayOfWeekTriggerSpinner" prefHeight="31.0" prefWidth="173.0" />
                                        </children>
                                     </HBox>
                                  </children>
