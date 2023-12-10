@@ -143,6 +143,14 @@ public class AddRuleController implements Initializable {
     private VBox dateTriggerPane;
     @FXML
     private DatePicker dateTriggerDatePicker;
+    @FXML
+    private MenuItem fileExistenceTriggerChoice;
+    @FXML
+    private VBox fileExistenceTriggerPane;
+    private BooleanProperty isFileExistenceTrigger = new SimpleBooleanProperty();
+    @FXML
+    private Label fileExistenceTriggerSelectedFileLabel;
+    private String fileExistenceTriggerSelectedFile = "";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -180,6 +188,9 @@ public class AddRuleController implements Initializable {
                 triggerIsSelected.not()), 
                 actionIsSelected.not()
         );
+//        BooleanBinding "false" if one triggerType parameters are filled at least.
+        BooleanBinding triggerFields = Bindings.and(fileExistenceTriggerSelectedFileLabel.textProperty().isEmpty(), isFileExistenceTrigger);
+        
 //        BooleanBinding "false" if one actionType parameters are filled at least.
         BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(Bindings.and(Bindings.and(Bindings.and(
                 messageActionInsertMessage.textProperty().isEmpty(), 
@@ -190,8 +201,9 @@ public class AddRuleController implements Initializable {
                 deleteFileActionSelectedFileLabel.textProperty().isEmpty()),
                 programExecutionActionSelectedProgramLabel.textProperty().isEmpty()
         );
+        
 //        Disable the Save button if the ruleFields OR field of the selected action are empty.
-        saveButton.disableProperty().bind(Bindings.or(ruleFields, actionFields));
+        saveButton.disableProperty().bind(Bindings.or(Bindings.or(ruleFields, actionFields), triggerFields));
     }
 
 //    Set the Spinner min and max value, and the wrapArounf propwerty in order
@@ -243,6 +255,13 @@ public class AddRuleController implements Initializable {
     @FXML
     private void selectDateTrigger(ActionEvent event) {
         selectTriggerOrAction(dateTriggerChoice, dateTriggerPane, TriggerType.DATE, null);
+    }
+    
+//    Handle the "File Existence" choice from the "Select Trigger" menu
+    @FXML
+    private void selectFileExistenceTrigger(ActionEvent event) {
+        selectTriggerOrAction(fileExistenceTriggerChoice, fileExistenceTriggerPane, TriggerType.FILE_EXISTENCE, null);
+        isFileExistenceTrigger.set(selectedTrigger == TriggerType.FILE_EXISTENCE);
     }
 
 //    Handle the "Audio" choice from the "Select Action" menu.
@@ -296,10 +315,23 @@ public class AddRuleController implements Initializable {
     
 //    Hide all the possible Trigger panes and reactivate all the MenuItems.
     private void hideAllTriggers() {
+        clearTriggerFields();
+        
         hideTrigger(timeTriggerPane, timeTriggerChoice);
         hideTrigger(dayOfWeekTriggerPane, dayOfWeekTriggerChoice);
         hideTrigger(dayOfMonthTriggerPane, dayOfMonthTriggerChoice);
         hideTrigger(dateTriggerPane, dateTriggerChoice);
+        hideTrigger(fileExistenceTriggerPane, fileExistenceTriggerChoice);
+    }
+    
+//    Clear all fields of the possible Trigger parameters.
+    private void clearTriggerFields() {
+        selectedTrigger = null;
+        triggerIsSelected.setValue(false);
+        
+        fileExistenceTriggerSelectedFile = ""; 
+        fileExistenceTriggerSelectedFileLabel.setText(fileExistenceTriggerSelectedFile);
+        isFileExistenceTrigger.set(false);
     }
     
 //    Hide a single Action panes and reactivate his MenuItems.
@@ -388,6 +420,8 @@ public class AddRuleController implements Initializable {
         trigParam.put("dayOfMonthTriggerDayOfMonth", dayOfMonthTriggerSpinner.getValue().toString());
         
         trigParam.put("dateTriggerDate", dateTriggerDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        
+        trigParam.put("fileExistenceTriggerFilePath", fileExistenceTriggerSelectedFile);
     }
     
 //    Put all the possible value for all the Actions parameters.
@@ -506,5 +540,11 @@ public class AddRuleController implements Initializable {
 //        In order to generalize the ProgramExecutionAction, we obtain the interpreter here.
         if(programExecutionActionSelectedProgram.split("\\.")[1].equals("jar"))
             programExecutionActionSelectedInterpreter = "java -jar";
+    }
+
+//    Handle the file selection with the system FileChooser
+    @FXML
+    private void fileExistenceTriggerSelectFile(ActionEvent event) {
+        fileExistenceTriggerSelectedFile = selectFile("Select File to check Existence", null, fileExistenceTriggerSelectedFileLabel);
     }
 }

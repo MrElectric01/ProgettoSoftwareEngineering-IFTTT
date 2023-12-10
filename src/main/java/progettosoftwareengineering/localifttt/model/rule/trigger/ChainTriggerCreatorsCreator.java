@@ -4,6 +4,7 @@ import progettosoftwareengineering.localifttt.model.rule.trigger.date.DateTrigge
 import progettosoftwareengineering.localifttt.model.rule.trigger.dayofmonth.DayOfMonthTriggerCreator;
 import progettosoftwareengineering.localifttt.model.rule.trigger.time.TimeTriggerCreator;
 import progettosoftwareengineering.localifttt.model.rule.trigger.dayofweek.DayOfWeekTriggerCreator;
+import progettosoftwareengineering.localifttt.model.rule.trigger.fileexistence.FileExistenceTriggerCreator;
 
 //Class that create the Trigger Creators chain.
 public class ChainTriggerCreatorsCreator {
@@ -18,11 +19,13 @@ public class ChainTriggerCreatorsCreator {
         BaseTriggerCreator DOWTC = new DayOfWeekTriggerCreator();
         BaseTriggerCreator DOMTC = new DayOfMonthTriggerCreator();
         BaseTriggerCreator DTC = new DateTriggerCreator();
+        BaseTriggerCreator FETC = new FileExistenceTriggerCreator();
         
         first = TTC;
         TTC.setNext(DOWTC);
         DOWTC.setNext(DOMTC);
         DOMTC.setNext(DTC);
+        DTC.setNext(FETC);
     }
     
 //    This method uses the Singleton pattern and also returns the first Creator of the chain. 

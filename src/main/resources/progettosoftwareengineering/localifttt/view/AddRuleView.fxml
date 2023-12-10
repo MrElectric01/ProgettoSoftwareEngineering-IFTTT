@@ -32,6 +32,7 @@
                               <MenuItem fx:id="dayOfWeekTriggerChoice" mnemonicParsing="false" onAction="#selectDayOfWeekTrigger" text="Day of Week" />
                               <MenuItem fx:id="dayOfMonthTriggerChoice" mnemonicParsing="false" onAction="#selectDayOfMonthTrigger" text="Day of Month" />
                               <MenuItem fx:id="dateTriggerChoice" mnemonicParsing="false" onAction="#selectDateTrigger" text="Date" />
+                              <MenuItem fx:id="fileExistenceTriggerChoice" mnemonicParsing="false" onAction="#selectFileExistenceTrigger" text="File Existence" />
                            </items>
                         </MenuButton>
                         <StackPane prefHeight="270.0" prefWidth="45.0">
@@ -84,6 +85,13 @@
                                           <DatePicker fx:id="dateTriggerDatePicker" editable="false" />
                                        </children>
                                     </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="fileExistenceTriggerPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefHeight="78.0" prefWidth="269.0" text="File Existence Trigger: a trigger that, when associated with a rule, causes it to activate if the specified file exists." wrapText="true" />
+                                    <Button mnemonicParsing="false" onAction="#fileExistenceTriggerSelectFile" text="Select File" />
+                                    <Label fx:id="fileExistenceTriggerSelectedFileLabel" />
                                  </children>
                               </VBox>
                            </children>
