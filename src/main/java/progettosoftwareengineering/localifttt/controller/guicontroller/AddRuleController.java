@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class AddRuleController implements Initializable {
 
@@ -151,6 +152,20 @@ public class AddRuleController implements Initializable {
     @FXML
     private Label fileExistenceTriggerSelectedFileLabel;
     private String fileExistenceTriggerSelectedFile = "";
+    @FXML
+    private MenuItem fileDimensionTriggerChoice;
+    @FXML
+    private VBox fileDimensionTriggerPane;
+    private BooleanProperty isFileDimensionTrigger = new SimpleBooleanProperty();
+    @FXML
+    private Label fileDimensionTriggerSelectedFileLabel;
+    private String fileDimensionTriggerSelectedFile = "";
+    @FXML
+    private HBox thresholdPane;
+    @FXML
+    private TextField fileDimensionTriggerInsertThreshold;
+    @FXML
+    private ChoiceBox<String> fileDimensionTriggerSizeUnit;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -182,6 +197,22 @@ public class AddRuleController implements Initializable {
 //        Set the defaultValue for the dateTriggerDatePicker.
         dateTriggerDatePicker.setValue(LocalDate.now());
         
+//        Set the formatter for the fileDimensionTriggerInsertThreshold in order to accept
+//        only numbers.
+        fileDimensionTriggerInsertThreshold.setTextFormatter(
+                new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
+                    String newText = change.getControlNewText();
+                    if (newText.matches("\\d*")) {
+                        return change;
+                    }
+                    return null;
+                })
+        );
+        
+//        Set the choises and the default for the fileDimensionTriggerSizeUnit
+        fileDimensionTriggerSizeUnit.getItems().addAll("B", "KB", "MB", "GB");
+        fileDimensionTriggerSizeUnit.setValue("B");
+        
 //        BooleanBinding "false" if all the rule fields are filled (name, triggger and action).
         BooleanBinding ruleFields = Bindings.or(Bindings.or(
                 insertRuleName.textProperty().isEmpty(), 
@@ -189,7 +220,10 @@ public class AddRuleController implements Initializable {
                 actionIsSelected.not()
         );
 //        BooleanBinding "false" if one triggerType parameters are filled at least.
-        BooleanBinding triggerFields = Bindings.and(fileExistenceTriggerSelectedFileLabel.textProperty().isEmpty(), isFileExistenceTrigger);
+        BooleanBinding triggerFields = Bindings.or(
+                Bindings.and(fileExistenceTriggerSelectedFileLabel.textProperty().isEmpty(), isFileExistenceTrigger),
+                Bindings.and(fileDimensionTriggerSelectedFileLabel.textProperty().isEmpty(), isFileDimensionTrigger)
+        );
         
 //        BooleanBinding "false" if one actionType parameters are filled at least.
         BooleanBinding actionFields = Bindings.and(Bindings.and(Bindings.and(Bindings.and(Bindings.and(Bindings.and(
@@ -263,6 +297,14 @@ public class AddRuleController implements Initializable {
         selectTriggerOrAction(fileExistenceTriggerChoice, fileExistenceTriggerPane, TriggerType.FILE_EXISTENCE, null);
         isFileExistenceTrigger.set(selectedTrigger == TriggerType.FILE_EXISTENCE);
     }
+    
+//    Handle the "File Dimension" choice from the "Select Trigger" menu
+    @FXML
+    private void selectFileDimensionTrigger(ActionEvent event) {
+        thresholdPane.disableProperty().bind(fileDimensionTriggerSelectedFileLabel.textProperty().isEmpty());
+        selectTriggerOrAction(fileDimensionTriggerChoice, fileDimensionTriggerPane, TriggerType.FILE_DIMENSION, null);
+        isFileDimensionTrigger.set(selectedTrigger == TriggerType.FILE_DIMENSION);
+    }
 
 //    Handle the "Audio" choice from the "Select Action" menu.
     @FXML
@@ -303,8 +345,8 @@ public class AddRuleController implements Initializable {
 //    Handle the "Program Execution" choice from the "Select Action" menu.
     @FXML
     private void selectProgramExecutionAction(ActionEvent event) {
-        selectTriggerOrAction(programExecutionActionChoice, programExecutionActionPane, null, ActionType.PROGRAMEX_ECUTION);
         argumentsPane.disableProperty().bind(programExecutionActionSelectedProgramLabel.textProperty().isEmpty());
+        selectTriggerOrAction(programExecutionActionChoice, programExecutionActionPane, null, ActionType.PROGRAM_EXECUTION);
     }
     
 //    Hide a single Trigger panes and reactivate his MenuItems.
@@ -322,6 +364,7 @@ public class AddRuleController implements Initializable {
         hideTrigger(dayOfMonthTriggerPane, dayOfMonthTriggerChoice);
         hideTrigger(dateTriggerPane, dateTriggerChoice);
         hideTrigger(fileExistenceTriggerPane, fileExistenceTriggerChoice);
+        hideTrigger(fileDimensionTriggerPane, fileDimensionTriggerChoice);
     }
     
 //    Clear all fields of the possible Trigger parameters.
@@ -332,6 +375,12 @@ public class AddRuleController implements Initializable {
         fileExistenceTriggerSelectedFile = ""; 
         fileExistenceTriggerSelectedFileLabel.setText(fileExistenceTriggerSelectedFile);
         isFileExistenceTrigger.set(false);
+        
+        fileDimensionTriggerSelectedFile = ""; 
+        fileDimensionTriggerSelectedFileLabel.setText(fileDimensionTriggerSelectedFile);
+        fileDimensionTriggerInsertThreshold.setText("0");
+        fileDimensionTriggerSizeUnit.setValue("B");
+        isFileDimensionTrigger.set(false);
     }
     
 //    Hide a single Action panes and reactivate his MenuItems.
@@ -422,6 +471,10 @@ public class AddRuleController implements Initializable {
         trigParam.put("dateTriggerDate", dateTriggerDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         
         trigParam.put("fileExistenceTriggerFilePath", fileExistenceTriggerSelectedFile);
+        
+        trigParam.put("fileDimensionTriggerFilePath", fileDimensionTriggerSelectedFile);
+        trigParam.put("fileDimensionTriggerSizeThreshold", fileDimensionTriggerInsertThreshold.getText());
+        trigParam.put("fileDimensionTriggerSizeUnit", fileDimensionTriggerSizeUnit.getValue());
     }
     
 //    Put all the possible value for all the Actions parameters.
@@ -546,5 +599,11 @@ public class AddRuleController implements Initializable {
     @FXML
     private void fileExistenceTriggerSelectFile(ActionEvent event) {
         fileExistenceTriggerSelectedFile = selectFile("Select File to check Existence", null, fileExistenceTriggerSelectedFileLabel);
+    }
+
+//    Handle the file selection with the system FileChooser
+    @FXML
+    private void fileDimensionTriggerSelectFile(ActionEvent event) {
+        fileDimensionTriggerSelectedFile = selectFile("Select File to check Dimension", null, fileDimensionTriggerSelectedFileLabel);
     }
 }

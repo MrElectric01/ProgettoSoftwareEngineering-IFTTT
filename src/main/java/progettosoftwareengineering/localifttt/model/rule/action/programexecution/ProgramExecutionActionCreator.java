@@ -8,7 +8,7 @@ public class ProgramExecutionActionCreator extends BaseActionCreator{
 
     @Override
     public Action createAction(ActionType action, Map<String,String> actParam) {
-        if(action.equals(ActionType.PROGRAMEX_ECUTION))
+        if(action.equals(ActionType.PROGRAM_EXECUTION))
             return new ProgramExecutionAction(actParam.get("programExecutionActionInterpreter"),actParam.get("programExecutionActionProgramPath"),actParam.get("programExecutionActionProgramArguments"));
         else
             return this.nextCreator(action, actParam);

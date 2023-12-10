@@ -9,5 +9,6 @@ public enum TriggerType {
     DAY_OF_WEEK,
     DAY_OF_MONTH,
     DATE,
-    FILE_EXISTENCE;
+    FILE_EXISTENCE,
+    FILE_DIMENSION;
 }

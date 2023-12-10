@@ -11,5 +11,5 @@ public enum ActionType {
     MOVE_FILE,
     COPY_FILE,
     DELETE_FILE,
-    PROGRAMEX_ECUTION;
+    PROGRAM_EXECUTION;
 }

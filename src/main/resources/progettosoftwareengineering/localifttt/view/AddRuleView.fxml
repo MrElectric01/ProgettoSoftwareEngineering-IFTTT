@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -33,6 +34,7 @@
                               <MenuItem fx:id="dayOfMonthTriggerChoice" mnemonicParsing="false" onAction="#selectDayOfMonthTrigger" text="Day of Month" />
                               <MenuItem fx:id="dateTriggerChoice" mnemonicParsing="false" onAction="#selectDateTrigger" text="Date" />
                               <MenuItem fx:id="fileExistenceTriggerChoice" mnemonicParsing="false" onAction="#selectFileExistenceTrigger" text="File Existence" />
+                              <MenuItem fx:id="fileDimensionTriggerChoice" mnemonicParsing="false" onAction="#selectFileDimensionTrigger" text="File Dimension" />
                            </items>
                         </MenuButton>
                         <StackPane prefHeight="270.0" prefWidth="45.0">
@@ -92,6 +94,20 @@
                                     <Label prefHeight="78.0" prefWidth="269.0" text="File Existence Trigger: a trigger that, when associated with a rule, causes it to activate if the specified file exists." wrapText="true" />
                                     <Button mnemonicParsing="false" onAction="#fileExistenceTriggerSelectFile" text="Select File" />
                                     <Label fx:id="fileExistenceTriggerSelectedFileLabel" />
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="fileDimensionTriggerPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
+                                 <children>
+                                    <Label prefHeight="112.0" prefWidth="274.0" text="File Dimension Trigger: a trigger that, when associated with a rule, causes it to activate if the dimension of the specified file is bigger than the specified threshold." wrapText="true" />
+                                    <Button mnemonicParsing="false" onAction="#fileDimensionTriggerSelectFile" text="Select File" />
+                                    <Label fx:id="fileDimensionTriggerSelectedFileLabel" />
+                                    <HBox fx:id="thresholdPane" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                                       <children>
+                                          <Label text="Threshold:" />
+                                          <TextField fx:id="fileDimensionTriggerInsertThreshold" prefHeight="31.0" prefWidth="103.0" promptText="Insert size" />
+                                          <ChoiceBox fx:id="fileDimensionTriggerSizeUnit" prefHeight="31.0" prefWidth="79.0" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
