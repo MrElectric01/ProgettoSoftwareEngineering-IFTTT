@@ -130,6 +130,12 @@ public class AddRuleController implements Initializable {
     private VBox dayOfWeekTriggerPane;
     @FXML
     private Spinner<String> dayOfWeekTriggerSpinner;
+    @FXML
+    private MenuItem dayOfMonthTriggerChoice;
+    @FXML
+    private VBox dayOfMonthTriggerPane;
+    @FXML
+    private Spinner<Integer> dayOfMonthTriggerSpinner;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -139,6 +145,7 @@ public class AddRuleController implements Initializable {
         setIntegerSpinnerValueFactory(periodicallyDaysSpinner, 0, 7);
         setIntegerSpinnerValueFactory(periodicallyHoursSpinner, 0, 23);
         setIntegerSpinnerValueFactory(periodicallyMinutesSpinner, 0, 59);
+        setIntegerSpinnerValueFactory(dayOfMonthTriggerSpinner, 1, 31);
         
 //        Set the ValueFactory for the DayOfWeekSpinner.
         SpinnerValueFactory<String> dayOfWeekFactory = new SpinnerValueFactory<String>() {
@@ -214,6 +221,13 @@ public class AddRuleController implements Initializable {
         dayOfWeekTriggerSpinner.getValueFactory().setValue(LocalDate.now().getDayOfWeek().toString());
         selectTriggerOrAction(dayOfWeekTriggerChoice, dayOfWeekTriggerPane, TriggerType.DAY_OF_WEEK, null);
     }
+    
+//    Handle the "Day of Month" choice from the "Select Trigger" menu.
+    @FXML
+    private void selectDayOfMonthTrigger(ActionEvent event) {
+        dayOfMonthTriggerSpinner.getValueFactory().setValue(LocalDate.now().getDayOfMonth());
+        selectTriggerOrAction(dayOfMonthTriggerChoice, dayOfMonthTriggerPane, TriggerType.DAY_OF_MONTH, null);
+    }
 
 //    Handle the "Audio" choice from the "Select Action" menu.
     @FXML
@@ -268,6 +282,7 @@ public class AddRuleController implements Initializable {
     private void hideAllTriggers() {
         hideTrigger(timeTriggerPane, timeTriggerChoice);
         hideTrigger(dayOfWeekTriggerPane, dayOfWeekTriggerChoice);
+        hideTrigger(dayOfMonthTriggerPane, dayOfMonthTriggerChoice);
     }
     
 //    Hide a single Action panes and reactivate his MenuItems.
@@ -352,6 +367,8 @@ public class AddRuleController implements Initializable {
         trigParam.put("timeTriggerMinutes", timeTriggerMinutesSpinner.getValue().toString());
         
         trigParam.put("dayOfWeekTriggerDayOfWeek", dayOfWeekTriggerSpinner.getValue());
+        
+        trigParam.put("dayOfMonthTriggerDayOfMonth", dayOfMonthTriggerSpinner.getValue().toString());
     }
     
 //    Put all the possible value for all the Actions parameters.
