@@ -1,5 +1,6 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger;
 
+import progettosoftwareengineering.localifttt.model.rule.trigger.date.DateTriggerCreator;
 import progettosoftwareengineering.localifttt.model.rule.trigger.dayofmonth.DayOfMonthTriggerCreator;
 import progettosoftwareengineering.localifttt.model.rule.trigger.time.TimeTriggerCreator;
 import progettosoftwareengineering.localifttt.model.rule.trigger.dayofweek.DayOfWeekTriggerCreator;
@@ -16,11 +17,12 @@ public class ChainTriggerCreatorsCreator {
         BaseTriggerCreator TTC = new TimeTriggerCreator();
         BaseTriggerCreator DOWTC = new DayOfWeekTriggerCreator();
         BaseTriggerCreator DOMTC = new DayOfMonthTriggerCreator();
+        BaseTriggerCreator DTC = new DateTriggerCreator();
         
         first = TTC;
         TTC.setNext(DOWTC);
         DOWTC.setNext(DOMTC);
-        
+        DOMTC.setNext(DTC);
     }
     
 //    This method uses the Singleton pattern and also returns the first Creator of the chain. 

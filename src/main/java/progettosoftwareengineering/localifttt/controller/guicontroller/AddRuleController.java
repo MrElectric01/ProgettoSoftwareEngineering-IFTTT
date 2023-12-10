@@ -11,6 +11,7 @@ import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javafx.beans.binding.*;
 import javafx.beans.property.*;
@@ -136,6 +137,12 @@ public class AddRuleController implements Initializable {
     private VBox dayOfMonthTriggerPane;
     @FXML
     private Spinner<Integer> dayOfMonthTriggerSpinner;
+    @FXML
+    private MenuItem dateTriggerChoice;
+    @FXML
+    private VBox dateTriggerPane;
+    @FXML
+    private DatePicker dateTriggerDatePicker;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -163,6 +170,9 @@ public class AddRuleController implements Initializable {
         };
         dayOfWeekFactory.setWrapAround(true);
         dayOfWeekTriggerSpinner.setValueFactory(dayOfWeekFactory);
+        
+//        Set the defaultValue for the dateTriggerDatePicker.
+        dateTriggerDatePicker.setValue(LocalDate.now());
         
 //        BooleanBinding "false" if all the rule fields are filled (name, triggger and action).
         BooleanBinding ruleFields = Bindings.or(Bindings.or(
@@ -228,6 +238,12 @@ public class AddRuleController implements Initializable {
         dayOfMonthTriggerSpinner.getValueFactory().setValue(LocalDate.now().getDayOfMonth());
         selectTriggerOrAction(dayOfMonthTriggerChoice, dayOfMonthTriggerPane, TriggerType.DAY_OF_MONTH, null);
     }
+    
+//    Handle the "Date" choice from the "Select Trigger" menu
+    @FXML
+    private void selectDateTrigger(ActionEvent event) {
+        selectTriggerOrAction(dateTriggerChoice, dateTriggerPane, TriggerType.DATE, null);
+    }
 
 //    Handle the "Audio" choice from the "Select Action" menu.
     @FXML
@@ -283,6 +299,7 @@ public class AddRuleController implements Initializable {
         hideTrigger(timeTriggerPane, timeTriggerChoice);
         hideTrigger(dayOfWeekTriggerPane, dayOfWeekTriggerChoice);
         hideTrigger(dayOfMonthTriggerPane, dayOfMonthTriggerChoice);
+        hideTrigger(dateTriggerPane, dateTriggerChoice);
     }
     
 //    Hide a single Action panes and reactivate his MenuItems.
@@ -369,6 +386,8 @@ public class AddRuleController implements Initializable {
         trigParam.put("dayOfWeekTriggerDayOfWeek", dayOfWeekTriggerSpinner.getValue());
         
         trigParam.put("dayOfMonthTriggerDayOfMonth", dayOfMonthTriggerSpinner.getValue().toString());
+        
+        trigParam.put("dateTriggerDate", dateTriggerDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
     
 //    Put all the possible value for all the Actions parameters.
