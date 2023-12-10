@@ -3,6 +3,7 @@ package progettosoftwareengineering.localifttt.model.rule.trigger.fileexistence;
 import java.io.File;
 import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 
+//Trigger for a file existence checking
 public class FileExistenceTrigger extends Trigger {
 
     private File file;
@@ -19,6 +20,7 @@ public class FileExistenceTrigger extends Trigger {
 
     @Override
     public String toString() {
-        return "File to check existence: " + file.getAbsolutePath();
+        String directory = new File(file.getParent()).getName();
+        return "File to check existence: " + file.getName() + "\nDirectory: " + directory;
     }
 }

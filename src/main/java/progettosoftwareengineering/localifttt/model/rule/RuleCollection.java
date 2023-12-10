@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule;
 
 import java.util.*;
 
+//Class for the Collection of Rules.
 public class RuleCollection extends Observable implements Iterable<Rule>, Observer {
     
     private List<Rule> rules;
@@ -14,7 +11,7 @@ public class RuleCollection extends Observable implements Iterable<Rule>, Observ
 //   In addition to initialize the Collection, we set as Deamon the RulesCheckThread,
 //   we set as Deamon the BackupRules and register it as observer.
     private RuleCollection() {
-        rules = new ArrayList<Rule>();
+        rules = new ArrayList();
         RulesCheckThread.getInstance().setDaemon(true);
     }
     

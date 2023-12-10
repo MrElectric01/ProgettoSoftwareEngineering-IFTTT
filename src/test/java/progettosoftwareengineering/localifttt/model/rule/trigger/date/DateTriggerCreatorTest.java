@@ -1,12 +1,9 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger.date;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
-import progettosoftwareengineering.localifttt.model.rule.trigger.TriggerType;
-
+import progettosoftwareengineering.localifttt.model.rule.trigger.*;
 public class DateTriggerCreatorTest {
 
 //    In order to verify that this creator return the right Trigger,

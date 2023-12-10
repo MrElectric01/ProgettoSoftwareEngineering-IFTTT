@@ -46,6 +46,6 @@ public class DeleteFileActionTest {
     
     @Test
     public void testToString() {
-        assertEquals("File to delete: " + file, action.toString());
+        assertEquals("File to delete: " + new File(file).getName(), action.toString());
     }
 }

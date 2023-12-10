@@ -1,9 +1,7 @@
 package progettosoftwareengineering.localifttt.model.rule.action.deletefile;
 
-import java.io.File;
-import java.io.IOException;
-import static java.nio.file.Files.delete;
-import java.nio.file.Path;
+import java.io.*;
+import java.nio.file.*;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 
 //Action for deleting a file from a directory.
@@ -21,7 +19,7 @@ public class DeleteFileAction extends Action {
     public void doAction() {
         Path filePath = file.toPath();
         try {
-            delete(filePath);
+            Files.delete(filePath);
         } catch (IOException ex) {
             setChanged();
             notifyObservers(new String[] {"The file to delete \"" + file + "\" doesn't exist anymore!", "File not found"});
@@ -33,6 +31,6 @@ public class DeleteFileAction extends Action {
     
     @Override
     public String toString() {
-        return "File to delete: " + file;
+        return "File to delete: " + file.getName();
     }
 }

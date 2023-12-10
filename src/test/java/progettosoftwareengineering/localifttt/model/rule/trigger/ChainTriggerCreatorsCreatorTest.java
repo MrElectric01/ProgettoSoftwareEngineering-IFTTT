@@ -26,7 +26,7 @@ public class ChainTriggerCreatorsCreatorTest {
 //    tested in the specific test class), we check that the created Trigger is null.
     @Test
     public void testChainElements() {
-        Trigger trigger = chain.createTrigger(TriggerType.TEST, new HashMap<String,String> ());
+        Trigger trigger = chain.createTrigger(TriggerType.TEST, new HashMap());
         assertNull(trigger);
     }
     

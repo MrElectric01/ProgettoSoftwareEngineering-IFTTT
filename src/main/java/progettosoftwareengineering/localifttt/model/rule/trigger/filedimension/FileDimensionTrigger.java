@@ -1,10 +1,10 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger.filedimension;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 
+//Trigger for the file dimension checking.
 public class FileDimensionTrigger extends Trigger {
 
     private File file;
@@ -47,6 +47,6 @@ public class FileDimensionTrigger extends Trigger {
 
     @Override
     public String toString() {
-        return "File to check dimension: " + file.getAbsolutePath() + "\n(Threshold: " + sizeThreshold + " " + sizeUnit + ")";
+        return "File to check dimension: " + file.getName() + "\n(Threshold: " + sizeThreshold + " " + sizeUnit + ")";
     }
 }

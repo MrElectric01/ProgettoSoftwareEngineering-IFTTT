@@ -6,7 +6,9 @@ import javafx.scene.control.Alert;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 import progettosoftwareengineering.localifttt.model.rule.action.message.MessageAction;
 
+//Class useful to manage the MessageAction GUI behaviour.
 public class MessageActionController  extends BaseActionController {
+    
     @Override
     public void observeAction(Action action) {
         if(action instanceof MessageAction)

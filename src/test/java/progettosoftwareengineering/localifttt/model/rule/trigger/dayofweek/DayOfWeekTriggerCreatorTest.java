@@ -3,8 +3,7 @@ package progettosoftwareengineering.localifttt.model.rule.trigger.dayofweek;
 import java.util.*;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
-import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
-import progettosoftwareengineering.localifttt.model.rule.trigger.TriggerType;
+import progettosoftwareengineering.localifttt.model.rule.trigger.*;
 
 public class DayOfWeekTriggerCreatorTest {
 

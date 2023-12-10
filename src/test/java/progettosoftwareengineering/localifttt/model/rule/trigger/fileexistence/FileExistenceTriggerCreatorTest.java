@@ -1,11 +1,9 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger.fileexistence;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
-import progettosoftwareengineering.localifttt.model.rule.trigger.TriggerType;
+import progettosoftwareengineering.localifttt.model.rule.trigger.*;
 
 public class FileExistenceTriggerCreatorTest {
 

@@ -1,12 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule;
 
 import java.io.Serializable;
 
-//Utility Class useful for contain the three part of the SleepingPeriod.
+//Utility Class useful for contain the three part of the SleepingPeriod for the PeriodicallyRule.
 public class SleepingPeriod implements Serializable {
     private Integer days;
     private Integer hours;

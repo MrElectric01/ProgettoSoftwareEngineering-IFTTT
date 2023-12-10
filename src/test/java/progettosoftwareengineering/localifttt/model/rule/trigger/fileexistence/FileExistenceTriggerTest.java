@@ -1,21 +1,25 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger.fileexistence;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import org.junit.Before;
-import org.junit.Test;
+import java.io.*;
+import java.nio.file.*;
+import org.junit.*;
 import static org.junit.Assert.*;
 
 public class FileExistenceTriggerTest {
 
-    private String filePath = "existenceTest.txt";
+    private String directoryPath = "existenceDirectory";
+    private String filePath = directoryPath + "/existenceTest.txt";
     private FileExistenceTrigger trigger;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         trigger = new FileExistenceTrigger(filePath);
+        Files.createDirectory(Paths.get(directoryPath));
+    }
+    
+    @After
+    public void cleanUp() throws IOException {
+        Files.delete(Paths.get(directoryPath));
     }
 
 //    In order to verify that checkTrigger for this trigger is triggered when
@@ -36,6 +40,6 @@ public class FileExistenceTriggerTest {
 
     @Test
     public void testToString() {
-        assertEquals("File to check existence: " + new File(filePath).getAbsolutePath(), trigger.toString());
+        assertEquals("File to check existence: " + new File(filePath).getName() + "\nDirectory: " + new File(directoryPath).getName(), trigger.toString());
     }
 }

@@ -1,15 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule.trigger.dayofmonth;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.HashMap;
-import java.util.Map;
-import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
-import progettosoftwareengineering.localifttt.model.rule.trigger.TriggerType;
+import java.util.*;
+import progettosoftwareengineering.localifttt.model.rule.trigger.*;
 
 public class DayOfMonthTriggerCreatorTest {
 

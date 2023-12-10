@@ -8,6 +8,7 @@ import javafx.scene.media.*;
 import progettosoftwareengineering.localifttt.model.rule.action.*;
 import progettosoftwareengineering.localifttt.model.rule.action.audio.AudioAction;
 
+//Class useful to manage the AudioAction GUI behaviour.
 public class AudioActionController extends BaseActionController {
 
     @Override
@@ -29,7 +30,7 @@ public class AudioActionController extends BaseActionController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Audio playing!");
                 alert.setHeaderText(null);
-                alert.setContentText("The audio "+audioFile.getName()+" is playing.\n\nPress the 'Stop Audio' button if you want to stop the audio play.");
+                alert.setContentText("The audio "+ audioFile.getName() +" is playing.\n\nPress the 'Stop Audio' button if you want to stop the audio play.");
 
                 alert.getButtonTypes().clear();
                 ButtonType stopAudioButton = new ButtonType("Stop Audio");

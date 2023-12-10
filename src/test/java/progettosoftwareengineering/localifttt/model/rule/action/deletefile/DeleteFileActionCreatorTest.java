@@ -3,8 +3,7 @@ package progettosoftwareengineering.localifttt.model.rule.action.deletefile;
 import java.util.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import progettosoftwareengineering.localifttt.model.rule.action.Action;
-import progettosoftwareengineering.localifttt.model.rule.action.ActionType;
+import progettosoftwareengineering.localifttt.model.rule.action.*;
 
 public class DeleteFileActionCreatorTest {
     

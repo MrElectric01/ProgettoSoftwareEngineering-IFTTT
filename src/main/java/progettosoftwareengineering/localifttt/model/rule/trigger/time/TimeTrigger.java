@@ -1,7 +1,6 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger.time;
 
 import java.time.LocalTime;
-
 import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 
 //Trigger for the hour of the day.

@@ -6,8 +6,7 @@ import java.util.*;
 import javafx.application.Platform;
 import javafx.collections.*;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +22,8 @@ public class HomeController implements Initializable, Observer {
     @FXML
     private MenuItem switchStatusContextMenuItem;
     @FXML
+    private MenuItem removeContextMenuItem;
+    @FXML
     private TableColumn<Rule, String> statusColumn;
     @FXML
     private TableColumn<Rule, String> nameColumn;
@@ -33,11 +34,9 @@ public class HomeController implements Initializable, Observer {
     @FXML
     private Button switchStatusButton;
     
-//    ObservaleList useful to contain the RuleCollection List in the interface.
+//    ObservableList useful to contain the RuleCollection List in the interface.
     private ObservableList<Rule> rules = FXCollections.observableArrayList();
     
-    @FXML
-    private MenuItem removeContextMenuItem;
     @FXML
     private Button removeButton;
 
@@ -80,10 +79,10 @@ public class HomeController implements Initializable, Observer {
 //    Handle the addRule button action switching the views.
     @FXML
     private void addRule(ActionEvent event) throws IOException {
-        LocalIFTTT.setRoot("src\\main\\resources\\progettosoftwareengineering\\localifttt\\view\\AddRuleView.fxml");
+        LocalIFTTT.setRoot("src/main/resources/progettosoftwareengineering/localifttt/view/AddRuleView.fxml");
     }
 
-//    Handle the SwitchStatus buttn changing the status of all the selected rules from the table.
+//    Handle the SwitchStatus button changing the status of all the selected rules from the table.
     @FXML
     private void handleSwitchStatus(ActionEvent event) {
         List<Rule> selectedRules = ruleTable.getSelectionModel().getSelectedItems();
@@ -108,6 +107,7 @@ public class HomeController implements Initializable, Observer {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Remove Rules");
         confirm.setHeaderText("Are you sure you want to remove the following rules?");
+//        Concat all the Rules Selected to be removed, in order to show them in the Alert.
         for(Rule rule: selectedRules) {
             confirm.setContentText(confirm.getContentText() + rule.getName() + "\n");
         }
@@ -115,10 +115,9 @@ public class HomeController implements Initializable, Observer {
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             for(Rule rule: selectedRules) {
-                ModelFacade.getRuleCollection().deleteRule(rule);
+                ModelFacade.deleteRuleFromRuleCollection(rule);
             }
             ruleTable.getSelectionModel().clearSelection();
         }
-        
     }
 }

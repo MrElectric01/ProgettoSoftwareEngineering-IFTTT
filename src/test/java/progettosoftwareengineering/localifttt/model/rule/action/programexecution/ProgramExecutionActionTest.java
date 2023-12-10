@@ -1,9 +1,7 @@
 package progettosoftwareengineering.localifttt.model.rule.action.programexecution;
 
 import static org.junit.Assert.assertEquals;
-
 import java.io.*;
-import java.net.*;
 import java.nio.file.*;
 import java.util.Observer;
 import org.junit.*;
@@ -12,21 +10,13 @@ import static org.mockito.Mockito.*;
 public class ProgramExecutionActionTest {
 
     private final String interpreter = "java -jar";
-    private final String programPath;
+//    TestProgram.jar is a build of a test program that, after a sleeping time (to simulate a long execution) write in a file (fileToRead)
+//    the command line passed arguments.
+    private final String programPath = "src/test/resources/progettosoftwareengineering/localifttt/model/rule/action/programexecution/TestProgram.jar";;
     private final String arguments = "test %\\r 2";
     private ProgramExecutionAction action;
     private final String fileToRead = "outputTestProgram.csv";
     private Observer obs = mock(Observer.class);
-
-    
-//    After retrieving the test program path using getResource() from the specific project folder, 
-//    we first decode it correctly, and then replace the '/' with '\' to obtain the same path format
-//    returned by the FileChooser through the UI.
-//    TestProgram.jar is a build of a test program that, after a sleeping time (to simulate a long execution) write in a file (fileToRead)
-//    the command line passed arguments.
-    public ProgramExecutionActionTest() throws UnsupportedEncodingException, URISyntaxException {
-        programPath = URLDecoder.decode(ProgramExecutionActionTest.class.getResource("TestProgram.jar").getPath().substring(1), "UTF-8");
-    }
 
     @Before
     public void setUp() {
@@ -73,7 +63,6 @@ public class ProgramExecutionActionTest {
 
     @Test
     public void testToString() {
-        assertEquals("Program path: " + programPath, action.toString());
+        assertEquals("Program path: " + new File(programPath).getName(), action.toString());
     }
-
 }

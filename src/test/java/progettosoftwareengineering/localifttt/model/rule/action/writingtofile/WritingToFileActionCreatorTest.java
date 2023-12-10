@@ -2,9 +2,7 @@ package progettosoftwareengineering.localifttt.model.rule.action.writingtofile;
 
 import java.util.*;
 import org.junit.*;
-
 import progettosoftwareengineering.localifttt.model.rule.action.*;
-
 import static org.junit.Assert.assertTrue;
 
 public class WritingToFileActionCreatorTest {

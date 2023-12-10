@@ -2,7 +2,6 @@ package progettosoftwareengineering.localifttt.model.rule.trigger.time;
 
 import java.time.LocalTime;
 import org.junit.*;
-
 import static org.junit.Assert.*;
 
 public class TimeTriggerTest {

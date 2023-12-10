@@ -1,9 +1,7 @@
 package progettosoftwareengineering.localifttt.model.rule.action.copyfile;
 
 import java.util.Map;
-import progettosoftwareengineering.localifttt.model.rule.action.Action;
-import progettosoftwareengineering.localifttt.model.rule.action.ActionType;
-import progettosoftwareengineering.localifttt.model.rule.action.BaseActionCreator;
+import progettosoftwareengineering.localifttt.model.rule.action.*;
 
 public class CopyFileActionCreator extends BaseActionCreator {
 

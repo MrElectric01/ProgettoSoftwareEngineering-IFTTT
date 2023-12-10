@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule;
 
+//Class useful for the periodically RuleCollection checking. 
 public class RulesCheckThread extends Thread {
 
     private static RulesCheckThread instance = null;

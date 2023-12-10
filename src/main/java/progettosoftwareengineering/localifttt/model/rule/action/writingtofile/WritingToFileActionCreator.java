@@ -1,7 +1,6 @@
 package progettosoftwareengineering.localifttt.model.rule.action.writingtofile;
 
 import java.util.Map;
-
 import progettosoftwareengineering.localifttt.model.rule.action.*;
 
 public class WritingToFileActionCreator extends BaseActionCreator{

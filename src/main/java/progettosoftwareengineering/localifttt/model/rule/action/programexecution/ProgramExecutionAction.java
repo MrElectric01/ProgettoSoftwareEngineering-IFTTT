@@ -75,6 +75,7 @@ public class ProgramExecutionAction extends Action {
 
     @Override
     public String toString() {
-        return "Program path: " + programPath;
+        String programName = new File(programPath).getName();
+        return "Program path: " + programName;
     }
 }

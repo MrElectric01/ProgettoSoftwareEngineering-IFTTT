@@ -3,8 +3,7 @@ package progettosoftwareengineering.localifttt.model.rule;
 import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
 public class RuleCollectionTest {
 
@@ -56,7 +55,7 @@ public class RuleCollectionTest {
     public void testAddAll() {
         Rule rule1 = new ConcreteRule("TestRule1", null, null);
         Rule rule2 = new ConcreteRule("TestRule2", null, null);
-        List<Rule> list = new ArrayList<Rule>();
+        List<Rule> list = new ArrayList();
         list.add(rule1);
         list.add(rule2);
         ruleCollection.addAll(list);
@@ -80,7 +79,7 @@ public class RuleCollectionTest {
         Rule rule2 = mock(Rule.class);
         ruleCollection.addRule(rule2);
         
-        List<Rule> copy = new ArrayList<Rule>();
+        List<Rule> copy = new ArrayList();
 
         for (Rule r : ruleCollection) {
             copy.add(r);

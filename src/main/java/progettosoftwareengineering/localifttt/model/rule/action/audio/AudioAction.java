@@ -26,6 +26,6 @@ public class AudioAction extends Action {
 
     @Override
     public String toString() {
-        return "Audio: " + audioFile;
+        return "Audio: " + audioFile.getName();
     }
 }

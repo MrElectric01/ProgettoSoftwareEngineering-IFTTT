@@ -3,6 +3,7 @@ package progettosoftwareengineering.localifttt.model.rule.trigger.date;
 import java.time.LocalDate;
 import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 
+//Trigger for a specific date.
 public class DateTrigger extends Trigger {
 
     private LocalDate date;

@@ -1,9 +1,7 @@
 package progettosoftwareengineering.localifttt.controller.actioncontroller;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import static java.lang.Thread.sleep;
-import java.net.URLDecoder;
 import java.nio.file.*;
 import java.util.*;
 import static org.junit.Assert.assertEquals;
@@ -70,12 +68,9 @@ public class NotifyActionExecutionControllerTest {
         param.put("CFAFile", "CopyTest1.txt");
         param.put("DFAFile", "DeleteTest1.txt");
         param.put("PEAInterpreter", "java -jar");
-//        After retrieving the test program path using getResource() from the specific project folder, 
-//        we first decode it correctly, and then replace the '/' with '\' to obtain the same path format
-//        returned by the FileChooser through the UI.
 //        TestProgram.jar is a build of a test program that, after a sleeping time (to simulate a long execution) write in a file ("outputTestProgram.csv")
 //        the command line passed arguments.
-        param.put("PEAProgramPath", URLDecoder.decode(NotifyActionExecutionControllerTest.class.getResource("TestProgram.jar").getPath().substring(1), "UTF-8"));
+        param.put("PEAProgramPath", "src/test/resources/progettosoftwareengineering/localifttt/controller/actioncontroller/TestProgram.jar");
         
         testHelper2();
         
@@ -85,10 +80,10 @@ public class NotifyActionExecutionControllerTest {
         Files.delete(Paths.get("CopyTest1.txt"));
         Files.delete(Paths.get("test1"));
 //        We have to wait that the executed program has finished.
-        while(new File("outputTestProgram.csv").exists()) {
+        while(!new File("outputTestProgram.csv").exists()) {
             sleep(1000);
-            Files.delete(Paths.get("outputTestProgram.csv"));
         }
+        Files.delete(Paths.get("outputTestProgram.csv"));
     }
     
 //    In order to verify that the "error" update of this controller is to open 

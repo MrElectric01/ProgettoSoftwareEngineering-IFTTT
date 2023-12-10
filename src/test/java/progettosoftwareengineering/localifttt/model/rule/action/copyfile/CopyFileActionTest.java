@@ -1,18 +1,11 @@
 package progettosoftwareengineering.localifttt.model.rule.action.copyfile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Observer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import java.nio.file.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class CopyFileActionTest {
     
@@ -31,7 +24,7 @@ public class CopyFileActionTest {
         Files.createDirectory(Paths.get(directory));
         Files.createFile(Paths.get(file));
         
-        testHelper(true, new String[] {"File " + file + " copied to " + directory + "\\" + file});
+        testHelper(true, new String[] {"File " + file + " copied to " + directory + File.separator + file});
         
         Files.delete(Paths.get(directory + "/" + file));
         Files.delete(Paths.get(file));
@@ -47,7 +40,7 @@ public class CopyFileActionTest {
     public void testDoActionNoFile() throws IOException {
         Files.createDirectory(Paths.get(directory));
         
-        testHelper(false, new String[] {"The file to copy \"" + file + "\"\nor the target directory \"" + directory + "\\" + file + "\" doesn't exist anymore!", "Directory or File not found"});
+        testHelper(false, new String[] {"The file to copy \"" + file + "\"\nor the target directory \"" + directory + File.separator + file + "\" doesn't exist anymore!", "Directory or File not found"});
         
         Files.delete(Paths.get(directory));
     }
@@ -61,7 +54,7 @@ public class CopyFileActionTest {
     public void testDoActionNoDirectory() throws IOException {
         Files.createFile(Paths.get(file));
         
-        testHelper(false, new String[] {"The file to copy \"" + file + "\"\nor the target directory \"" + directory + "\\" + file + "\" doesn't exist anymore!", "Directory or File not found"});
+        testHelper(false, new String[] {"The file to copy \"" + file + "\"\nor the target directory \"" + directory + File.separator + file + "\" doesn't exist anymore!", "Directory or File not found"});
 
         Files.delete(Paths.get(file));
     }
@@ -77,6 +70,6 @@ public class CopyFileActionTest {
     
     @Test
     public void testToString() {
-        assertEquals("File to copy from: " + file +"\nTo: " + directory + "\\" + file, action.toString());
+        assertEquals("File to copy from: " + new File(file).getName() +"\nTo: " + new File(directory).getName(), action.toString());
     }
 }

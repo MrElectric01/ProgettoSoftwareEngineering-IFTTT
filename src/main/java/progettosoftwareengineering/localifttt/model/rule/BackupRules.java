@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule;
 
 import java.io.*;
 import java.util.*;
 
+//Class useful to manage the backup saving/loading of the RuleCollection.
 public class BackupRules implements Runnable, Observer {
     
     private static String backupFile = "BackupRules.bin";
@@ -57,9 +54,9 @@ public class BackupRules implements Runnable, Observer {
     }
     
 //    Static method for the Reloading of the rule collection.
-    @SuppressWarnings("unchecked") //we can be sure that the file contains an ArrayList<Rule>
+//we can be sure that the file contains an ArrayList<Rule>
     public static List<Rule> reloadBackup() {
-        List<Rule> backup = new ArrayList<Rule>();
+        List<Rule> backup = new ArrayList();
         try(ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(backupFile)))) {
             backup = (ArrayList<Rule>) ois.readObject();
         } catch (FileNotFoundException ex) {

@@ -15,7 +15,7 @@ public class LocalIFTTT extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("src\\main\\resources\\progettosoftwareengineering\\localifttt\\view\\HomeView.fxml"));
+        scene = new Scene(loadFXML("src/main/resources/progettosoftwareengineering/localifttt/view/HomeView.fxml"));
         stage.setScene(scene);
         stage.getIcons().add(new Image("/progettosoftwareengineering/localifttt/logo.png"));
         stage.setTitle("Local IFTTT");
@@ -35,5 +35,4 @@ public class LocalIFTTT extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }

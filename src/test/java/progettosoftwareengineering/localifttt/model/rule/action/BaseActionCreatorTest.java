@@ -2,8 +2,6 @@ package progettosoftwareengineering.localifttt.model.rule.action;
 
 import java.util.Map;
 import org.junit.*;
-
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 

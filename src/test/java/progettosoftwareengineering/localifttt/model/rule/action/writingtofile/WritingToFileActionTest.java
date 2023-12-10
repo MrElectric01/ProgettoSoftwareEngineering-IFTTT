@@ -1,19 +1,11 @@
 package progettosoftwareengineering.localifttt.model.rule.action.writingtofile;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 import java.util.Observer;
-
 import org.junit.*;
-
-
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class WritingToFileActionTest {
 
@@ -89,7 +81,6 @@ public class WritingToFileActionTest {
 
     @Test
     public void testToString() {
-        assertEquals("Text to append: " + textToAppend +"\nFile: " + filePath, action.toString());
+        assertEquals("Text to append: " + textToAppend +"\nFile: " + new File(filePath).getName(), action.toString());
     }
-
 }

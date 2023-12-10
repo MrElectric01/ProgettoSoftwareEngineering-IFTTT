@@ -2,7 +2,6 @@ package progettosoftwareengineering.localifttt.model.rule.action;
 
 import java.util.Map;
 
-
 //Abstract class for the base behaviour of an ActionCreator in the Chain.
 public abstract class BaseActionCreator {
 //    Reference to the next Creator in the chain, initially null.

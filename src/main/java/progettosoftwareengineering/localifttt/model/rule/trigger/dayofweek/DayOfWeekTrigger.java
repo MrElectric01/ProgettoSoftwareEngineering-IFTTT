@@ -1,7 +1,6 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger.dayofweek;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.*;
 
 import progettosoftwareengineering.localifttt.model.rule.trigger.Trigger;
 

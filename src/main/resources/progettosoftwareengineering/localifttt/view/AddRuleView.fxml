@@ -29,12 +29,12 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </VBox.margin>
                            <items>
-                              <MenuItem fx:id="timeTriggerChoice" mnemonicParsing="false" onAction="#selectTimeTrigger" text="Time" />
-                              <MenuItem fx:id="dayOfWeekTriggerChoice" mnemonicParsing="false" onAction="#selectDayOfWeekTrigger" text="Day of Week" />
-                              <MenuItem fx:id="dayOfMonthTriggerChoice" mnemonicParsing="false" onAction="#selectDayOfMonthTrigger" text="Day of Month" />
                               <MenuItem fx:id="dateTriggerChoice" mnemonicParsing="false" onAction="#selectDateTrigger" text="Date" />
-                              <MenuItem fx:id="fileExistenceTriggerChoice" mnemonicParsing="false" onAction="#selectFileExistenceTrigger" text="File Existence" />
+                              <MenuItem fx:id="dayOfMonthTriggerChoice" mnemonicParsing="false" onAction="#selectDayOfMonthTrigger" text="Day of Month" />
+                              <MenuItem fx:id="dayOfWeekTriggerChoice" mnemonicParsing="false" onAction="#selectDayOfWeekTrigger" text="Day of Week" />
                               <MenuItem fx:id="fileDimensionTriggerChoice" mnemonicParsing="false" onAction="#selectFileDimensionTrigger" text="File Dimension" />
+                              <MenuItem fx:id="fileExistenceTriggerChoice" mnemonicParsing="false" onAction="#selectFileExistenceTrigger" text="File Existence" />
+                              <MenuItem fx:id="timeTriggerChoice" mnemonicParsing="false" onAction="#selectTimeTrigger" text="Time" />
                            </items>
                         </MenuButton>
                         <StackPane prefHeight="270.0" prefWidth="45.0">
@@ -91,9 +91,15 @@
                               </VBox>
                               <VBox fx:id="fileExistenceTriggerPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
                                  <children>
-                                    <Label prefHeight="78.0" prefWidth="269.0" text="File Existence Trigger: a trigger that, when associated with a rule, causes it to activate if the specified file exists." wrapText="true" />
-                                    <Button mnemonicParsing="false" onAction="#fileExistenceTriggerSelectFile" text="Select File" />
-                                    <Label fx:id="fileExistenceTriggerSelectedFileLabel" />
+                                    <Label prefHeight="88.0" prefWidth="269.0" text="File Existence Trigger: a trigger that, when associated with a rule, causes it to activate if the specified file, in the specified directory, exists." wrapText="true" />
+                                    <Button mnemonicParsing="false" onAction="#fileExistenceTriggerSelectDirectory" text="Select Directory" />
+                                    <Label fx:id="fileExistenceTriggerSelectedDirectoryLabel" />
+                                    <HBox fx:id="fileNamePane" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                                       <children>
+                                          <Label text="File:" />
+                                          <TextField fx:id="fileExistenceTriggerInsertFileName" promptText="Insert file's name here" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                               <VBox fx:id="fileDimensionTriggerPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
@@ -126,12 +132,12 @@
                            </VBox.margin>
                            <items>
                               <MenuItem fx:id="audioActionChoice" mnemonicParsing="false" onAction="#selectAudioAction" text="Audio" />
-                              <MenuItem fx:id="messageActionChoice" mnemonicParsing="false" onAction="#selectMessageAction" text="Message" />
-                              <MenuItem fx:id="writingToFileActionChoice" mnemonicParsing="false" onAction="#selectWritingToFIleAction" text="Writing to File" />
-                              <MenuItem fx:id="moveFileActionChoice" mnemonicParsing="false" onAction="#selectMoveFileAction" text="Move File" />
                               <MenuItem fx:id="copyFileActionChoice" mnemonicParsing="false" onAction="#selectCopyFileAction" text="Copy File" />
                               <MenuItem fx:id="deleteFileActionChoice" mnemonicParsing="false" onAction="#selectDeleteFileAction" text="Delete File" />
+                              <MenuItem fx:id="messageActionChoice" mnemonicParsing="false" onAction="#selectMessageAction" text="Message" />
+                              <MenuItem fx:id="moveFileActionChoice" mnemonicParsing="false" onAction="#selectMoveFileAction" text="Move File" />
                               <MenuItem fx:id="programExecutionActionChoice" mnemonicParsing="false" onAction="#selectProgramExecutionAction" text="Program Execution" />
+                              <MenuItem fx:id="writingToFileActionChoice" mnemonicParsing="false" onAction="#selectWritingToFIleAction" text="Writing to File" />
                            </items>
                         </MenuButton>
                         <StackPane prefHeight="270.0" prefWidth="116.0">

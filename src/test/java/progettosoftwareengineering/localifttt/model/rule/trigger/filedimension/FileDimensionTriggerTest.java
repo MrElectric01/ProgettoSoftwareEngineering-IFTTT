@@ -1,22 +1,15 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger.filedimension;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import static org.junit.Assert.*;
 
 public class FileDimensionTriggerTest {
    
-    private String filePath;
+    private String filePath = "src/test/resources/progettosoftwareengineering/localifttt/model/rule/trigger/filedimension/fileDimension.jpg";
     private String sizeThreshold = "20";
     private String sizeUnit = "KB";
     private FileDimensionTrigger trigger;
-
-    public FileDimensionTriggerTest() throws UnsupportedEncodingException {
-        this.filePath = URLDecoder.decode(FileDimensionTriggerTest.class.getResource("fileDimension.jpg").getPath().substring(1), "UTF-8");
-    }
 
     @Before
     public void setUp() {
@@ -52,6 +45,6 @@ public class FileDimensionTriggerTest {
 
     @Test
     public void testToString() {
-        assertEquals("File to check dimension: " + new File(filePath).getAbsolutePath() + "\n(Threshold: " + sizeThreshold + " " + sizeUnit + ")", trigger.toString());
+        assertEquals("File to check dimension: " + new File(filePath).getName() + "\n(Threshold: " + sizeThreshold + " " + sizeUnit + ")", trigger.toString());
     }
 }

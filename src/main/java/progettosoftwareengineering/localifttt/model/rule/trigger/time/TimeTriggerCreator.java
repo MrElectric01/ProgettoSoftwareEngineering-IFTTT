@@ -1,7 +1,6 @@
 package progettosoftwareengineering.localifttt.model.rule.trigger.time;
 
 import java.util.Map;
-
 import progettosoftwareengineering.localifttt.model.rule.trigger.*;
 
 public class TimeTriggerCreator extends BaseTriggerCreator {

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model;
 
 import java.util.List;
@@ -28,6 +24,11 @@ public class ModelFacade {
         Action newAction = ChainActionCreatorsCreator.chain().createAction(action, actParam);
         controller.observeAction(newAction);
         return newAction;
+    }
+    
+//    Delete a rule from RuleCollection.
+    public static void deleteRuleFromRuleCollection(Rule rule) {
+        RuleCollection.getInstance().deleteRule(rule);
     }
     
 //    Return the instance of the RuleCollection.

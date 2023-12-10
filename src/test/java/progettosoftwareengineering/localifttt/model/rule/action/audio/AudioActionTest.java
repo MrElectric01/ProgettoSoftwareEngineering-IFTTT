@@ -1,12 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule.action.audio;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.io.*;
 import java.util.Observer;
 import org.junit.*;
 
@@ -20,10 +14,10 @@ public class AudioActionTest {
     private Observer obs;
     
 //    After retrieving the test audio path using getResource() from the specific project folder, 
-//    we first decode it correctly, and then replace the '/' with '\' to obtain the same path format
+//    we first decode it correctly, to obtain the same path format
 //    returned by the FileChooser through the UI.
     public AudioActionTest() throws UnsupportedEncodingException {
-        this.audio = URLDecoder.decode(AudioActionTest.class.getResource("WindowsXPError.mp3").getPath().substring(1), "UTF-8").replace("/", "\\");
+        this.audio = "src/test/resources/progettosoftwareengineering/localifttt/model/rule/action/audio/WindowsXPError.mp3";
     }
 
     @Before
@@ -57,7 +51,6 @@ public class AudioActionTest {
 
     @Test
     public void testToString() {
-        assertEquals("Audio: "+audio, action.toString());
+        assertEquals("Audio: "+ new File(audio).getName(), action.toString());
     }
-    
 }

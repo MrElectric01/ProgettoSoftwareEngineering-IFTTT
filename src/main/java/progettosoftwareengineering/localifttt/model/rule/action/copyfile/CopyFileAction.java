@@ -1,10 +1,7 @@
 package progettosoftwareengineering.localifttt.model.rule.action.copyfile;
 
-import java.io.File;
-import java.io.IOException;
-import static java.nio.file.Files.copy;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
+import java.nio.file.*;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 
 //Action for copying a file to a directory.
@@ -26,7 +23,7 @@ public class CopyFileAction extends Action{
         Path sourcePath = file.toPath();
         Path targetPath = directory.toPath();
         try {
-            copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
             setChanged();
             notifyObservers(new String[] {"The file to copy \"" + file + "\"\nor the target directory \"" + directory + "\" doesn't exist anymore!", "Directory or File not found"});
@@ -38,6 +35,7 @@ public class CopyFileAction extends Action{
     
     @Override
     public String toString() {
-        return "File to copy from: " + file +"\nTo: " + directory;
+        String directoryName = new File(directory.getParent()).getName();
+        return "File to copy from: " + file.getName() +"\nTo: " + directoryName;
     }
 }

@@ -2,8 +2,6 @@ package progettosoftwareengineering.localifttt.model.rule.action;
 
 import java.util.HashMap;
 import org.junit.*;
-
-
 import static org.junit.Assert.*;
 
 public class ChainActionCreatorsCreatorTest {
@@ -28,7 +26,7 @@ public class ChainActionCreatorsCreatorTest {
 //    tested in the specific test class), we check that the created Action is null.
     @Test
     public void testChainElements() {
-        Action action = chain.createAction(ActionType.TEST, new HashMap<String,String>());
+        Action action = chain.createAction(ActionType.TEST, new HashMap());
         assertNull(action);
     }
     

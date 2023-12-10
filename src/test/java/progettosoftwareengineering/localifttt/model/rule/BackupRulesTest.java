@@ -17,6 +17,8 @@ public class BackupRulesTest {
     public void setUp() throws InterruptedException {
         Rule rule = new ConcreteRule ("Test Rule", null, null);
         BackupRules.getInstance().setBackupFile(testBackupFile);
+//        We observe the RuleCollection here because in other test we delete its observers.
+        RuleCollection.getInstance().addObserver(BackupRules.getInstance());
         RuleCollection.getInstance().addRule(rule);
         Thread.sleep(500);
     }

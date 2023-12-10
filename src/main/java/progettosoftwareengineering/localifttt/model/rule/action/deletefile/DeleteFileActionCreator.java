@@ -1,9 +1,7 @@
 package progettosoftwareengineering.localifttt.model.rule.action.deletefile;
 
 import java.util.Map;
-import progettosoftwareengineering.localifttt.model.rule.action.Action;
-import progettosoftwareengineering.localifttt.model.rule.action.ActionType;
-import progettosoftwareengineering.localifttt.model.rule.action.BaseActionCreator;
+import progettosoftwareengineering.localifttt.model.rule.action.*;
 
 public class DeleteFileActionCreator extends BaseActionCreator {
 
@@ -14,5 +12,4 @@ public class DeleteFileActionCreator extends BaseActionCreator {
         else
             return this.nextCreator(action, actParam);
     }
-    
 }

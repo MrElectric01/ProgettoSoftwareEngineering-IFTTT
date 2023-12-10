@@ -1,10 +1,6 @@
 package progettosoftwareengineering.localifttt.model.rule.action.writingtofile;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-
+import java.io.*;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 
 //Action for the append of a text to a file.
@@ -40,6 +36,7 @@ public class WritingToFileAction extends Action{
 
     @Override
     public String toString() {
-        return "Text to append: " + textToAppend +"\nFile: " + filePath;
+        String fileName = new File(filePath).getName();
+        return "Text to append: " + textToAppend +"\nFile: " + fileName;
     }
 }

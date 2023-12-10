@@ -4,9 +4,8 @@ import javafx.util.Duration;
 import java.util.Observable;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import progettosoftwareengineering.localifttt.model.rule.action.Action;
 import progettosoftwareengineering.localifttt.model.rule.action.copyfile.CopyFileAction;
 import progettosoftwareengineering.localifttt.model.rule.action.deletefile.DeleteFileAction;
@@ -14,8 +13,10 @@ import progettosoftwareengineering.localifttt.model.rule.action.movefile.MoveFil
 import progettosoftwareengineering.localifttt.model.rule.action.programexecution.ProgramExecutionAction;
 import progettosoftwareengineering.localifttt.model.rule.action.writingtofile.WritingToFileAction;
 
+//Class useful to manage all that actions that use the GUI only to show 
+//an Alert that notifies that the action is done.
 public class NotifyActionExecutionController extends BaseActionController {
-    
+//    Duration of the Alert in second. 
     private int notifyDuration = 3;
 
     @Override

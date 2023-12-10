@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package progettosoftwareengineering.localifttt.model.rule.action.movefile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.util.Observer;
 import org.junit.Test;
@@ -29,7 +24,7 @@ public class MoveFileActionTest {
         Files.createDirectory(Paths.get(directory));
         Files.createFile(Paths.get(file));
         
-        testHelper(true, new String[] {"File " + file + " moved to " + directory + "\\" + file});
+        testHelper(true, new String[] {"File " + file + " moved to " + directory + File.separator + file});
         
         Files.delete(Paths.get(directory + "/" + file));
         Files.delete(Paths.get(directory));
@@ -44,7 +39,7 @@ public class MoveFileActionTest {
     public void testDoActionNoFile() throws IOException {
         Files.createDirectory(Paths.get(directory));
         
-        testHelper(false, new String[] {"The file to move \"" + file + "\"\nor the target directory \"" + directory + "\\" + file + "\" doesn't exist anymore!", "Directory or File not found"});
+        testHelper(false, new String[] {"The file to move \"" + file + "\"\nor the target directory \"" + directory + File.separator + file + "\" doesn't exist anymore!", "Directory or File not found"});
         
         Files.delete(Paths.get(directory));
     }
@@ -58,7 +53,7 @@ public class MoveFileActionTest {
     public void testDoActionNoDirectory() throws IOException {
         Files.createFile(Paths.get(file));
         
-        testHelper(false, new String[] {"The file to move \"" + file + "\"\nor the target directory \"" + directory + "\\" + file + "\" doesn't exist anymore!", "Directory or File not found"});
+        testHelper(false, new String[] {"The file to move \"" + file + "\"\nor the target directory \"" + directory + File.separator + file + "\" doesn't exist anymore!", "Directory or File not found"});
 
         Files.delete(Paths.get(file));
     }
@@ -74,6 +69,6 @@ public class MoveFileActionTest {
     
     @Test
     public void testToString() {
-        assertEquals("File to move from: " + file +"\nTo: " + directory + "\\" + file, action.toString());
+        assertEquals("File to move from: " + new File(file).getName() +"\nTo: " + new File(directory).getName(), action.toString());
     }
 }
